@@ -101,11 +101,15 @@ struct LoginView: View {
             
             // Splash View
             VStack {
-                Image(systemName: "moon.stars.fill")
+                Image("LogoBufetec")
                     .resizable()
-                    .frame(width: screen.width * 0.3, height: screen.width * 0.3)
-                    .foregroundColor(.white)
-                    .padding(.top, showLogin ? 100 : screen.height / 3) // Custom Logo Position
+                        .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
+                        .frame(width: screen.width * 0.5, height: screen.width * 0.5)
+                        .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
+                        .background(Color.clear) // Asegura que no haya un fondo no deseado
+                        .foregroundColor(.white)
+                        .padding(.top, showLogin ? 100 : screen.height / 3)
+                        .padding(.bottom, 20) // Agrega un padding inferior si el logo está muy cerca del fondo
                 
                 Spacer()
             }

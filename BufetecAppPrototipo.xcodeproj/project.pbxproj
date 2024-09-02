@@ -20,6 +20,8 @@
 		41D581542C6AB35D00E463CD /* Cosen-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
+		EC69AF6F2C86350E003B43F3 /* SplashScreenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */; };
+		EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF702C8635B0003B43F3 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenApp.swift; sourceTree = "<group>"; };
+		EC69AF702C8635B0003B43F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
+				EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */,
+				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -193,9 +199,11 @@
 			files = (
 				04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */,
 				41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */,
+				EC69AF6F2C86350E003B43F3 /* SplashScreenApp.swift in Sources */,
 				04CAEF8929B304E600A4FB62 /* NewsView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
+				EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */,
 				41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */,
 				04CAEF5B29B3029B00A4FB62 /* ContentView.swift in Sources */,
 				04CAEF8F29B3055000A4FB62 /* ProfileView.swift in Sources */,

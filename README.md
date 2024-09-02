@@ -29,7 +29,7 @@ La aplicación servirá como una plataforma integral para la gestión de servici
 Este proyecto es desarrollado por el equipo **iCodeCrew**, conformado por estudiantes de la materia en el Campus Monterrey:
 
 - **Enrique Macías López** - Programador
-- **[Nombre de Compañero]** - [Rol]
+- **Ramiro Uziel ** - Programador
 - **[Nombre de Compañero]** - [Rol]
   
 ## Estructura del Repositorio

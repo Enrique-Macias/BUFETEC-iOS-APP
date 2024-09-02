@@ -1,6 +1,6 @@
 import SwiftUI
 
-@main
+@main 
 struct BufetecApp: App {
     
     @StateObject var appearanceManager = AppearanceManager()

@@ -12,86 +12,99 @@ struct LoginView: View {
     @State var password     = ""
     @State var showPassword = false
     @State var showLogin = false
+    @State private var navigateToContentView = false
+    
     var body: some View {
         ZStack {
+            
              // Login View
-            VStack {
-                // User Textfield
-                ZStack {
-                    TextField("Username", text: $username)
-                }
-                .frame(width: screen.width * 0.8, height: 44)
-                .padding(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(.white, lineWidth: 0.3)
-                )
-                .background(Color(red: 22/255, green: 21/255, blue: 26/255).cornerRadius(16))
-                .padding(.top, 275)
-                
-                // Password Textfield
-                ZStack {
-                    HStack {
-                        if showPassword {
-                            TextField("Password", text: $password)
-                        } else {
-                            SecureField("Password", text: $password)
+            NavigationStack {
+                VStack {
+                    // User Textfield
+                    ZStack {
+                        TextField("Username", text: $username)
+                    }
+                    .frame(width: screen.width * 0.8, height: 44)
+                    .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(.white, lineWidth: 0.3)
+                    )
+                    .background(Color(.white).cornerRadius(16))
+                    .padding(.top, 275)
+                    
+                    // Password Textfield
+                    ZStack {
+                        HStack {
+                            if showPassword {
+                                TextField("Password", text: $password)
+                            } else {
+                                SecureField("Password", text: $password)
+                            }
+                            Spacer()
+                            
+                            Button(action: {
+                                showPassword.toggle()
+                            }) {
+                                Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.trailing, 6)
                         }
-                        Spacer()
                         
-                        Button(action: {
-                            showPassword.toggle()
-                        }) {
-                            Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
-                                .font(.system(size: 22))
+                    }
+                    .frame(width: screen.width * 0.8, height: 44)
+                    .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(.white, lineWidth: 0.3)
+                    )
+                    .background(Color(.white).cornerRadius(16))
+                    .padding(.top, 10)
+                    
+                    Spacer()
+                    
+                    // No tienes una cuenta? y crear cuenta
+                    HStack {
+                        Text("No tienes una cuenta?")
+                            .font(.system(size: 18, weight: .light))
+                            .foregroundColor(Color.white.opacity(0.5))
+                        
+                        Button(action: {}) {
+                            Text("Registrate")
+                                .font(.system(size: 18, weight: .bold))
                                 .foregroundColor(.white)
                         }
-                        .padding(.trailing, 6)
                     }
+                    .padding(.bottom, 10)
+                    
+                    // Login Btn
+                    Button(action: {
+                        self.navigateToContentView = true
+                    }) {
+                        ZStack {
+                            Text("Iniciar Sesión")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.black)
+                        }
+                        .frame(width: screen.width * 0.8, height: 60)
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .padding(.bottom, 40)
+                    }
+                    .background(
+                        NavigationLink(destination: ContentView(), isActive: $navigateToContentView) {
+                            EmptyView()
+                        }
+                            .hidden()
+                    )
                     
                 }
-                .frame(width: screen.width * 0.8, height: 44)
-                .padding(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(.white, lineWidth: 0.3)
-                )
-                .background(Color(red: 22/255, green: 21/255, blue: 26/255).cornerRadius(16))
-                .padding(.top, 10)
-                
-                Spacer()
-                
-                // No tienes una cuenta? y crear cuenta
-                HStack {
-                    Text("No tienes una cuenta?")
-                        .font(.system(size: 18, weight: .light))
-                        .foregroundColor(Color.white.opacity(0.5))
-                    
-                    Button(action: {}) {
-                        Text("Registrate")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                }
-                .padding(.bottom, 10)
-                
-                // Login Btn
-                Button(action: {}) {
-                    ZStack {
-                        Text("Iniciar Sesión")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.black)
-                    }
-                    .frame(width: screen.width * 0.8, height: 60)
-                    .background(Color.white)
-                    .cornerRadius(16)
-                    .padding(.bottom, 40)
-                }
-                
-            }
-            .frame(width: screen.width, height: screen.height)
-            .edgesIgnoringSafeArea(.all)
+                .frame(width: screen.width, height: screen.height)
+                .edgesIgnoringSafeArea(.all)
             .background(Color("launchBackground"))
+            }
             
             // Color de fondo mientras la View se esta cargando
             if !showLogin {

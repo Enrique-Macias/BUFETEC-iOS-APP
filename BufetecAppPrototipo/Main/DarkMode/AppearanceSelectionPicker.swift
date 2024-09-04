@@ -21,10 +21,9 @@ struct AppearanceSelectionPicker: View {
                 .foregroundColor(.primary)
             }
         }
-        
-        .onChange(of: appearanceManager.selectedAppearance, perform: { value in
-            appearanceManager.applyAppearanceStyle(value)
-        })
+        .onChange(of: appearanceManager.selectedAppearance) { oldValue, newValue in
+            appearanceManager.applyAppearanceStyle(newValue)
+        }
         .onAppear {
             appearanceManager.setInitialSelectedAppearance()
         }

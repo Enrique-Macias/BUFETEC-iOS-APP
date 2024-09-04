@@ -12,7 +12,7 @@ struct NewsView: View {
             let minY = proxy.frame(in: .global).minY
             let isUnderToolbar = minY - topInsets < 0
             Color.clear
-                .onChange(of: isUnderToolbar) { newVal in
+                .onChange(of: isUnderToolbar) { oldVal, newVal in
                     showingScrolledTitle = newVal
                 }
         }
@@ -31,13 +31,13 @@ struct NewsView: View {
                     }
                     .padding(.bottom, 20)
                 }
-                .background(Color("btBeige"))
+                .background(Color("btBackground"))
                 .toolbar {
                     CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
                 }
                 .navigationTitle("Noticias")
                 .navigationBarTitleDisplayMode(.inline)
-                .background(Color("btBeige"))
+                .background(Color("btBackground"))
                 .sheet(isPresented: $showingSettings) {
                     SettingsView()
                 }
@@ -69,7 +69,7 @@ struct NewsHeaderView: View {
                 let minY = proxy.frame(in: .global).minY
                 let isUnderToolbar = minY - topInsets < 0
                 Color.clear
-                    .onChange(of: isUnderToolbar) { newVal in
+                    .onChange(of: isUnderToolbar) { oldVal, newVal in
                         showingScrolledTitle = newVal
                     }
             }

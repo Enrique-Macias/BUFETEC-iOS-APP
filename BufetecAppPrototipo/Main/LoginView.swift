@@ -1,156 +1,130 @@
-//
-//  LoginView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/2/24.
-//
-
 import SwiftUI
 
 struct LoginView: View {
-    @State var username     = ""
-    @State var password     = ""
-    @State var showPassword = false
-    @State var showLogin = false
-    @State private var navigateToContentView = false
+    let logoAnimationDelay: Double = 1.5
+    let logoAnimationDuration: Double = 0.4
+    let contentAnimationDuration: Double = 0.2
+    
+    @Environment(\.colorScheme) var colorScheme
+    @State private var username = ""
+    @State private var password = ""
+    @State private var showPassword = false
+    @State private var showLogin = false
+    @State private var isContentViewPresented = false
+    @State private var showContent = false
     
     var body: some View {
         ZStack {
-            
-            // Login View
-            NavigationStack {
-                VStack {
-                    VStack {
-                        Image("LogoBufetec")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
-                            .frame(width: screen.width * 0.5, height: screen.width * 0.5)
-                            .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
-                            .background(Color.clear) // Asegura que no haya un fondo no deseado
-                            .foregroundColor(.white)
-                            .padding(.top, showLogin ? 100 : screen.height / 3)
-                    }
-                    
-                    .edgesIgnoringSafeArea(.all)
-                    .background(Color.clear)
-
-                    
-                    // User Textfield
-                    ZStack {
-                        TextField("Username", text: $username)
-                    }
-                    .frame(width: screen.width * 0.8, height: 44)
-                    .padding(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(.white, lineWidth: 0.3)
-                    )
-                    .background(Color(.white).cornerRadius(16))
-                    
-                    
-                    
-                    // Password Textfield
-                    ZStack {
-                        HStack {
-                            if showPassword {
-                                TextField("Password", text: $password)
-                            } else {
-                                SecureField("Password", text: $password)
-                            }
-                            Spacer()
-                            
-                            Button(action: {
-                                showPassword.toggle()
-                            }) {
-                                Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
-                                    .font(.system(size: 22))
-                                    .foregroundColor(.white)
-                            }
-                            .padding(.trailing, 6)
-                        }
-                        
-                    }
-                    .frame(width: screen.width * 0.8, height: 44)
-                    .padding(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(.white, lineWidth: 0.3)
-                    )
-                    .background(Color(.white).cornerRadius(16))
-                    .padding(.top, 10)
-                    
-                    Spacer()
-                    
-                    // No tienes una cuenta? y crear cuenta
-                    HStack {
-                        Text("No tienes una cuenta?")
-                            .font(.system(size: 18, weight: .light))
-                            .foregroundColor(Color.white.opacity(0.5))
-                        
-                        Button(action: {}) {
-                            Text("Registrate")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding(.bottom, 10)
-                    
-                    // Login Btn
-                    Button(action: {
-                        self.navigateToContentView = true
-                    }) {
-                        ZStack {
-                            Text("Iniciar Sesión")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundColor(.black)
-                        }
-                        .frame(width: screen.width * 0.8, height: 60)
-                        .background(Color.white)
-                        .cornerRadius(16)
-                        .padding(.bottom, 40)
-                    }
-                    .background(
-                        NavigationLink(destination: ContentView(), isActive: $navigateToContentView) {
-                            EmptyView()
-                        }
-                            .hidden()
-                    )
-                }
-                .frame(width: screen.width, height: screen.height)
+            Color("btBackground")
                 .edgesIgnoringSafeArea(.all)
-                .background(Color("launchBackground"))
-            }
             
-            if !showLogin {
-                ZStack{
-                    Color("launchBackground")
-                        .edgesIgnoringSafeArea(.all)
+            VStack {
+                Image("LogoBufetec")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: screen.width * 0.5, height: screen.width * (showLogin ? 0.3 : 0.5))
+                    .padding(.top, showLogin ? 200 : -40)
+                    .foregroundStyle(.primary)
+                    .animation(.spring(duration: logoAnimationDuration), value: showLogin)
+                
+                if showLogin {
                     VStack {
-                        Image("LogoBufetec")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
-                            .frame(width: screen.width * 0.5, height: screen.width * 0.5)
-                            .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
-                            .background(Color.clear) // Asegura que no haya un fondo no deseado
-                            .foregroundColor(.white)
-                            .padding(.top, showLogin ? 100 : screen.height / 3)
-                            .padding(.bottom, 20) // Agrega un padding inferior si el logo está muy cerca del fondo
+                        TextField("", text: $username, prompt: Text("Usuario").foregroundStyle(.gray))
+                            .frame(width: screen.width * 0.8, height: 30)
+                            .padding(18)
+                            .background(Color(.white).cornerRadius(16))
+                            .foregroundStyle(.black)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(colorScheme == .light ? Color.black : Color.clear, lineWidth: 1)
+                            )
+                            .opacity(showContent ? 1 : 0)
+                            .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
+                        
+                        ZStack {
+                            HStack {
+                                if showPassword {
+                                    TextField("", text: $password, prompt: Text("Contraseña").foregroundStyle(.gray))
+                                } else {
+                                    SecureField("", text: $password, prompt: Text("Contraseña").foregroundStyle(.gray))
+                                }
+                                Spacer()
+                                
+                                Button(action: {
+                                    showPassword.toggle()
+                                }) {
+                                    Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
+                                        .font(.system(size: 22))
+                                        .foregroundColor(.black)
+                                        .opacity(0.5)
+                                }
+                                .padding(.trailing, 6)
+                            }
+                        }
+                        .frame(width: screen.width * 0.8, height: 30)
+                        .padding(18)
+                        .background(Color(.white).cornerRadius(16))
+                        .foregroundStyle(.black)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(colorScheme == .light ? Color.black : Color.clear, lineWidth: 1)
+                        )
+                        .padding(.top, 10)
+                        .opacity(showContent ? 1 : 0)
+                        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
                         
                         Spacer()
+                        
+                        HStack {
+                            Text("No tienes una cuenta?")
+                                .font(.system(size: 18, weight: .light))
+                                .foregroundColor(.primary.opacity(0.5))
+                            
+                            Button(action: {}) {
+                                Text("Registrate")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        .padding(.bottom, 10)
+                        .opacity(showContent ? 1 : 0)
+                        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
+                        
+                        Button(action: {
+                            isContentViewPresented = true
+                        }) {
+                            ZStack {
+                                Text("Iniciar Sesión")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundColor(colorScheme == .light ? Color.white : Color.black)
+                            }
+                            .frame(width: screen.width * 0.8, height: 60)
+                            .background(colorScheme == .light ? Color.black : Color.white)
+                            .cornerRadius(16)
+                            .padding(.bottom, 40)
+                        }
+                        .opacity(showContent ? 1 : 0)
+                        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
                     }
-                    .frame(width: screen.width, height: screen.height)
-                    .edgesIgnoringSafeArea(.all)
-                    .background(Color.clear)
                 }
             }
+            .frame(width: screen.width, height: screen.height)
+            .edgesIgnoringSafeArea(.all)
         }
         .frame(width: screen.width, height: screen.height)
         .edgesIgnoringSafeArea(.all)
-        .onAppear{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                // Mostrar login view despues de 2 segundos
-                withAnimation(.spring()) {
+        .fullScreenCover(isPresented: $isContentViewPresented) {
+            ContentView()
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + logoAnimationDelay) {
+                withAnimation(.spring(duration: logoAnimationDuration)) {
                     showLogin = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + logoAnimationDuration) {
+                    withAnimation(.easeIn(duration: contentAnimationDuration)) {
+                        showContent = true
+                    }
                 }
             }
         }
@@ -159,6 +133,7 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
+        .environmentObject(AppearanceManager())
 }
 
 let screen = UIScreen.main.bounds

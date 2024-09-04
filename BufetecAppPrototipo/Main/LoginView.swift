@@ -17,9 +17,24 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             
-             // Login View
+            // Login View
             NavigationStack {
                 VStack {
+                    VStack {
+                        Image("LogoBufetec")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
+                            .frame(width: screen.width * 0.5, height: screen.width * 0.5)
+                            .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
+                            .background(Color.clear) // Asegura que no haya un fondo no deseado
+                            .foregroundColor(.white)
+                            .padding(.top, showLogin ? 100 : screen.height / 3)
+                    }
+                    
+                    .edgesIgnoringSafeArea(.all)
+                    .background(Color.clear)
+
+                    
                     // User Textfield
                     ZStack {
                         TextField("Username", text: $username)
@@ -31,7 +46,8 @@ struct LoginView: View {
                             .stroke(.white, lineWidth: 0.3)
                     )
                     .background(Color(.white).cornerRadius(16))
-                    .padding(.top, 275)
+                    
+                    
                     
                     // Password Textfield
                     ZStack {
@@ -99,38 +115,34 @@ struct LoginView: View {
                         }
                             .hidden()
                     )
-                    
                 }
                 .frame(width: screen.width, height: screen.height)
                 .edgesIgnoringSafeArea(.all)
-            .background(Color("launchBackground"))
+                .background(Color("launchBackground"))
             }
             
-            // Color de fondo mientras la View se esta cargando
             if !showLogin {
-                Color("launchBackground")
+                ZStack{
+                    Color("launchBackground")
+                        .edgesIgnoringSafeArea(.all)
+                    VStack {
+                        Image("LogoBufetec")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
+                            .frame(width: screen.width * 0.5, height: screen.width * 0.5)
+                            .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
+                            .background(Color.clear) // Asegura que no haya un fondo no deseado
+                            .foregroundColor(.white)
+                            .padding(.top, showLogin ? 100 : screen.height / 3)
+                            .padding(.bottom, 20) // Agrega un padding inferior si el logo está muy cerca del fondo
+                        
+                        Spacer()
+                    }
+                    .frame(width: screen.width, height: screen.height)
                     .edgesIgnoringSafeArea(.all)
+                    .background(Color.clear)
+                }
             }
-            
-            // Splash View
-            VStack {
-                Image("LogoBufetec")
-                    .resizable()
-                        .aspectRatio(contentMode: .fit) // Mantén el aspecto original del logo
-                        .frame(width: screen.width * 0.5, height: screen.width * 0.5)
-                        .padding(.all, 20) // Agrega un padding alrededor del logo dentro del frame
-                        .background(Color.clear) // Asegura que no haya un fondo no deseado
-                        .foregroundColor(.white)
-                        .padding(.top, showLogin ? 100 : screen.height / 3)
-                        .padding(.bottom, 20) // Agrega un padding inferior si el logo está muy cerca del fondo
-                
-                Spacer()
-            }
-            .frame(width: screen.width, height: screen.height)
-            .edgesIgnoringSafeArea(.all)
-            .background(Color.clear)
-            
-            
         }
         .frame(width: screen.width, height: screen.height)
         .edgesIgnoringSafeArea(.all)

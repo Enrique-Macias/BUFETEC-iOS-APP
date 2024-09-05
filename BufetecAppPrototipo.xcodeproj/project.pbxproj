@@ -25,6 +25,10 @@
 		EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */; };
 		EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */; };
 		EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA92C8995A100A9FB80 /* RegisterView.swift */; };
+		EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */; };
+		EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB12C8A31FB00A9FB80 /* LoadView.swift */; };
+		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
+		EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB52C8A323400A9FB80 /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,10 @@
 		EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentValidationView.swift; sourceTree = "<group>"; };
 		EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentScanView.swift; sourceTree = "<group>"; };
 		EC800CA92C8995A100A9FB80 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
+		EC800CB12C8A31FB00A9FB80 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
+		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
+		EC800CB52C8A323400A9FB80 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +114,11 @@
 				41203A402C6D4187006E1FAC /* SettingsView.swift */,
 				04CAEF8829B304E600A4FB62 /* NewsView.swift */,
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
+				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
+				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
 				EC800CA92C8995A100A9FB80 /* RegisterView.swift */,
 				EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */,
 				EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */,
@@ -132,6 +142,24 @@
 				41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		EC800CAB2C8A23C900A9FB80 /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */,
+			);
+			path = OnboardingViews;
+			sourceTree = "<group>";
+		};
+		EC800CB02C8A31BE00A9FB80 /* ChatBotViews */ = {
+			isa = PBXGroup;
+			children = (
+				EC800CB12C8A31FB00A9FB80 /* LoadView.swift */,
+				EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */,
+				EC800CB52C8A323400A9FB80 /* ChatView.swift */,
+			);
+			path = ChatBotViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,11 +243,15 @@
 				41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */,
 				04CAEF8929B304E600A4FB62 /* NewsView.swift in Sources */,
 				EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */,
+				EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */,
+				EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
+				EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
 				EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */,
 				EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */,
+				EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */,
 				41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */,
 				04CAEF5B29B3029B00A4FB62 /* ContentView.swift in Sources */,
 				04CAEF8F29B3055000A4FB62 /* ProfileView.swift in Sources */,

@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct DocumentValidationView: View {
+    @State private var isScanning = false
+    @State private var selectedDocumentType: DocumentType = .ine
+    
     let logoImageName = "BT-icon"
+    
+    enum DocumentType {
+        case ine, licencia
+    }
 
     var body: some View {
         ZStack {
@@ -48,16 +55,16 @@ struct DocumentValidationView: View {
                     .padding(.top, 25)
 
                 // Subtitle (Placeholder text as per the image)
-                Text("It is a long established fact that a reader will be distracted.")
+                Text("Nuestra prioridad es mantener seguros los datos de nuestros clientes, por lo que necesitamos validar tu identidad con una identificación oficial.")
                     .font(.body)
                     .fontWeight(.semibold)
-                    .font(.system(size: 18))
+                    .font(.system(size: 16))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color("btBlue"))
                     .padding(.top, 18)
                     .padding(.horizontal)
                     .padding(.bottom, 30)
-                    .frame(maxWidth: 300)
+                    .frame(maxWidth: 350)
 
                 Spacer()
                 
@@ -73,29 +80,38 @@ struct DocumentValidationView: View {
                 HStack(spacing: 16) {
                     Button(action: {
                         // Action for INE button
+                        selectedDocumentType = .ine
                     }) {
                         Text("INE")
                             .fontWeight(.semibold)
                             .font(.system(size: 16))
                             .frame(width: 155, height: 43)
-                            .background(Color("btBlue"))
-                            .foregroundColor(.white)
+                            .background(selectedDocumentType == .ine ? Color("btBlue") : Color.clear)
+                            .foregroundColor(selectedDocumentType == .ine ? .white : Color("btBlue"))
                             .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color("btBlue"), lineWidth: 2)
+                                    .opacity(selectedDocumentType == .ine ? 0 : 1)
+                            )
                     }
 
                     Button(action: {
                         // Action for Licencia de Conducir button
+                        selectedDocumentType = .licencia
                     }) {
                         Text("Licencia de Conducir")
                             .fontWeight(.semibold)
                             .font(.system(size: 16))
                             .frame(width: 170, height: 43)
-                            .background(Color.clear)
+                            .background(selectedDocumentType == .licencia ? Color("btBlue") : Color.clear)
+                            .foregroundColor(selectedDocumentType == .licencia ? .white : Color("btBlue"))
+                            .cornerRadius(8)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color("btBlue"), lineWidth: 2)
+                                    .opacity(selectedDocumentType == .licencia ? 0 : 1)
                             )
-                            .foregroundColor(Color("btBlue"))
                     }
                 }
                 .padding(.horizontal)
@@ -111,6 +127,7 @@ struct DocumentValidationView: View {
 
                 Button(action: {
                     // Action for scanning
+                    isScanning = true
                 }) {
                     HStack {
                         Image(systemName: "camera.fill")
@@ -123,6 +140,9 @@ struct DocumentValidationView: View {
                     .background(Color("btBlue"))
                     .foregroundColor(.white)
                     .cornerRadius(8)
+                }
+                .sheet(isPresented: $isScanning) {
+                    DocumentScanView()
                 }
                 .padding(.horizontal)
 

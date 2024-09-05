@@ -23,6 +23,7 @@
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
 		EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF702C8635B0003B43F3 /* LoginView.swift */; };
 		EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */; };
+		EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		EC69AF702C8635B0003B43F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentValidationView.swift; sourceTree = "<group>"; };
+		EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentScanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
 				EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */,
+				EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
+				EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */,
 				EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */,
 				41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */,
 				04CAEF5B29B3029B00A4FB62 /* ContentView.swift in Sources */,

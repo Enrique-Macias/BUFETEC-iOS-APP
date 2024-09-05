@@ -24,6 +24,7 @@
 		EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF702C8635B0003B43F3 /* LoginView.swift */; };
 		EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */; };
 		EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */; };
+		EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA92C8995A100A9FB80 /* RegisterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		EC69AF702C8635B0003B43F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentValidationView.swift; sourceTree = "<group>"; };
 		EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentScanView.swift; sourceTree = "<group>"; };
+		EC800CA92C8995A100A9FB80 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
+				EC800CA92C8995A100A9FB80 /* RegisterView.swift */,
 				EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */,
 				EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */,
 			);
@@ -211,6 +214,7 @@
 				04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */,
 				41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */,
 				04CAEF8929B304E600A4FB62 /* NewsView.swift in Sources */,
+				EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,

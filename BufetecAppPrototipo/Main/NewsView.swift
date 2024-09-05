@@ -55,7 +55,7 @@ struct NewsHeaderView: View {
             Text("Noticias")
                 .font(.custom("Cosen-Medium", size: 32))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(Color("btBlue"))
+                .foregroundStyle(Color.accentColor)
             
             Text("It is a long established fact that a reader will be distracted by the readable content")
                 .font(.custom("HiraginoSans-W3", size: 16))
@@ -115,7 +115,7 @@ struct PageIndicator: View {
         HStack(spacing: 8) {
             ForEach(0..<numberOfTabs, id: \.self) { index in
                 Circle()
-                    .fill(index == selectedIndex ? Color("btBlue") : Color.gray.opacity(0.3))
+                    .fill(index == selectedIndex ? Color.accentColor : Color.gray.opacity(0.3))
                     .frame(width: 8, height: 8)
                     .animation(.easeInOut(duration: 0.3), value: selectedIndex)
             }
@@ -147,18 +147,18 @@ struct CustomToolbar: ToolbarContent {
                 .bold()
                 .opacity(showingScrolledTitle ? 1 : 0)
                 .animation(.easeInOut, value: showingScrolledTitle)
-                .foregroundColor(Color("btBlue"))
+                .foregroundColor(.accentColor)
         }
         ToolbarItem(placement: .topBarTrailing) {
             HStack(spacing: 20) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color("btBlue"))
+                    .foregroundColor(.accentColor)
                 
                 Button(action: {
                     showingSettings.toggle()
                 }) {
                     Image(systemName: "gearshape")
-                        .foregroundColor(Color("btBlue"))
+                        .foregroundColor(.accentColor)
                 }
             }
             .padding(.horizontal, 10)
@@ -183,7 +183,7 @@ struct NewsCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 5))
                 .overlay(
                     RoundedRectangle(cornerRadius: 5)
-                        .stroke(colorScheme == .dark ? .white.opacity(0.5) : Color("btBlue"), lineWidth: 1)
+                        .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
                 )
             
             Spacer()
@@ -214,7 +214,7 @@ struct NewsCard: View {
                     Image(systemName: "arrow.right")
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
-                .foregroundStyle(Color("btBlue"))
+                .foregroundStyle(Color.accentColor)
             }
         }
         .padding(20)
@@ -223,7 +223,7 @@ struct NewsCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(colorScheme == .dark ? .white.opacity(0.5) : Color("btBlue"), lineWidth: 1)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
         )
     }
 }

@@ -93,7 +93,7 @@ struct CustomTabBar: View {
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(colorScheme == .dark ? .white.opacity(0.5) : Color("btBlue"), lineWidth: 1)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
         )
         .padding(.bottom, -5)
         .shadow(color: .black.opacity(0.1), radius: 10, y: 15)
@@ -112,12 +112,12 @@ struct CustomTabItem: View {
             Image(systemName: isActive ? "\(imageName).fill" : imageName)
                 .symbolRenderingMode(.monochrome)
                 .resizable()
-                .foregroundColor(isActive ? (colorScheme == .dark ? .white : Color("btBlue")) : .gray)
+                .foregroundColor(isActive ? (colorScheme == .dark ? .white : .accentColor) : .gray)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 25, height: 20)
             Text(title)
                 .font(.system(size: 10, weight: .regular))
-                .foregroundColor(isActive ? (colorScheme == .dark ? .white : Color("btBlue")) : .gray)
+                .foregroundColor(isActive ? (colorScheme == .dark ? .white : .accentColor) : .gray)
         }
         .frame(maxWidth: .infinity, maxHeight: 60)
         .cornerRadius(20)

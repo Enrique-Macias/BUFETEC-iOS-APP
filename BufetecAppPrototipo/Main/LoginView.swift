@@ -4,7 +4,6 @@ struct LoginView: View {
     let logoAnimationDelay: Double = 1.5
     let logoAnimationDuration: Double = 0.4
     let contentAnimationDuration: Double = 0.2
-    
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @State private var username = ""
@@ -14,21 +13,21 @@ struct LoginView: View {
     @State private var isContentViewPresented = false
     @State private var showContent = false
     @FocusState private var focusedField: Field?
-
+    
     private enum Field {
         case username, password
     }
-
+    
     var body: some View {
-        NavigationView {  // Asegúrate de que todo esté envuelto en NavigationView
-            ZStack {
-                Color("btBackground")
-                    .edgesIgnoringSafeArea(.all)
-                
-                if isContentViewPresented {
-                    ContentView()
-                        .transition(.opacity)
-                } else {
+        if isContentViewPresented {
+            ContentView()
+                .transition(.opacity)
+        } else {
+            NavigationStack {
+                ZStack {
+                    Color("btBackground")
+                        .edgesIgnoringSafeArea(.all)
+                    
                     VStack {
                         Image("LogoBufetec")
                             .resizable()
@@ -112,7 +111,7 @@ struct LoginView: View {
                                 .padding(.top, 10)
                                 .opacity(showContent ? 1 : 0)
                                 .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
-
+                                
                                 Spacer()
                                 
                                 HStack {
@@ -177,4 +176,3 @@ struct LoginView: View {
 }
 
 let screen = UIScreen.main.bounds
-

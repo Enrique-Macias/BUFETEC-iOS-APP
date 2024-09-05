@@ -1,218 +1,162 @@
-//
-//  RegisterView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/5/24.
-//
-
 import SwiftUI
 
 struct RegisterView: View {
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
+    @Environment(\.colorScheme) var colorScheme
+    @State private var date = Date()
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var phone: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State private var day: String = ""
-    @State private var month: String = ""
-    @State private var year: String = ""
     
-    @State private var isDocumentValidationViewPresented = false  // Estado para controlar la navegación
-
-    let logoImageName = "BT-icon" // Your logo asset name
-
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
-                // Background color depending on the system mode
-                Color(UIColor.systemBackground)
+                Color("btBackground")
                     .edgesIgnoringSafeArea(.all)
-
+                
                 VStack {
-                    // Header with the logo aligned to the right of the Back button
-                    HStack {
-                        Spacer()  // Pushes the logo to the right
-                        Image(logoImageName)
-                            .resizable()
-                            .frame(width: 62, height: 29)
-                    }
-                    .padding(.trailing) // Adjust the spacing between the logo and the edge of the screen
-
-                    Spacer()
-
+                    
                     // Main title
                     Text("Registro")
                         .fontWeight(.bold)
-                        .font(.system(size: 18))
-                        .foregroundColor(Color("btBlue"))
+                        .font(.system(size: 25))
+                        .foregroundStyle(.primary)
                         .padding(.bottom, 22)
-
+                    
                     // Name Field
                     HStack {
                         Image(systemName: "person")
-                            .foregroundColor(Color("btBlue"))
+                            .foregroundStyle(.primary)
+                            .frame(width: 20)
                         TextField("Donathan Smith", text: $name)
                             .padding()
-                            .foregroundColor(Color("btBlue"))
+                            .foregroundStyle(.primary)
                             .frame(width: 280, height: 20)
                     }
                     .padding()
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color("btBlue"), lineWidth: 1.5)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
                     )
                     .padding(.horizontal)
-
-                    // Birthdate Fields
-                    Text("Fecha de Nacimiento")
-                        .foregroundColor(Color("btBlue"))
-                        .fontWeight(.light)
-                        .font(.system(size: 14))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top)
-                        .padding(.leading, 28)
-
-                    HStack(spacing: 16) {
-                        TextField("Día", text: $day)
-                            .padding()
-                            .frame(height: 43)
-                            .background(Color.clear)
-                            .frame(width: 100, height: 43)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color("btBlue"), lineWidth: 1.5)
-                            )
-
-                        TextField("Mes", text: $month)
-                            .padding()
-                            .frame(height: 43)
-                            .background(Color.clear)
-                            .frame(width: 100, height: 43)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color("btBlue"), lineWidth: 1.5)
-                            )
-
-                        TextField("Año", text: $year)
-                            .padding()
-                            .frame(height: 43)
-                            .background(Color.clear)
-                            .frame(width: 100, height: 43)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color("btBlue"), lineWidth: 1.5)
-                            )
-                    }
-                    .padding(.horizontal)
-
+                    
                     // Email Field
                     HStack {
                         Image(systemName: "envelope")
-                            .foregroundColor(Color("btBlue"))
-                        TextField("donathansmth@gmail.com", text: $email)
+                            .foregroundStyle(.primary)
+                            .frame(width: 20)
+                        TextField("Correo electrónico", text: $email)
                             .keyboardType(.emailAddress)
                             .padding()
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .frame(width: 280, height: 20)
                     }
                     .padding()
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color("btBlue"), lineWidth: 1.5)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
                     )
                     .padding(.horizontal)
-
+                    
                     // Phone Field
                     HStack {
-                        Image(systemName: "phone.fill")
-                            .foregroundColor(Color("btBlue"))
+                        Image(systemName: "phone")
+                            .foregroundStyle(.primary)
+                            .frame(width: 20)
                         TextField("Teléfono", text: $phone)
                             .keyboardType(.phonePad)
                             .padding()
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .frame(width: 280, height: 20)
                     }
                     .padding()
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color("btBlue"), lineWidth: 1.5)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
                     )
                     .padding(.horizontal)
-
+                    
                     // Password Field
                     HStack {
                         Image(systemName: "lock")
-                            .foregroundColor(Color("btBlue"))
+                            .foregroundStyle(.primary)
+                            .frame(width: 20)
                         SecureField("Contraseña", text: $password)
                             .padding()
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .frame(width: 280, height: 20)
                     }
                     .padding()
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color("btBlue"), lineWidth: 1.5)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
                     )
                     .padding(.horizontal)
-
+                    
                     // Confirm Password Field
                     HStack {
                         Image(systemName: "lock")
-                            .foregroundColor(Color("btBlue"))
+                            .foregroundStyle(.primary)
+                            .frame(width: 20)
                         SecureField("Confirmar contraseña", text: $confirmPassword)
                             .padding()
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .frame(width: 280, height: 20)
                     }
                     .padding()
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color("btBlue"), lineWidth: 1.5)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
                     )
                     .padding(.horizontal)
-
-                    Spacer()
-
-                    // Register Button with NavigationLink to DocumentValidationView
-                    NavigationLink(destination: DocumentValidationView(), isActive: $isDocumentValidationViewPresented) {
-                        EmptyView()
+                    
+                    // Date picker
+                    HStack {
+                        Text("Fecha de nacimiento")
+                        DatePicker(
+                            "",
+                            selection: $date,
+                            displayedComponents: [.date]
+                        )
+                        .frame(width: 140, height: 0)
                     }
-
-                    Button(action: {
-                        // Simulate registration logic here
-                        // If registration is successful, navigate to DocumentValidationView
-                        isDocumentValidationViewPresented = true
-                    }) {
+                    .padding()
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    // Register Button using NavigationLink
+                    NavigationLink(destination: DocumentValidationView()) {
                         Text("Registrarse")
                             .fontWeight(.bold)
                             .font(.system(size: 18))
-                            .frame(maxWidth: 340, maxHeight: 55)
-                            .background(Color("btBlue"))
-                            .foregroundColor(.white)
+                            .frame(maxWidth: 340, minHeight: 55)
+                            .background(colorScheme == .light ? Color.black : Color.white)
+                            .foregroundColor(colorScheme == .light ? Color.white : Color.black)
                             .cornerRadius(8)
                     }
                     .padding(.horizontal)
-
+                    
                     Spacer()
                 }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Image("btIcon")
+                    .resizable()
+                    .foregroundStyle(colorScheme == .light ? Color.accentColor : .white)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50)
             }
         }
     }
 }
 
-struct RegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            RegisterView()
-                .preferredColorScheme(.light)
-            RegisterView()
-                .preferredColorScheme(.dark)
-        }
-    }
-}
-
-
-
 #Preview {
     RegisterView()
+        .environment(AppearanceManager())
 }

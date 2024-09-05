@@ -41,7 +41,7 @@ struct NoEffectButton: ButtonStyle {
 }
 
 struct ContentView: View {
-    @EnvironmentObject var appearanceManager: AppearanceManager
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @State private var selectedTab = 0
     
@@ -127,5 +127,5 @@ struct CustomTabItem: View {
 
 #Preview {
     ContentView()
-        .environmentObject(AppearanceManager())
+        .environment(AppearanceManager())
 }

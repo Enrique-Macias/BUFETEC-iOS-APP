@@ -8,5 +8,5 @@ struct AppointmentsView: View {
 
 #Preview {
     AppointmentsView()
-        .environmentObject(AppearanceManager())
+        .environment(AppearanceManager())
 }

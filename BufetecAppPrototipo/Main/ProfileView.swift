@@ -8,6 +8,6 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
-        .environmentObject(AppearanceManager())
+        .environment(AppearanceManager())
 }
 

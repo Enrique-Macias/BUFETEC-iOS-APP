@@ -1,14 +1,13 @@
 import SwiftUI
 
-
+@main
 struct BufetecApp: App {
-    
-    @StateObject var appearanceManager = AppearanceManager()
-    
+    @State var appearanceManager = AppearanceManager()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(appearanceManager)
+            LoginView()
+                .environment(appearanceManager)
                 .onAppear {
                     appearanceManager.initAppearanceStyle()
                 }

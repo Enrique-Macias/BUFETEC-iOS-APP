@@ -24,23 +24,14 @@ struct DocumentValidationView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                // Back button and logo
+                // Logo aligned to the right
                 HStack {
-                    Button(action: {
-                        // Action for back button
-                    }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Iniciar Sesión")
-                                .foregroundColor(Color("btBlue"))
-                        }
-                    }
                     Spacer()
                     Image(logoImageName)
                         .resizable()
                         .frame(width: 62, height: 29)
                 }
-                .padding()
+                .padding() // Adjust the spacing between the logo and the edge of the screen
 
                 Spacer()
 
@@ -54,7 +45,7 @@ struct DocumentValidationView: View {
                     .padding(.horizontal)
                     .padding(.top, 25)
 
-                // Subtitle (Placeholder text as per the image)
+                // Subtitle
                 Text("Nuestra prioridad es mantener seguros los datos de nuestros clientes, por lo que necesitamos validar tu identidad con una identificación oficial.")
                     .font(.body)
                     .fontWeight(.semibold)
@@ -122,7 +113,7 @@ struct DocumentValidationView: View {
                 Image("INE-example") // Use a placeholder or actual image in assets
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 375,height: 230)
+                    .frame(width: 375, height: 230)
                     .padding()
 
                 Button(action: {
@@ -152,7 +143,7 @@ struct DocumentValidationView: View {
     }
 }
 
-struct IdentityVerificationView_Previews: PreviewProvider {
+struct DocumentValidationView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             DocumentValidationView()
@@ -162,6 +153,7 @@ struct IdentityVerificationView_Previews: PreviewProvider {
         }
     }
 }
+
 
 
 #Preview {

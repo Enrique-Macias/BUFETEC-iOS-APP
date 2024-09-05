@@ -29,23 +29,14 @@ struct RegisterView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack {
-                    // Back button and logo
+                    // Header with the logo aligned to the right of the Back button
                     HStack {
-                        Button(action: {
-                            // Acción para volver atrás
-                        }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Iniciar Sesión")
-                                    .foregroundColor(Color("btBlue"))
-                            }
-                        }
-                        Spacer()
+                        Spacer()  // Pushes the logo to the right
                         Image(logoImageName)
                             .resizable()
                             .frame(width: 62, height: 29)
                     }
-                    .padding()
+                    .padding(.trailing) // Adjust the spacing between the logo and the edge of the screen
 
                     Spacer()
 
@@ -219,6 +210,7 @@ struct RegisterView_Previews: PreviewProvider {
         }
     }
 }
+
 
 
 #Preview {

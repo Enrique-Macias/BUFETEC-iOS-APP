@@ -25,7 +25,7 @@ struct LoginView: View {
                 .edgesIgnoringSafeArea(.all)
             
             if isContentViewPresented {
-                DocumentValidationView()
+                ContentView()
                     .transition(.opacity)
             } else {
                 VStack {

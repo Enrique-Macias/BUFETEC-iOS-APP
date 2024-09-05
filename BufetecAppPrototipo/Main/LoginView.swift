@@ -19,15 +19,15 @@ struct LoginView: View {
     }
     
     var body: some View {
+        if isContentViewPresented {
+            ContentView()
+                .transition(.opacity)
+        } else {
         NavigationStack {
             ZStack {
                 Color("btBackground")
                     .edgesIgnoringSafeArea(.all)
                 
-                if isContentViewPresented {
-                    ContentView()
-                        .transition(.opacity)
-                } else {
                     VStack {
                         Image("LogoBufetec")
                             .resizable()

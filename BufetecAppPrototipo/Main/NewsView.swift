@@ -214,7 +214,7 @@ struct NewsCard: View {
                     Image(systemName: "arrow.right")
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color("btBlue"))
             }
         }
         .padding(20)
@@ -230,5 +230,5 @@ struct NewsCard: View {
 
 #Preview {
     NewsView()
-        .environmentObject(AppearanceManager())
+        .environment(AppearanceManager())
 }

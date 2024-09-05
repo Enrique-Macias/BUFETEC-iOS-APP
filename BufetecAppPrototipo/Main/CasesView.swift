@@ -8,5 +8,5 @@ struct CasesView: View {
 
 #Preview {
     CasesView()
-        .environmentObject(AppearanceManager())
+        .environment(AppearanceManager())
 }

@@ -1,9 +1,13 @@
 import SwiftUI
 
-enum Appearance: LocalizedStringKey, CaseIterable, Identifiable {
-    case Light
-    case Dark
-    case System
+enum Appearance: String, CaseIterable, Identifiable {
+    case light = "Claro"
+    case dark = "Oscuro"
+    case system = "Sistema"
     
     var id: String { UUID().uuidString }
+    
+    var localizedName: LocalizedStringKey {
+        LocalizedStringKey(rawValue)
+    }
 }

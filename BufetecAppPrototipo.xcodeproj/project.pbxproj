@@ -17,10 +17,10 @@
 		04CAEF8F29B3055000A4FB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8E29B3055000A4FB62 /* ProfileView.swift */; };
 		41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41203A402C6D4187006E1FAC /* SettingsView.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
+		41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */ = {isa = PBXBuildFile; productRef = 41D3F7762C893CD700D44145 /* ObservableUserDefault */; };
 		41D581542C6AB35D00E463CD /* Cosen-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
-		EC69AF6F2C86350E003B43F3 /* SplashScreenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */; };
 		EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF702C8635B0003B43F3 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +40,6 @@
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
-		EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenApp.swift; sourceTree = "<group>"; };
 		EC69AF702C8635B0003B43F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +94,7 @@
 		04CAEF8229B3047900A4FB62 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				410484E12C6FDF3D006DEDE4 /* DarkMode */,
+				410484E12C6FDF3D006DEDE4 /* Utility */,
 				04CAEF5829B3029B00A4FB62 /* BufetecApp.swift */,
 				04CAEF5A29B3029B00A4FB62 /* ContentView.swift */,
 				41203A402C6D4187006E1FAC /* SettingsView.swift */,
@@ -102,20 +102,19 @@
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
-				EC69AF6E2C86350E003B43F3 /* SplashScreenApp.swift */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
 		};
-		410484E12C6FDF3D006DEDE4 /* DarkMode */ = {
+		410484E12C6FDF3D006DEDE4 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
 				41F2B19F2C6FB48700DE8B10 /* Appearance.swift */,
 				41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */,
 				4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */,
 			);
-			path = DarkMode;
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		413606872C6AA42B0006A3EC /* Fonts */ = {
@@ -142,6 +141,9 @@
 			dependencies = (
 			);
 			name = BufetecAppPrototipo;
+			packageProductDependencies = (
+				41D3F7762C893CD700D44145 /* ObservableUserDefault */,
+			);
 			productName = CustomTabbarSwiftUI;
 			productReference = 04CAEF5529B3029B00A4FB62 /* BufetecAppPrototipo.app */;
 			productType = "com.apple.product-type.application";
@@ -170,6 +172,9 @@
 				Base,
 			);
 			mainGroup = 04CAEF4C29B3029B00A4FB62;
+			packageReferences = (
+				41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
+			);
 			productRefGroup = 04CAEF5629B3029B00A4FB62 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -199,7 +204,6 @@
 			files = (
 				04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */,
 				41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */,
-				EC69AF6F2C86350E003B43F3 /* SplashScreenApp.swift in Sources */,
 				04CAEF8929B304E600A4FB62 /* NewsView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
@@ -339,7 +343,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -355,7 +359,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = EnriqueMacias.BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = Codecrew.BufetecAppPrototipo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -375,7 +379,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -391,7 +395,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = EnriqueMacias.BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = Codecrew.BufetecAppPrototipo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -425,6 +429,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davidsteppenbeck/ObservableUserDefault.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		41D3F7762C893CD700D44145 /* ObservableUserDefault */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;
+			productName = ObservableUserDefault;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04CAEF4D29B3029B00A4FB62 /* Project object */;
 }

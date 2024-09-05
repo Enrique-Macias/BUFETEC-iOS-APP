@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AppearanceSelectionPicker: View {
-    @EnvironmentObject var appearanceManager: AppearanceManager
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     
     var body: some View {
         List {
@@ -14,18 +14,19 @@ struct AppearanceSelectionPicker: View {
                         Spacer()
                         if appearance == appearanceManager.selectedAppearance {
                             Image(systemName: "checkmark")
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(.blue)
                         }
                     }
                 }
                 .foregroundColor(.primary)
             }
         }
-        .onChange(of: appearanceManager.selectedAppearance) { oldValue, newValue in
-            appearanceManager.applyAppearanceStyle(newValue)
+        .onChange(of: appearanceManager.selectedAppearance) {
+            appearanceManager.applyAppearanceStyle(appearanceManager.selectedAppearance)
         }
         .onAppear {
             appearanceManager.setInitialSelectedAppearance()
         }
     }
 }
+

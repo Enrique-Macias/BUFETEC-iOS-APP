@@ -23,11 +23,11 @@ struct LoginView: View {
             ContentView()
                 .transition(.opacity)
         } else {
-        NavigationStack {
-            ZStack {
-                Color("btBackground")
-                    .edgesIgnoringSafeArea(.all)
-                
+            NavigationStack {
+                ZStack {
+                    Color("btBackground")
+                        .edgesIgnoringSafeArea(.all)
+                    
                     VStack {
                         Image("LogoBufetec")
                             .resizable()

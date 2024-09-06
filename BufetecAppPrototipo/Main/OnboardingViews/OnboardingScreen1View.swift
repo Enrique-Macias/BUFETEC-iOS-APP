@@ -16,7 +16,7 @@ struct OnboardingScreen1View: View {
 
             // Título
             Text("ACCEDE A\nRECURSOS LEGALES")
-                .font(.system(size: 32, weight: .bold))
+                .font(CustomFonts.PoppinsExtraBold(size: 40))
                 .foregroundColor(Color("btBlue"))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
@@ -36,7 +36,7 @@ struct OnboardingScreen1View: View {
 
             // Texto descriptivo debajo de la imagen
             Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
-                .font(.system(size: 16))
+                .font(CustomFonts.MontserratRegular(size: 16))
                 .foregroundColor(Color("btBlue"))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)

@@ -45,8 +45,9 @@ struct LoginView: View {
                                     .scaledToFit()
                                     .frame(height: 270)
                                     .padding(.bottom, 30)
+
                                 Text("Iniciar sesión con correo")
-                                    .font(.system(size: 18, weight: .semibold))
+                                    .font(.custom("Montserrat-ExtraBold", size: 16))
                                     .padding(.bottom, 20)
                                 
                                 Button {
@@ -54,6 +55,7 @@ struct LoginView: View {
                                 } label: {
                                     Image(systemName: "envelope")
                                     TextField("", text: $username, prompt: Text("Usuario").foregroundStyle(.gray).kerning(0))
+                                        .font(.custom("Manrope-Bold", size: 16))
                                         .kerning(0.8)
                                         .fontWeight(.bold)
                                         .autocapitalization(.none)
@@ -84,7 +86,7 @@ struct LoginView: View {
                                                     .autocapitalization(.none)
                                                     .disableAutocorrection(true)
                                                     .kerning(0.8)
-                                                    .fontWeight(.bold)
+                                                    .font(.custom("Manrope-Medium", size: 16))
                                                     .focused($focusedField, equals: .password)
                                                     .multilineTextAlignment(.leading)
                                             } else {
@@ -92,7 +94,7 @@ struct LoginView: View {
                                                     .autocapitalization(.none)
                                                     .disableAutocorrection(true)
                                                     .kerning(0.8)
-                                                    .fontWeight(.bold)
+                                                    .font(.custom("Manrope-Medium", size: 16))
                                                     .focused($focusedField, equals: .password)
                                                     .multilineTextAlignment(.leading)
                                             }
@@ -133,7 +135,7 @@ struct LoginView: View {
                                 }) {
                                     ZStack {
                                         Text("Iniciar Sesión")
-                                            .font(.system(size: 16, weight: .bold))
+                                            .font(CustomFonts.MontserratBold(size: 16))
                                             .foregroundColor(colorScheme == .light ? Color.white : Color.black)
                                     }
                                     .frame(width: screen.width * 0.9, height: 60)
@@ -148,19 +150,19 @@ struct LoginView: View {
                                 }) {
                                     Text("Recuperar Contraseña")
                                         .foregroundStyle(Color.black)
-                                        .font(.system(size: 14))
+                                        .font(CustomFonts.MontserratMedium(size: 14))
                                         .underline()
                                 }
                                 .padding(.top, 5)
                                 //
                                 HStack {
                                     Text("No tienes una cuenta?")
-                                        .font(.system(size: 18, weight: .light))
+                                        .font(CustomFonts.MontserratMedium(size: 14))
                                         .foregroundColor(.primary.opacity(0.5))
                                     
                                     NavigationLink(destination: RegisterView()) {
                                         Text("Regístrate")
-                                            .font(.system(size: 18, weight: .bold))
+                                            .font(CustomFonts.MontserratBold(size: 14))
                                             .foregroundColor(.primary)
                                     }
                                 }

@@ -30,7 +30,7 @@ struct WelcomeScreenView: View {
                 
                 // Subtítulo
                 Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
-                    .font(.system(size: 16))
+                    .font(CustomFonts.MontserratSemiBold(size: 18))
                     .foregroundColor(Color("btBlue"))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
@@ -41,8 +41,7 @@ struct WelcomeScreenView: View {
                     // Acción al presionar el botón
                 }) {
                     Text("Comenzar")
-                        .fontWeight(.bold)
-                        .font(.system(size: 18))
+                        .font(CustomFonts.PoppinsSemiBold(size: 19))
                         .frame(maxWidth: .infinity)
                         .frame(width: 250 ,height: 50)
                         .background(Color("btBlue"))
@@ -72,17 +71,17 @@ struct WelcomeScreenView: View {
         var attributedString = AttributedString("APOYO LEGAL\nSIN COSTO,\nJUSTICIA PARA\nTODOS")
         
         // Estilo general para todo el texto
-        attributedString.font = .system(size: 32, weight: .bold)
+        attributedString.font = CustomFonts.PoppinsMedium(size: 40)
         attributedString.foregroundColor = Color("btBlue")
         
         // Estilo para "SIN COSTO"
         if let range = attributedString.range(of: "SIN COSTO") {
-            attributedString[range].font = .system(size: 32, weight: .black)
+            attributedString[range].font = CustomFonts.PoppinsExtraBold(size: 40)
         }
         
         // Estilo para "TODOS"
         if let range = attributedString.range(of: "TODOS") {
-            attributedString[range].font = .system(size: 32, weight: .black)
+            attributedString[range].font = CustomFonts.PoppinsExtraBold(size: 40)
         }
         
         return attributedString

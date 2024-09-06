@@ -33,6 +33,24 @@
 		EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB12C8A31FB00A9FB80 /* LoadView.swift */; };
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
 		EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB52C8A323400A9FB80 /* ChatView.swift */; };
+		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
+		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
+		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
+		ECB60E272C8B9346007535DB /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E262C8B9346007535DB /* Montserrat-SemiBold.ttf */; };
+		ECB60E292C8B9397007535DB /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E282C8B9397007535DB /* Poppins-ExtraBold.ttf */; };
+		ECB60E2B2C8B93B6007535DB /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E2A2C8B93B6007535DB /* Montserrat-Regular.ttf */; };
+		ECB60E2D2C8B93E6007535DB /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E2C2C8B93E6007535DB /* Poppins-Medium.ttf */; };
+		ECB60E2F2C8B9403007535DB /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E2E2C8B9403007535DB /* Poppins-SemiBold.ttf */; };
+		ECB60E312C8B945C007535DB /* Nunito-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E302C8B945C007535DB /* Nunito-Medium.ttf */; };
+		ECB60E332C8B9467007535DB /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E322C8B9467007535DB /* Nunito-ExtraBold.ttf */; };
+		ECB60E352C8B947C007535DB /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E342C8B947C007535DB /* Nunito-Bold.ttf */; };
+		ECB60E372C8B94A9007535DB /* Nunito-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E362C8B94A9007535DB /* Nunito-SemiBold.ttf */; };
+		ECB60E392C8B9509007535DB /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E382C8B9509007535DB /* Nunito-Black.ttf */; };
+		ECB60E3B2C8B955B007535DB /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E3A2C8B955B007535DB /* Nunito-Regular.ttf */; };
+		ECB60E3D2C8B958D007535DB /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E3C2C8B958D007535DB /* Poppins-Bold.ttf */; };
+		ECB60E3F2C8B9786007535DB /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */; };
+		ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */; };
+		ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB60E422C8B9B53007535DB /* Fonts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +81,24 @@
 		EC800CB12C8A31FB00A9FB80 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
 		EC800CB52C8A323400A9FB80 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E262C8B9346007535DB /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		ECB60E282C8B9397007535DB /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ECB60E2A2C8B93B6007535DB /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		ECB60E2C2C8B93E6007535DB /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E2E2C8B9403007535DB /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		ECB60E302C8B945C007535DB /* Nunito-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E322C8B9467007535DB /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ECB60E342C8B947C007535DB /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E362C8B94A9007535DB /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
+		ECB60E382C8B9509007535DB /* Nunito-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Black.ttf"; sourceTree = "<group>"; };
+		ECB60E3A2C8B955B007535DB /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		ECB60E3C2C8B958D007535DB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E422C8B9B53007535DB /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +184,24 @@
 			isa = PBXGroup;
 			children = (
 				41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */,
+				ECB60E2A2C8B93B6007535DB /* Montserrat-Regular.ttf */,
+				ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */,
+				ECB60E262C8B9346007535DB /* Montserrat-SemiBold.ttf */,
+				ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */,
+				ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */,
+				ECB60E2C2C8B93E6007535DB /* Poppins-Medium.ttf */,
+				ECB60E2E2C8B9403007535DB /* Poppins-SemiBold.ttf */,
+				ECB60E3C2C8B958D007535DB /* Poppins-Bold.ttf */,
+				ECB60E282C8B9397007535DB /* Poppins-ExtraBold.ttf */,
+				ECB60E3A2C8B955B007535DB /* Nunito-Regular.ttf */,
+				ECB60E302C8B945C007535DB /* Nunito-Medium.ttf */,
+				ECB60E362C8B94A9007535DB /* Nunito-SemiBold.ttf */,
+				ECB60E342C8B947C007535DB /* Nunito-Bold.ttf */,
+				ECB60E322C8B9467007535DB /* Nunito-ExtraBold.ttf */,
+				ECB60E382C8B9509007535DB /* Nunito-Black.ttf */,
+				ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */,
+				ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */,
+				ECB60E422C8B9B53007535DB /* Fonts.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -238,9 +292,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECB60E352C8B947C007535DB /* Nunito-Bold.ttf in Resources */,
+				ECB60E3D2C8B958D007535DB /* Poppins-Bold.ttf in Resources */,
+				ECB60E2B2C8B93B6007535DB /* Montserrat-Regular.ttf in Resources */,
+				ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */,
+				ECB60E392C8B9509007535DB /* Nunito-Black.ttf in Resources */,
+				ECB60E2F2C8B9403007535DB /* Poppins-SemiBold.ttf in Resources */,
 				41D581542C6AB35D00E463CD /* Cosen-Medium.ttf in Resources */,
+				ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */,
+				ECB60E332C8B9467007535DB /* Nunito-ExtraBold.ttf in Resources */,
+				ECB60E272C8B9346007535DB /* Montserrat-SemiBold.ttf in Resources */,
+				ECB60E292C8B9397007535DB /* Poppins-ExtraBold.ttf in Resources */,
+				ECB60E3F2C8B9786007535DB /* Manrope-Bold.ttf in Resources */,
+				ECB60E372C8B94A9007535DB /* Nunito-SemiBold.ttf in Resources */,
 				04CAEF6029B3029D00A4FB62 /* Preview Assets.xcassets in Resources */,
+				ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */,
+				ECB60E312C8B945C007535DB /* Nunito-Medium.ttf in Resources */,
+				ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */,
 				04CAEF5D29B3029D00A4FB62 /* Assets.xcassets in Resources */,
+				ECB60E3B2C8B955B007535DB /* Nunito-Regular.ttf in Resources */,
+				ECB60E2D2C8B93E6007535DB /* Poppins-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +332,7 @@
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
 				EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */,
+				ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */,
 				EC3B53682C8AEBAD00684EAC /* OnboardingScreen3View.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
 				EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */,
@@ -408,6 +480,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bufetec;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceder a la cámara para escanear tu identificación.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -444,6 +517,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bufetec;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceder a la cámara para escanear tu identificación.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

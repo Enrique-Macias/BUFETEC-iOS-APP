@@ -3,14 +3,19 @@ import SwiftUI
 @main
 struct BufetecApp: App {
     @State var appearanceManager = AppearanceManager()
+    @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
 
     var body: some Scene {
         WindowGroup {
-            LoginView()
-                .environment(appearanceManager)
-                .onAppear {
-                    appearanceManager.initAppearanceStyle()
-                }
+            if hasSeenOnboarding {
+                LoginView()
+                    .environment(appearanceManager)
+                    .onAppear {
+                        appearanceManager.initAppearanceStyle()
+                    }
+            } else {
+                OnboardingView()
+            }
         }
     }
 }

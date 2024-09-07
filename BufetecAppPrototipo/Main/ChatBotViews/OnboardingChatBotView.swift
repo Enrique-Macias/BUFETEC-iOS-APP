@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OnboardingChatBotView: View {
+    var onContinue: () -> Void // Closure que se ejecuta cuando el usuario hace clic en "Continuar"
     var body: some View {
         ZStack {
             // Color de fondo azul
@@ -44,9 +45,7 @@ struct OnboardingChatBotView: View {
                 Spacer()
 
                 // Botón Continuar
-                Button(action: {
-                    // Acción cuando se presiona el botón
-                }) {
+                Button(action: onContinue) {
                     ZStack {
                         Text("Continuar")
                             .fontWeight(.bold)
@@ -72,20 +71,4 @@ struct OnboardingChatBotView: View {
             }
         }
     }
-}
-
-struct OnboardingChatBotView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            OnboardingChatBotView()
-                .preferredColorScheme(.light)
-            OnboardingChatBotView()
-                .preferredColorScheme(.dark)
-        }
-    }
-}
-
-
-#Preview {
-    OnboardingChatBotView()
 }

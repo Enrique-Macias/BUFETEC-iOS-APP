@@ -7,64 +7,69 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct OnboardingScreen3View: View {
     var body: some View {
-        VStack {
-            Spacer()
+        ZStack {
+            VStack {
 
-            // Título
-            Text("GESTIONA TUS\nCASOS LEGALES")
-                .font(.system(size: 32, weight: .bold))
-                .foregroundColor(Color("btBlue"))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-                .padding(.top, 50)
+                Spacer()
+                // Título
+                Text("GESTIONA TUS\nCASOS LEGALES")
+                    .font(CustomFonts.PoppinsExtraBold(size: 36))
+                    .kerning(-2)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color("btBlue"))
+                    .padding(.horizontal, 20)
+                    .padding(.top, 40)
 
-            Spacer()
+                Spacer()
 
-            // Imagen del centro
-            Image("onboarding-3")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 250)
-                .foregroundStyle(Color("btBlue"))
-                .padding(.bottom, 30)
+                // Imagen del centro
+                Image("onboarding-3")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 250)
+                    .foregroundStyle(Color("btBlue"))
+                    .padding(.bottom, 20)
 
-            Spacer()
+                Spacer()
 
-            // Texto descriptivo debajo de la imagen
-            Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
-                .font(.system(size: 16))
-                .foregroundColor(Color("btBlue"))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-                .padding(.bottom, 40)
+                // Texto descriptivo debajo de la imagen
+                Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
+                    .font(CustomFonts.MontserratRegular(size: 16))
+                    .foregroundColor(Color("btBlue"))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 40)
 
-            // Indicador de página
-            HStack(spacing: 8) {
-                Circle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 10, height: 10)
+                // Indicador de página
+                HStack(spacing: 8) {
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
 
-                Circle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 10, height: 10)
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
 
-                Circle()
-                    .fill(Color("btBlue"))
-                    .frame(width: 10, height: 10)
+                    Circle()
+                        .fill(Color("btBlue"))
+                        .frame(width: 10, height: 10)
+                    
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
+                }
+                .padding(.bottom, 60)
+
+                // Logo de Bufetec en la parte inferior
+                Image("LogoBufetec") // Coloca el nombre de tu logo
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(Color("btBlue"))
+                    .frame(width: 135, height: 35)
+                    .padding(.bottom, 30)
             }
-            .padding(.bottom, 40)
-
-            // Logo de Bufetec en la parte inferior
-            Image("LogoBufetec") // Coloca el nombre de tu logo
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(Color("btBlue"))
-                .frame(width: 135, height: 35)
-                .padding(.bottom, 30)
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -81,8 +86,6 @@ struct OnboardingScreen3View_Previews: PreviewProvider {
     }
 }
 
-
 #Preview {
     OnboardingScreen3View()
 }
-

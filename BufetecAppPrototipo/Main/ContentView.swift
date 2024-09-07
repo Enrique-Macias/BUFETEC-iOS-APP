@@ -56,7 +56,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
-                    NewsView().tag(TabbedItems.home.rawValue)
+                    LawyerView().tag(TabbedItems.home.rawValue)
                     CasesView().tag(TabbedItems.favorite.rawValue)
                     AppointmentsView().tag(TabbedItems.chat.rawValue)
                     ProfileView().tag(TabbedItems.profile.rawValue)

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WelcomeScreenView: View {
+    @State var appearanceManager = AppearanceManager()
+    @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
+    @State private var showBufetecApp = false
     @Environment(\.colorScheme) var colorScheme
     
     let logoImageName = "LogoBufetec"
@@ -24,7 +27,10 @@ struct WelcomeScreenView: View {
                 // Título principal con diferentes pesos usando AttributedString
                 Text(attributedMainTitle)
                     .multilineTextAlignment(.center)
+                    .kerning(-2)
                     .padding(.horizontal, 20)
+                    .padding(.top, 50)
+                    
 
                 Spacer()
                 
@@ -34,11 +40,13 @@ struct WelcomeScreenView: View {
                     .foregroundColor(Color("btBlue"))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
-                    .padding(.bottom, 30)
-
+                    .padding(.bottom, 80)
+                
                 // Botón Comenzar
                 Button(action: {
                     // Acción al presionar el botón
+                    hasSeenOnboarding = true
+                    showBufetecApp = true
                 }) {
                     Text("Comenzar")
                         .font(CustomFonts.PoppinsSemiBold(size: 19))
@@ -50,8 +58,36 @@ struct WelcomeScreenView: View {
                         .padding(.horizontal, 40)
                 }
                 .padding(.bottom, 60)
+                .fullScreenCover(isPresented: $showBufetecApp) {
+                    LoginView()
+                        .environment(appearanceManager)
+                        .onAppear {
+                            appearanceManager.initAppearanceStyle()
+                        }
+                    
+                }
 
                 Spacer()
+                
+                // Indicador de página
+                HStack(spacing: 8) {
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
+
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
+
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 10, height: 10)
+                    
+                    Circle()
+                        .fill(Color("btBlue"))
+                        .frame(width: 10, height: 10)
+                }
+                .padding(.bottom, 60)
                 
                 // Logo y texto al pie de la vista
                 VStack {
@@ -61,7 +97,7 @@ struct WelcomeScreenView: View {
                         .frame(width: 180, height: 30)
                         .foregroundColor(Color(colorScheme == .light ? Color("btBlue") : .white))
                 }
-                .padding(.bottom, 40)
+                .padding(.bottom, 30)
             }
         }
     }

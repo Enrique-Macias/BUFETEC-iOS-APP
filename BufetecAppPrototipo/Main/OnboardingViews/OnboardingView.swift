@@ -15,7 +15,7 @@ struct OnboardingView: View {
             OnboardingScreen3View()
             WelcomeScreenView()
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Desactiva el indicador de página por defecto de TabView
+        .tabViewStyle(PageTabViewStyle()) // Desactiva el indicador de página por defecto de TabView
     }
 }
 

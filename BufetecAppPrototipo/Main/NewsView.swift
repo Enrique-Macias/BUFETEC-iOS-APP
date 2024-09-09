@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct NewsView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var showingScrolledTitle = false

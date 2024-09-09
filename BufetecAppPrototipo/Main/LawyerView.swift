@@ -98,43 +98,60 @@ struct LawyerView: View {
                                 .padding(20) // Add padding around the button
                                 .padding(.bottom, 85)
                                 .onTapGesture {
+                                    print("tapped chatbot button")
+                                    showingChatbotViews = true
                                     currentView = .load
-                                    
                                 }
                         }
                     }
                     .ignoresSafeArea() // Ensures that the button ignores safe areas and appears correctly
-                    
-                    // Show view depending on currentView
-                    if currentView == .load {
-                        LoadView()
-                            .transition(.opacity)
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                    // Después de 3 segundos, mostrar el onboarding o el chat dependiendo de si ya se vio el onboarding
-                                    if hasSeenChatbotOnboarding {
-                                        currentView = .chat
-                                    } else {
-                                        currentView = .onboarding
-                                    }
-                                }
-                            }
-                    } else if currentView == .onboarding {
-                        OnboardingChatBotView(onContinue: {
-                            // Acción para cuando se completa el onboarding
-                            hasSeenChatbotOnboarding = true // Guardar que el onboarding ya se mostró
-                            currentView = .chat // Cambiar a la vista del chat
-                        })
-                        .transition(.opacity)
-                    } else if currentView == .chat {
-                        ChatView()
-                            .transition(.opacity)
-                    }
+                }
+                .fullScreenCover(isPresented: $showingChatbotViews) {
+                    ChatBotFlowView(currentView: $currentView, hasSeenChatbotOnboarding: $hasSeenChatbotOnboarding)
                 }
             }
         }
     }
 }
+
+// ChatBotFlowView: Esta vista maneja el flujo de vistas de carga, onboarding y el chat del ChatBot
+struct ChatBotFlowView: View {
+    @Binding var currentView: LawyerView.ChatBotState
+    @Binding var hasSeenChatbotOnboarding: Bool
+
+    var body: some View {
+        ZStack {
+            if currentView == .load {
+                LoadView()
+                    .onAppear {
+                        print("Mostrando LoadView...")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            if hasSeenChatbotOnboarding {
+                                print("Mostrando ChatView...")
+                                currentView = .chat
+                            } else {
+                                print("Mostrando OnboardingChatBotView...")
+                                currentView = .onboarding
+                            }
+                        }
+                    }
+            } else if currentView == .onboarding {
+                OnboardingChatBotView(onContinue: {
+                    print("Onboarding completado. Mostrando ChatView.")
+                    hasSeenChatbotOnboarding = true
+                    currentView = .chat
+                })
+            } else if currentView == .chat {
+                ChatView()
+            } else {
+                Text("Error: No se pudo determinar la vista actual.")
+            }
+        }
+        .background(Color.red) // Asegúrate de tener un fondo
+    }
+}
+
+
     
     struct NewsHeaderView: View {
         @Binding var showingScrolledTitle: Bool

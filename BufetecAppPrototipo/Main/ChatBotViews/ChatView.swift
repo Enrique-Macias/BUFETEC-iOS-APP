@@ -9,77 +9,87 @@ import SwiftUI
 
 struct ChatView: View {
     @State private var userInput: String = ""
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationView {
             VStack {
-                Spacer()
-                // Consulta de procedimientos con el ícono de lápiz
-                VStack {
-                    Image("edit-2")
-                        .font(.system(size: 32))
-                        .foregroundColor(Color(.black))
-                        .padding(.bottom, 4)
-                    
-                    Text("Consulta de procedimientos")
-                        .font(.system(size: 16))
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(.black))
-                        .padding(.bottom, 20)
+                // ScrollView para el área de chat
+                ScrollView {
+                    VStack {
+                        Spacer(minLength: 200) // Espacio superior para centrar el contenido
 
-                    // Botones de preguntas predefinidas
-                    VStack(spacing: 12) {
-                        Button(action: {
-                            // Acción para la primera pregunta
-                        }) {
-                            Text("¿Cómo se cuál es mi procedimiento legal?")
-                                .frame(maxWidth: .infinity, maxHeight: 15)
-                                .fontWeight(.light)
-                                .padding()
-                                .foregroundColor(.primary)
-                                .background(Color.clear)
-                                .cornerRadius(30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color.primary, lineWidth: 1)
-                                )
-                        }
-                        
-                        Button(action: {
-                            // Acción para la segunda pregunta
-                        }) {
-                            Text("¿Que papelería debo tener a la mano?")
-                                .frame(maxWidth: .infinity, maxHeight: 15)
-                                .fontWeight(.light)
-                                .padding()
-                                .foregroundColor(.primary)
-                                .background(Color.clear)
-                                .cornerRadius(30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color.primary, lineWidth: 1)
-                                )
+                        // Consulta de procedimientos con el ícono de lápiz
+                        VStack {
+                            Image("edit-2")
+                                .font(.system(size: 32))
+                                .foregroundColor(Color(.black))
+                                .padding(.bottom, 4)
+                            
+                            Text("Consulta de procedimientos")
+                                .font(.system(size: 16))
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(.black))
+                                .padding(.bottom, 20)
+
+                            // Botones de preguntas predefinidas
+                            VStack(spacing: 12) {
+                                Button(action: {
+                                    // Acción para la primera pregunta
+                                }) {
+                                    Text("¿Cómo se cuál es mi procedimiento legal?")
+                                        .frame(maxWidth: .infinity, maxHeight: 15)
+                                        .fontWeight(.light)
+                                        .padding()
+                                        .foregroundColor(.primary)
+                                        .background(Color.clear)
+                                        .cornerRadius(30)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .stroke(Color.primary, lineWidth: 1)
+                                        )
+                                }
+                                
+                                Button(action: {
+                                    // Acción para la segunda pregunta
+                                }) {
+                                    Text("¿Que papelería debo tener a la mano?")
+                                        .frame(maxWidth: .infinity, maxHeight: 15)
+                                        .fontWeight(.light)
+                                        .padding()
+                                        .foregroundColor(.primary)
+                                        .background(Color.clear)
+                                        .cornerRadius(30)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .stroke(Color.primary, lineWidth: 1)
+                                        )
+                                }
+
+                                Button(action: {
+                                    // Acción para la tercera pregunta
+                                }) {
+                                    Text("¿Cómo se cuál procedimiento tomar?")
+                                        .frame(maxWidth: .infinity, maxHeight: 15)
+                                        .fontWeight(.light)
+                                        .padding()
+                                        .foregroundColor(.primary)
+                                        .background(Color.clear)
+                                        .cornerRadius(30)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .stroke(Color.primary, lineWidth: 1)
+                                        )
+                                }
+                            }
+                            .padding(.horizontal, 20)
                         }
 
-                        Button(action: {
-                            // Acción para la tercera pregunta
-                        }) {
-                            Text("¿Cómo se cuál procedimiento tomar?")
-                                .frame(maxWidth: .infinity, maxHeight: 15)
-                                .fontWeight(.light)
-                                .padding()
-                                .foregroundColor(.primary)
-                                .background(Color.clear)
-                                .cornerRadius(30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color.primary, lineWidth: 1)
-                                )
-                        }
+                        Spacer() // Espacio inferior para centrar el contenido
                     }
-                    .padding(.horizontal, 20)
+                    .frame(maxHeight: .infinity) // Asegura que el contenido se expanda y se centre
                 }
-
+                
                 Spacer()
 
                 // Barra de ingreso de preguntas con TextField
@@ -123,6 +133,7 @@ struct ChatView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         // Acción para volver atrás
+                        dismiss()
                     }) {
                         Image("arrow-left")
                             .font(.system(size: 20))
@@ -173,8 +184,4 @@ struct ChatView_Previews: PreviewProvider {
                 .preferredColorScheme(.dark)
         }
     }
-}
-
-#Preview {
-    ChatView()
 }

@@ -34,7 +34,8 @@
 		EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */; };
 		EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB12C8A31FB00A9FB80 /* LoadView.swift */; };
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
-		EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB52C8A323400A9FB80 /* ChatView.swift */; };
+		EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC792C9116C4008C42EB /* ChatBubble.swift */; };
+		EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -53,6 +54,10 @@
 		ECB60E3F2C8B9786007535DB /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */; };
 		ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */; };
 		ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB60E422C8B9B53007535DB /* Fonts.swift */; };
+		ECE2404E2C8F942900F84D0D /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECE2404D2C8F942900F84D0D /* GenerativeAI-Info.plist */; };
+		ECE240512C8F96DA00F84D0D /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = ECE240502C8F96DA00F84D0D /* GoogleGenerativeAI */; };
+		ECE240532C9005E000F84D0D /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE240522C9005E000F84D0D /* APIKey.swift */; };
+		ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,7 +73,7 @@
 		41203A402C6D4187006E1FAC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		41284E382C6AAAB200067460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
-		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
+		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		EC3B53632C8AE91D00684EAC /* OnboardingScreen1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen1View.swift; sourceTree = "<group>"; };
@@ -84,25 +89,29 @@
 		EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
 		EC800CB12C8A31FB00A9FB80 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
-		EC800CB52C8A323400A9FB80 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
-		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
-		ECB60E262C8B9346007535DB /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		ECB60E282C8B9397007535DB /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		ECB60E2A2C8B93B6007535DB /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		ECB60E2C2C8B93E6007535DB /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		ECB60E2E2C8B9403007535DB /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
-		ECB60E302C8B945C007535DB /* Nunito-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Medium.ttf"; sourceTree = "<group>"; };
+		EC8ABC792C9116C4008C42EB /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
+		EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleShape.swift; sourceTree = "<group>"; };
+		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E262C8B9346007535DB /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		ECB60E282C8B9397007535DB /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ECB60E2A2C8B93B6007535DB /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		ECB60E2C2C8B93E6007535DB /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		ECB60E2E2C8B9403007535DB /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		ECB60E302C8B945C007535DB /* Nunito-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Nunito-Medium.ttf"; sourceTree = "<group>"; };
 		ECB60E322C8B9467007535DB /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E342C8B947C007535DB /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E362C8B94A9007535DB /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
 		ECB60E382C8B9509007535DB /* Nunito-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Black.ttf"; sourceTree = "<group>"; };
-		ECB60E3A2C8B955B007535DB /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
-		ECB60E3C2C8B958D007535DB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		ECB60E3A2C8B955B007535DB /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		ECB60E3C2C8B958D007535DB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Medium.ttf"; sourceTree = "<group>"; };
 		ECB60E422C8B9B53007535DB /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		ECE2404D2C8F942900F84D0D /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
+		ECE240522C9005E000F84D0D /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiturnChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */,
+				ECE240512C8F96DA00F84D0D /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +151,7 @@
 				04CAEF8229B3047900A4FB62 /* Main */,
 				04CAEF5C29B3029D00A4FB62 /* Assets.xcassets */,
 				04CAEF5E29B3029D00A4FB62 /* Preview Content */,
+				ECE2404D2C8F942900F84D0D /* GenerativeAI-Info.plist */,
 			);
 			path = BufetecAppPrototipo;
 			sourceTree = "<group>";
@@ -228,8 +239,11 @@
 			children = (
 				EC800CB12C8A31FB00A9FB80 /* LoadView.swift */,
 				EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */,
-				EC800CB52C8A323400A9FB80 /* ChatView.swift */,
 				EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */,
+				ECE240522C9005E000F84D0D /* APIKey.swift */,
+				ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */,
+				EC8ABC792C9116C4008C42EB /* ChatBubble.swift */,
+				EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */,
 			);
 			path = ChatBotViews;
 			sourceTree = "<group>";
@@ -252,6 +266,7 @@
 			name = BufetecAppPrototipo;
 			packageProductDependencies = (
 				41D3F7762C893CD700D44145 /* ObservableUserDefault */,
+				ECE240502C8F96DA00F84D0D /* GoogleGenerativeAI */,
 			);
 			productName = CustomTabbarSwiftUI;
 			productReference = 04CAEF5529B3029B00A4FB62 /* BufetecAppPrototipo.app */;
@@ -283,6 +298,7 @@
 			mainGroup = 04CAEF4C29B3029B00A4FB62;
 			packageReferences = (
 				41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
+				ECE2404F2C8F96D900F84D0D /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 04CAEF5629B3029B00A4FB62 /* Products */;
 			projectDirPath = "";
@@ -300,6 +316,7 @@
 			files = (
 				ECB60E352C8B947C007535DB /* Nunito-Bold.ttf in Resources */,
 				ECB60E3D2C8B958D007535DB /* Poppins-Bold.ttf in Resources */,
+				ECE2404E2C8F942900F84D0D /* GenerativeAI-Info.plist in Resources */,
 				ECB60E2B2C8B93B6007535DB /* Montserrat-Regular.ttf in Resources */,
 				ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */,
 				ECB60E392C8B9509007535DB /* Nunito-Black.ttf in Resources */,
@@ -334,7 +351,6 @@
 				04CAEF8929B304E600A4FB62 /* LawyerView.swift in Sources */,
 				EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */,
 				EC3B53642C8AE91D00684EAC /* OnboardingScreen1View.swift in Sources */,
-				EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */,
 				EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
@@ -343,6 +359,7 @@
 				ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */,
 				EC3B53682C8AEBAD00684EAC /* OnboardingScreen3View.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
+				EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */,
 				EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */,
 				EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */,
 				EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */,
@@ -352,7 +369,10 @@
 				4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */,
 				EC3B53662C8AEB9F00684EAC /* OnboardingScreen2View.swift in Sources */,
 				04CAEF5929B3029B00A4FB62 /* BufetecApp.swift in Sources */,
+				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,
+				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
 				EC3B536A2C8AED0D00684EAC /* OnboardingView.swift in Sources */,
+				EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,6 +601,14 @@
 				minimumVersion = 1.3.1;
 			};
 		};
+		ECE2404F2C8F96D900F84D0D /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-gemini/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -588,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;
 			productName = ObservableUserDefault;
+		};
+		ECE240502C8F96DA00F84D0D /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ECE2404F2C8F96D900F84D0D /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

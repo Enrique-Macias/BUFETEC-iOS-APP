@@ -18,16 +18,15 @@ struct ProfileView: View {
                     Image(systemName: "person.circle.fill")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100)
+                        .frame(width: 80, height: 80)
                         .foregroundColor(Color("btBlue"))
                     
                     Text("Bruno García")
                         .font(CustomFonts.PoppinsBold(size: 16))
                         .foregroundColor(Color("btBlue"))
                     
-                    Button(action: {
-                        // Acción para editar el perfil
-                    }) {
+                    // Botón para editar perfil con NavigationLink
+                    NavigationLink(destination: EditProfileView()) {
                         Text("Editar Perfil")
                             .font(CustomFonts.PoppinsSemiBold(size: 14))
                             .padding(.vertical, 8)

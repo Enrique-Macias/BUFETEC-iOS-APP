@@ -36,6 +36,7 @@
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
 		EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC792C9116C4008C42EB /* ChatBubble.swift */; };
 		EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */; };
+		ECB17D562C923D1C00B38D64 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB17D552C923D1C00B38D64 /* EditProfileView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -91,6 +92,7 @@
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
 		EC8ABC792C9116C4008C42EB /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleShape.swift; sourceTree = "<group>"; };
+		ECB17D552C923D1C00B38D64 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -173,10 +175,11 @@
 				41203A402C6D4187006E1FAC /* SettingsView.swift */,
 				04CAEF8829B304E600A4FB62 /* LawyerView.swift */,
 				EC5F1EAD2C8C316600EE6697 /* NewsView.swift */,
+				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
 				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
-				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
+				ECB17D542C923C3200B38D64 /* ProfileViews */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
 				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
 				EC800CA92C8995A100A9FB80 /* RegisterView.swift */,
@@ -246,6 +249,14 @@
 				EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */,
 			);
 			path = ChatBotViews;
+			sourceTree = "<group>";
+		};
+		ECB17D542C923C3200B38D64 /* ProfileViews */ = {
+			isa = PBXGroup;
+			children = (
+				ECB17D552C923D1C00B38D64 /* EditProfileView.swift */,
+			);
+			path = ProfileViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -359,6 +370,7 @@
 				ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */,
 				EC3B53682C8AEBAD00684EAC /* OnboardingScreen3View.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
+				ECB17D562C923D1C00B38D64 /* EditProfileView.swift in Sources */,
 				EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */,
 				EC800CA82C898AA200A9FB80 /* DocumentScanView.swift in Sources */,
 				EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */,

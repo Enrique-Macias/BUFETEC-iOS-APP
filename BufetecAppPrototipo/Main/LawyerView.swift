@@ -91,11 +91,11 @@ struct LawyerView: View {
                     
                     // Floating ChatBot Button
                     VStack {
-                        Spacer() // Pushes the button to the bottom
+                        Spacer()
                         HStack {
-                            Spacer() // Pushes the button to the right
+                            Spacer()
                             ChatBotButton()
-                                .padding(20) // Add padding around the button
+                                .padding(20) 
                                 .padding(.bottom, 85)
                                 .onTapGesture {
                                     print("tapped chatbot button")
@@ -104,7 +104,7 @@ struct LawyerView: View {
                                 }
                         }
                     }
-                    .ignoresSafeArea() // Ensures that the button ignores safe areas and appears correctly
+                    .ignoresSafeArea()
                 }
                 .fullScreenCover(isPresented: $showingChatbotViews) {
                     ChatBotFlowView(currentView: $currentView, hasSeenChatbotOnboarding: $hasSeenChatbotOnboarding)
@@ -142,12 +142,11 @@ struct ChatBotFlowView: View {
                     currentView = .chat
                 })
             } else if currentView == .chat {
-                ChatView()
+                MultiturnChatView()
             } else {
                 Text("Error: No se pudo determinar la vista actual.")
             }
         }
-        .background(Color.red) // Asegúrate de tener un fondo
     }
 }
 

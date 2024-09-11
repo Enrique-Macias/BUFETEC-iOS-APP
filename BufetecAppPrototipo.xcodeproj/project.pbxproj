@@ -34,7 +34,6 @@
 		EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */; };
 		EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB12C8A31FB00A9FB80 /* LoadView.swift */; };
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
-		EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB52C8A323400A9FB80 /* ChatView.swift */; };
 		EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC792C9116C4008C42EB /* ChatBubble.swift */; };
 		EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
@@ -90,7 +89,6 @@
 		EC800CAE2C8A245E00A9FB80 /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
 		EC800CB12C8A31FB00A9FB80 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
-		EC800CB52C8A323400A9FB80 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		EC8ABC792C9116C4008C42EB /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleShape.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 			children = (
 				EC800CB12C8A31FB00A9FB80 /* LoadView.swift */,
 				EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */,
-				EC800CB52C8A323400A9FB80 /* ChatView.swift */,
 				EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */,
 				ECE240522C9005E000F84D0D /* APIKey.swift */,
 				ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */,
@@ -354,7 +351,6 @@
 				04CAEF8929B304E600A4FB62 /* LawyerView.swift in Sources */,
 				EC800CAA2C8995A100A9FB80 /* RegisterView.swift in Sources */,
 				EC3B53642C8AE91D00684EAC /* OnboardingScreen1View.swift in Sources */,
-				EC800CB62C8A323400A9FB80 /* ChatView.swift in Sources */,
 				EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,

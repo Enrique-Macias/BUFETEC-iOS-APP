@@ -24,13 +24,12 @@ struct MultiturnChatView: View {
                         VStack {
                             Spacer(minLength: 200)
                             Image("edit-2")
-                                .font(.system(size: 32))
+                                .font(.system(size: 24))
                                 .foregroundColor(Color(.black))
                                 .padding(.bottom, 4)
                             
                             Text("Consulta de procedimientos")
-                                .font(.system(size: 16))
-                                .fontWeight(.bold)
+                                .font(CustomFonts.NunitoBold(size: 14))
                                 .foregroundColor(Color(.black))
                                 .padding(.bottom, 20)
                             
@@ -40,8 +39,8 @@ struct MultiturnChatView: View {
                                     // Acción para la primera pregunta
                                 }) {
                                     Text("¿Cómo se cuál es mi procedimiento legal?")
+                                        .font(CustomFonts.NunitoMedium(size: 14))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
-                                        .fontWeight(.light)
                                         .padding()
                                         .foregroundColor(.primary)
                                         .background(Color.clear)
@@ -56,8 +55,8 @@ struct MultiturnChatView: View {
                                     // Acción para la segunda pregunta
                                 }) {
                                     Text("¿Que papelería debo tener a la mano?")
+                                        .font(CustomFonts.NunitoMedium(size: 14))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
-                                        .fontWeight(.light)
                                         .padding()
                                         .foregroundColor(.primary)
                                         .background(Color.clear)
@@ -72,8 +71,8 @@ struct MultiturnChatView: View {
                                     // Acción para la tercera pregunta
                                 }) {
                                     Text("¿Cómo se cuál procedimiento tomar?")
+                                        .font(CustomFonts.NunitoMedium(size: 14))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
-                                        .fontWeight(.light)
                                         .padding()
                                         .foregroundColor(.primary)
                                         .background(Color.clear)
@@ -115,7 +114,7 @@ struct MultiturnChatView: View {
                 HStack {
                     TextField("Genera tu propia pregunta", text: $textInput)
                         .padding(10)
-                        .foregroundColor(Color("btBlue"))
+                        .foregroundColor(.secondary)
                         .background(Color.clear)
                         .cornerRadius(8)
                         .frame(height: 50)
@@ -162,13 +161,15 @@ struct MultiturnChatView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack {
                         Image("BOT-logo")
-                            .font(.system(size: 24))
+                            .font(CustomFonts.NunitoBold(size: 20))
                             .foregroundColor(Color("btBlue"))
                             .opacity(logoAnimating ? 0.5 : 1)
                             .animation(.easeInOut, value: logoAnimating)
                         Text("Asistente")
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("btBlue"))
+                            .opacity(logoAnimating ? 0.5 : 1)
+                            .animation(.easeInOut, value: logoAnimating)
                     }
                 }
                 
@@ -196,13 +197,21 @@ struct MultiturnChatView: View {
     
     // Chat Message View
     @ViewBuilder func chatMessageView(_ message: ChatMessage) -> some View {
-        ChatBubble(direction: message.role == .model ? .left : .right) {
-            Text(message.message)
-                .font(.title3)
-                .padding(.all, 20)
-                .foregroundStyle(.white)
-                .background(message.role == .model ? Color.blue : Color.green)
+        HStack {
+            ChatBubble(direction: message.role == .model ? .left : .right) {
+                Text(LocalizedStringKey(message.message))
+                    .font(CustomFonts.NunitoSemiBold(size: 14))
+                    .padding(.all, 20)
+                    .foregroundStyle(message.role == .model ? .primary : Color(.white))
+                    .background(message.role == .model ? Color.clear : Color("btBlue"))
+                    .overlay(
+                        // Aquí se ajusta el border personalizado para el chatbot
+                        ChatBubbleShape(direction: message.role == .model ? .left : .right)
+                            .stroke(Color(.black), lineWidth: 2) // Solo se aplica a los bordes necesarios
+                    )
+            }
         }
+        .frame(maxWidth: .infinity, alignment: message.role == .model ? .leading : .trailing)
     }
     
     // Enviar mensaje

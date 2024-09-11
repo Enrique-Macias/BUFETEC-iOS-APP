@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ChatView: View {
-    @State private var userInput: String = ""
+    // ChatBot Gemini API
+    @State var textInput = ""
+    @State var logoAnimating = false
+    @State var timer: Timer?
+    @State var chatService = ChatBot()
+    
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationView {
             VStack {
                 // ScrollView para el área de chat
-                ScrollView {
+                    ScrollView {
                     VStack {
                         Spacer(minLength: 200) // Espacio superior para centrar el contenido
 
@@ -94,7 +99,7 @@ struct ChatView: View {
 
                 // Barra de ingreso de preguntas con TextField
                 HStack {
-                    TextField("Genera tu propia pregunta", text: $userInput)
+                    TextField("Genera tu propia pregunta", text: $textInput)
                         .padding(10)
                         .foregroundColor(Color("btBlue"))
                         .background(Color.clear)
@@ -112,7 +117,7 @@ struct ChatView: View {
                     
                     // Botón de enviar pregunta
                     Button(action: {
-                        // Acción para enviar la pregunta
+                        
                     }) {
                         Image("send")
                             .font(.system(size: 20))
@@ -146,6 +151,8 @@ struct ChatView: View {
                         Image("BOT-logo")
                             .font(.system(size: 24))
                             .foregroundColor(Color("btBlue"))
+                            .opacity(logoAnimating ? 0.5 : 1)
+                            .animation(.easeInOut, value: logoAnimating)
                         Text("Asistente")
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("btBlue"))

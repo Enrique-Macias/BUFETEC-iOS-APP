@@ -36,6 +36,8 @@
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
 		EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC792C9116C4008C42EB /* ChatBubble.swift */; };
 		EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */; };
+		ECA58D422C9B4F4D0081ECDE /* AttorneysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA58D412C9B4F4D0081ECDE /* AttorneysView.swift */; };
+		ECA58D442C9B51980081ECDE /* Attorneys.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA58D432C9B51980081ECDE /* Attorneys.swift */; };
 		ECB17D562C923D1C00B38D64 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB17D552C923D1C00B38D64 /* EditProfileView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
@@ -92,6 +94,8 @@
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
 		EC8ABC792C9116C4008C42EB /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleShape.swift; sourceTree = "<group>"; };
+		ECA58D412C9B4F4D0081ECDE /* AttorneysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttorneysView.swift; sourceTree = "<group>"; };
+		ECA58D432C9B51980081ECDE /* Attorneys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attorneys.swift; sourceTree = "<group>"; };
 		ECB17D552C923D1C00B38D64 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 				EC5F1EAD2C8C316600EE6697 /* NewsView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
+				ECA58D402C9B4F2B0081ECDE /* AttorneysViews */,
 				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				ECB17D542C923C3200B38D64 /* ProfileViews */,
@@ -249,6 +254,15 @@
 				EC8ABC7B2C911C10008C42EB /* ChatBubbleShape.swift */,
 			);
 			path = ChatBotViews;
+			sourceTree = "<group>";
+		};
+		ECA58D402C9B4F2B0081ECDE /* AttorneysViews */ = {
+			isa = PBXGroup;
+			children = (
+				ECA58D412C9B4F4D0081ECDE /* AttorneysView.swift */,
+				ECA58D432C9B51980081ECDE /* Attorneys.swift */,
+			);
+			path = AttorneysViews;
 			sourceTree = "<group>";
 		};
 		ECB17D542C923C3200B38D64 /* ProfileViews */ = {
@@ -382,7 +396,9 @@
 				EC3B53662C8AEB9F00684EAC /* OnboardingScreen2View.swift in Sources */,
 				04CAEF5929B3029B00A4FB62 /* BufetecApp.swift in Sources */,
 				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,
+				ECA58D422C9B4F4D0081ECDE /* AttorneysView.swift in Sources */,
 				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
+				ECA58D442C9B51980081ECDE /* Attorneys.swift in Sources */,
 				EC3B536A2C8AED0D00684EAC /* OnboardingView.swift in Sources */,
 				EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */,
 			);

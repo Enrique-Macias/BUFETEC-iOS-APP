@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct LawyerView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -52,10 +53,7 @@ struct LawyerView: View {
                             // Page Indicator
                             PageIndicator(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
                             
-                            // Button for All News
-                            Button(action: {
-                                // Acción para ver todas las noticias
-                            }) {
+                            NavigationLink(destination: NewsContentView()){
                                 HStack {
                                     Text("Ver Todas las Noticias")
                                         .font(CustomFonts.PoppinsSemiBold(size: 14))
@@ -174,20 +172,31 @@ struct ChatBotFlowView: View {
     }
     
     // TabView for news cards
-    struct NewsTabView: View {
-        var numberOfTabs: Int
-        @Binding var selectedIndex: Int
-        
-        var body: some View {
+struct NewsTabView: View {
+    var numberOfTabs: Int
+    @ObservedObject var list = GetData()
+    @Binding var selectedIndex: Int
+    
+    var body: some View {
+        if list.datas.isEmpty {
+            Text("Cargando artículos...") // Loading state
+                .onAppear {
+                    list.fetchData()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white) // To ensure it is visible
+        } else {
             TabView(selection: $selectedIndex) {
-                ForEach(0..<numberOfTabs, id: \.self) { index in
+                ForEach(0..<5, id: \.self) { index in
+                    let article = list.datas[index]
                     NewsCard(
-                        cardTitle: "Plataforma de Poder Judicial \ndel Estado de Nuevo León",
-                        cardBody: "It is a long established fact that a reader will be distracted by the readable content.",
-                        image: "placeholderCardImage"
-                    )
+                        cardTitle: article.title,
+                        cardBody: article.desc,
+                        image: article.image.isEmpty ? "placeholderCardImage" : article.image,
+                        cardDate:article.date, articleURL:article.url)
                     .tag(index)
                 }
+                
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 380)
@@ -203,6 +212,7 @@ struct ChatBotFlowView: View {
             )
         }
     }
+}
     
     // Page Indicator for the TabView
     struct PageIndicator: View {
@@ -271,47 +281,60 @@ struct ChatBotFlowView: View {
         var cardTitle: String
         var cardBody: String
         var image: String
+        var cardDate:String
+        var articleURL:String
         
         var body: some View {
             VStack(spacing: 10) {
-                Image(image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 300, height: 120)
-                    .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-                    )
-                
+                if !image.isEmpty {
+                               WebImage(url: URL(string: image))
+                                   .resizable()
+                                   .aspectRatio(contentMode: .fill)
+                                   .frame(width: 300, height: 150)
+                                   .cornerRadius(20)
+                                   
+                                   .clipped()
+                                   
+                                   .transition(.fade(duration: 0.5)) // Optional fade-in transition
+                                   .animation(.easeInOut(duration: 0.5), value: image)
+                } else {
+                    Image("placeholderCardImage") // Default placeholder
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 200)
+                    .clipped()}
                 Spacer()
                 
                 VStack(alignment: .leading, spacing: -10) {
                     ForEach(cardTitle.components(separatedBy: "\n"), id: \.self) { line in
                         Text(line)
-                            .font(.custom("Cosen-Medium", size: 18))
+                            .font(.custom("Poppins-Bold", size: 18))
                             .foregroundStyle(.primary)
+                           // .foregroundColor(Color(hex: "14397F"))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                Text(cardDate) // Display the date here
+                    .font(.subheadline)
+                                .foregroundColor(.gray)
+                                .padding(.bottom, 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                               // .foregroundColor(Color(hex: "14397F"))
                 
                 Text(cardBody)
-                    .font(.custom("HiraginoSans-W3", size: 16))
+                    .font(.custom("Poppins", size: 15))
                     .lineSpacing(5)
                     .foregroundStyle(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
+                   // .foregroundColor(Color(hex: "14397F"))
                 Spacer()
                 
-                Button {
-                    print("Ver más")
-                } label: {
-                    HStack {
-                        Text("Ver más")
-                            .font(.custom("HiraginoSans-W3", size: 16))
-                        Image(systemName: "arrow.right")
-                    }
+                NavigationLink(destination: FullNewsView(article: NewsDataType(id: UUID().uuidString, title: cardTitle, desc: cardBody, url: articleURL, image: image, date: cardDate, body: cardBody))) {
+                               HStack {
+                                   Text("Ver más")
+                                       .font(.custom("HiraginoSans-W3", size: 16))
+                                   Image(systemName: "arrow.right")
+                               }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .foregroundStyle(Color.accentColor)
                 }

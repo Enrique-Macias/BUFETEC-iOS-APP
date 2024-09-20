@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct LawyerView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -36,43 +37,49 @@ struct LawyerView: View {
         }
     }
     
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
+    
     var body: some View {
         GeometryReader { outer in
             NavigationStack {
                 ZStack {
                     // Scrollable content in the background
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 20) {
+                        VStack(alignment: .leading, spacing: 30) {
                             // News Header
                             NewsHeaderView(showingScrolledTitle: $showingScrolledTitle)
+                            VStack {
+                                // TabView for News
+                                NewsTabView(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
+                                
+                                // Page Indicator
+                                PageIndicator(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
+                            }
                             
-                            // TabView for News
-                            NewsTabView(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
-                            
-                            // Page Indicator
-                            PageIndicator(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
-                            
-                            // Button for All News
-                            Button(action: {
-                                // Acción para ver todas las noticias
-                            }) {
+                            NavigationLink(destination: NewsContentView()){
                                 HStack {
-                                    Text("Ver Todas las Noticias")
-                                        .font(CustomFonts.PoppinsSemiBold(size: 14))
+                                    Text("Todas las noticias")
+                                        .font(.system(size: 16, weight: .semibold))
                                     Image(systemName: "arrow.right")
+                                        .font(.system(size: 14))
                                 }
-                                .padding()
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 10)
                                 .frame(maxWidth: 230, maxHeight: 40, alignment: .center)
                                 .foregroundColor(.white)
                                 .background(Color("btBlue"))
-                                .cornerRadius(1152)
+                                .cornerRadius(15)
                             }
                             .padding(.horizontal, 25)
+                            .frame(maxWidth: .infinity, alignment: .center)
+
                             
                             // Cards for "Gestión de Casos" and "Clientes"
-                            VStack(spacing: 20) {
-                                CustomCard(title: "GESTIÓN DE CASOS", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
-                                CustomCard(title: "CLIENTES", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
+                            VStack(spacing: 30) {
+                                CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
+                                CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
                             }
                             .padding(.horizontal, 25)
                         }
@@ -84,7 +91,6 @@ struct LawyerView: View {
                     }
                     .navigationTitle("Abogado")
                     .navigationBarTitleDisplayMode(.inline)
-                    .background(Color("btBackground"))
                     .sheet(isPresented: $showingSettings) {
                         SettingsView()
                     }
@@ -95,7 +101,7 @@ struct LawyerView: View {
                         HStack {
                             Spacer()
                             ChatBotButton()
-                                .padding(20) 
+                                .padding(20)
                                 .padding(.bottom, 85)
                                 .onTapGesture {
                                     print("tapped chatbot button")
@@ -118,7 +124,7 @@ struct LawyerView: View {
 struct ChatBotFlowView: View {
     @Binding var currentView: LawyerView.ChatBotState
     @Binding var hasSeenChatbotOnboarding: Bool
-
+    
     var body: some View {
         ZStack {
             if currentView == .load {
@@ -150,41 +156,98 @@ struct ChatBotFlowView: View {
     }
 }
 
-
+struct NewsHeaderView: View {
+    @Binding var showingScrolledTitle: Bool
     
-    struct NewsHeaderView: View {
-        @Binding var showingScrolledTitle: Bool
-        
-        var body: some View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Últimas Noticias")
+                .font(.system(size: 30, weight: .heavy))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundStyle(Color.accentColor)
+                .padding(.top, 20)
+            
+            Text("It is a long established fact that a reader will be distracted by the readable content")
+                .font(.system(size: 16))
+                .lineSpacing(5)
+                .foregroundStyle(.primary)
+        }
+        .padding(.horizontal, 25)
+        .padding(.top, 5)
+    }
+}
+
+struct PlaceholderCard: View {
+    @State private var isAnimating = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 300, height: 150)
+                .cornerRadius(15)
+            
             VStack(alignment: .leading, spacing: 10) {
-                Text("ÚLTIMAS NOTICIAS")
-                    .font(CustomFonts.PoppinsExtraBold(size: 35))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(Color.accentColor)
-                    .padding(.top, 20)
-                
-                Text("It is a long established fact that a reader will be distracted by the readable content")
-                    .font(.custom("HiraginoSans-W3", size: 16))
-                    .lineSpacing(5)
-                    .foregroundStyle(.primary)
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 20)
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 20)
+                    .frame(width: 200)
             }
-            .padding(.horizontal, 25)
-            .padding(.top, 5)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 15)
+                .frame(width: 100)
+            
+            Spacer()
+        }
+        .padding(20)
+        .frame(width: 340, height: 350)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+        )
+        .opacity(isAnimating ? 0.5 : 1.0)
+        .animation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isAnimating)
+        .onAppear {
+            isAnimating = true
         }
     }
+}
+
+struct NewsTabView: View {
+    var numberOfTabs: Int
+    @ObservedObject var list = GetData()
+    @Binding var selectedIndex: Int
     
-    // TabView for news cards
-    struct NewsTabView: View {
-        var numberOfTabs: Int
-        @Binding var selectedIndex: Int
-        
-        var body: some View {
+    var body: some View {
+        if list.datas.isEmpty {
+            TabView {
+                ForEach(0..<3) { _ in
+                    PlaceholderCard()
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .frame(height: 380)
+            .onAppear {
+                list.fetchData()
+            }
+        } else {
             TabView(selection: $selectedIndex) {
-                ForEach(0..<numberOfTabs, id: \.self) { index in
+                ForEach(0..<min(5, list.datas.count), id: \.self) { index in
+                    let article = list.datas[index]
                     NewsCard(
-                        cardTitle: "Plataforma de Poder Judicial \ndel Estado de Nuevo León",
-                        cardBody: "It is a long established fact that a reader will be distracted by the readable content.",
-                        image: "placeholderCardImage"
+                        cardTitle: article.title,
+                        cardBody: article.desc,
+                        image: article.image.isEmpty ? "placeholderCardImage" : article.image,
+                        cardDate: article.date,
+                        articleURL: article.url
                     )
                     .tag(index)
                 }
@@ -203,177 +266,174 @@ struct ChatBotFlowView: View {
             )
         }
     }
+}
+
+// Page Indicator for the TabView
+struct PageIndicator: View {
+    var numberOfTabs: Int
+    @Binding var selectedIndex: Int
     
-    // Page Indicator for the TabView
-    struct PageIndicator: View {
-        var numberOfTabs: Int
-        @Binding var selectedIndex: Int
-        
-        var body: some View {
-            HStack(spacing: 8) {
-                ForEach(0..<numberOfTabs, id: \.self) { index in
-                    Circle()
-                        .fill(index == selectedIndex ? Color.accentColor : Color.gray.opacity(0.3))
-                        .frame(width: 8, height: 8)
-                        .animation(.easeInOut(duration: 0.3), value: selectedIndex)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-        }
-    }
-    
-    // Custom Toolbar
-    struct CustomToolbar: ToolbarContent {
-        @Binding var showingScrolledTitle: Bool
-        @Binding var showingSettings: Bool // Binding to control the sheet presentation
-        
-        var body: some ToolbarContent {
-            ToolbarItem(placement: .topBarLeading) {
-                Image("btIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .foregroundStyle(Color("btBlue"))
-                    .frame(width: 27, height: 27)
-                    .padding(.horizontal, 20)
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Noticias")
-                    .font(.custom("Cosen-Medium", size: 18))
-                    .bold()
-                    .opacity(showingScrolledTitle ? 1 : 0)
-                    .animation(.easeInOut, value: showingScrolledTitle)
-                    .foregroundColor(.accentColor)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 20) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.accentColor)
-                    
-                    Button(action: {
-                        showingSettings.toggle()
-                    }) {
-                        Image(systemName: "gearshape")
-                            .foregroundColor(.accentColor)
-                    }
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image("UserCircle")
-                            .frame(width: 2, height: 2)
-                            .foregroundStyle(Color("btBlue"))
-                    })
-                }
-                .padding(.horizontal, 10)
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<numberOfTabs, id: \.self) { index in
+                Circle()
+                    .fill(index == selectedIndex ? Color.accentColor : Color.gray.opacity(0.3))
+                    .frame(width: 8, height: 8)
+                    .animation(.easeInOut(duration: 0.3), value: selectedIndex)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .center)
     }
+}
+
+// Custom Toolbar
+struct CustomToolbar: ToolbarContent {
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var showingScrolledTitle: Bool
+    @Binding var showingSettings: Bool
     
-    struct NewsCard: View {
-        @Environment(\.colorScheme) var colorScheme
-        var cardTitle: String
-        var cardBody: String
-        var image: String
-        
-        var body: some View {
-            VStack(spacing: 10) {
-                Image(image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 300, height: 120)
-                    .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-                    )
-                
-                Spacer()
-                
-                VStack(alignment: .leading, spacing: -10) {
-                    ForEach(cardTitle.components(separatedBy: "\n"), id: \.self) { line in
-                        Text(line)
-                            .font(.custom("Cosen-Medium", size: 18))
-                            .foregroundStyle(.primary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                
-                Text(cardBody)
-                    .font(.custom("HiraginoSans-W3", size: 16))
-                    .lineSpacing(5)
-                    .foregroundStyle(.primary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Spacer()
-                
-                Button {
-                    print("Ver más")
-                } label: {
-                    HStack {
-                        Text("Ver más")
-                            .font(.custom("HiraginoSans-W3", size: 16))
-                        Image(systemName: "arrow.right")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Image("btIcon")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 20, height: 20)
+                .padding(.horizontal, 20)
+                .foregroundStyle(Color.accentColor)
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            Button(action: {
+                showingSettings.toggle()
+            }) {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 20))
                     .foregroundStyle(Color.accentColor)
-                }
             }
-            .padding(20)
-            .frame(width: 340, height: 350)
-            .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-            )
         }
-    }
-    
-    // Custom Card for "Gestión de Casos" and "Clientes"
-    struct CustomCard: View {
-        var title: String
-        var description: String
-        var buttonText: String
         
-        var body: some View {
-            VStack(alignment: .leading, spacing: 10) {
-                Text(title)
-                    .font(CustomFonts.PoppinsBold(size: 25))
-                    .foregroundColor(Color("btBlue"))
-                
-                Text(description)
-                    .font(CustomFonts.MontserratRegular(size: 12))
-                    .lineSpacing(5)
-                    .foregroundStyle(.primary)
-                
-                Button(action: {
-                    // Acción para visitar la sección
-                }) {
-                    Text(buttonText)
-                        .font(CustomFonts.PoppinsSemiBold(size: 10))
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 15)
-                        .background(Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 856)
-                                .stroke(Color("btBlue"), lineWidth: 2)
-                        )
-                }
-                .foregroundColor(Color("btBlue"))
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color("btBlue"), lineWidth: 1)
-            )
+        ToolbarItem(placement: .topBarTrailing) {
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Image(systemName: "person.crop.circle")
+                    .font(.system(size: 20))
+                    .foregroundStyle(Color.accentColor)
+            })
         }
     }
+}
+
+import SwiftUI
+import Kingfisher
+
+struct NewsCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    var cardTitle: String
+    var cardBody: String
+    var image: String
+    var cardDate: String
+    var articleURL: String
     
-    
-    
-    
-    #Preview {
-        LawyerView()
-            .environment(AppearanceManager())
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            KFImage(URL(string: image))
+                .resizable()
+                .placeholder {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 310, height: 160)
+                        .cornerRadius(15)
+                }
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 310, height: 160)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            
+            Text(cardTitle)
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(.primary)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .padding(.top, 5)
+            
+            Text(cardDate)
+                .font(.system(size: 14))
+                .foregroundColor(.gray)
+            
+            Text(cardBody)
+                .font(.system(size: 16))
+                .lineSpacing(5)
+                .foregroundStyle(.primary)
+                .lineLimit(3)
+                .multilineTextAlignment(.leading)
+            
+            NavigationLink(destination: FullNewsView(article: NewsDataType(id: UUID().uuidString, title: cardTitle, desc: cardBody, url: articleURL, image: image, date: cardDate, body: cardBody))) {
+                HStack {
+                    Text("Ver más")
+                        .font(.system(size: 16))
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 14))
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .foregroundStyle(Color.accentColor)
+                .padding(.top, 5)
+            }
+        }
+        .padding(20)
+        .frame(width: 350, height: 350)
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
+}
+
+struct CustomCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    var title: String
+    var description: String
+    var buttonText: String
+    @State private var isPressed = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text(title)
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(Color.accentColor)
+            
+            Text(description)
+                .font(.system(size: 16))
+                .lineSpacing(5)
+                .foregroundStyle(.primary)
+            
+            Button(action: {
+                // Acción para visitar la sección
+            }) {
+                Text(buttonText)
+                    .font(.system(size: 16, weight: .semibold))
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 20)
+                    .background(Color.clear)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.accentColor, lineWidth: 2)
+                    )
+            }
+            .foregroundColor(Color.accentColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(20)
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+    }
+}
+
+#Preview {
+    LawyerView()
+        .environment(AppearanceManager())
+}

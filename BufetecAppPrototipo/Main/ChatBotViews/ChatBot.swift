@@ -71,21 +71,17 @@ class ChatBot {
 struct ChatBotButton: View {
     var body: some View {
         ZStack {
-            // Outer border circle
-            Circle()
-                .stroke(Color("btBlue"), lineWidth: 4)
-                .frame(width: 65, height: 65)
             
             // Inner filled circle
             Circle()
                 .fill(Color("btBlue"))
-                .frame(width: 55, height: 55)
+                .frame(width: 65, height: 65)
             
             // Icon in the center
             Image("BOT-logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 35, height: 35)
+                .frame(width: 33, height: 33)
                 .foregroundColor(.white)
         }
     }

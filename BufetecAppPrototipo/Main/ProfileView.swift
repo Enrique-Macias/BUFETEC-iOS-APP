@@ -8,32 +8,37 @@
 import SwiftUI
 
 struct ProfileView: View {
+    
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
+
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
                 
                 // Imagen de usuario y nombre
-                VStack(spacing: 10) {
+                VStack(spacing: 15) {
                     Image(systemName: "person.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)
-                        .foregroundColor(Color("btBlue"))
+                        .foregroundColor(.accentColor)
                     
                     Text("Bruno García")
-                        .font(CustomFonts.PoppinsBold(size: 16))
-                        .foregroundColor(Color("btBlue"))
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.accentColor)
                     
                     // Botón para editar perfil con NavigationLink
                     NavigationLink(destination: EditProfileView()) {
                         Text("Editar Perfil")
-                            .font(CustomFonts.PoppinsSemiBold(size: 14))
-                            .padding(.vertical, 8)
+                            .font(.system(size: 16, weight: .semibold))
+                            .padding(.vertical, 12)
                             .padding(.horizontal, 40)
-                            .background(Color("btBlue"))
+                            .background(Color.accentColor)
                             .foregroundColor(.white)
-                            .cornerRadius(25)
+                            .cornerRadius(15)
                     }
                 }
                 
@@ -42,7 +47,7 @@ struct ProfileView: View {
                 // Lista de opciones
                 VStack(spacing: 20) {
                     Divider()
-                        .background(Color("btBlue"))
+                        .background(Color.accentColor)
                     
                     ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
                         // Navegar a la vista de Configuración
@@ -57,7 +62,7 @@ struct ProfileView: View {
                     }
                     
                     Divider()
-                        .background(Color("btBlue"))
+                        .background(Color.accentColor)
                     
                     ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
                         // Navegar a la vista de Ayuda y Soporte
@@ -71,28 +76,16 @@ struct ProfileView: View {
                 
                 Spacer()
             }
+            .navigationTitle("Mi Perfil")
             .navigationBarTitleDisplayMode(.inline) // Esto mantiene el título centrado
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Mi Perfil")
-                        .font(CustomFonts.PoppinsBold(size: 20))
-                        .foregroundColor(Color("btBlue"))
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Image("btIcon") // Asegúrate de tener tu imagen de icono
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .foregroundStyle(Color("btBlue"))
-                        .frame(width: 27, height: 27)
-                        .padding(.horizontal, 20)
-                }
-            }
+            .background(Color("btBackground"))
         }
     }
 }
 
 // Componente para opciones del perfil
 struct ProfileOption: View {
+    @Environment(\.colorScheme) var colorScheme
     let iconName: String
     let title: String
     let showChevron: Bool
@@ -102,12 +95,12 @@ struct ProfileOption: View {
         Button(action: action) {
             HStack {
                 Image(systemName: iconName)
-                    .foregroundColor(Color("btBlue"))
+                    .foregroundColor(.accentColor)
                     .frame(width: 30)
                 
                 Text(title)
-                    .font(CustomFonts.PoppinsMedium(size: 16))
-                    .foregroundColor(Color("btBlue"))
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.accentColor)
                 
                 Spacer()
                 
@@ -117,8 +110,10 @@ struct ProfileOption: View {
                 }
             }
             .padding()
-            .background(Color(.systemGray6))  // Fondo claro
+            .padding(.vertical, 5)
+            .background(colorScheme == .light ? Color.white : Color.clear)  // Fondo blanco
             .cornerRadius(15)  // Borde redondeado
+            .shadow(color: Color.black.opacity(0.07), radius: 10, x: 0, y: 5) // Sombra
         }
     }
 }

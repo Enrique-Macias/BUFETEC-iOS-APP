@@ -1,10 +1,3 @@
-//
-//  EditProfileView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/11/24.
-//
-
 import SwiftUI
 import PhotosUI
 
@@ -16,173 +9,154 @@ struct EditProfileView: View {
     @State private var numeroCelular: String = "+52 81 1234 5678"
     @State private var correoElectronico: String = "bruno.garcia@bufetec.mx"
     
-    // Para el picker de género
     @State private var selectedGender: String = "Masculino"
     let generos = ["Masculino", "Femenino"]
     
-    // Para la selección de la imagen
     @State private var profileImage: Image? = Image(systemName: "person.circle.fill")
     @State private var showingImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack {
+                VStack(spacing: 20) {
                     Spacer()
                     
-                    // Imagen de perfil
+                    // Profile Image
                     VStack {
                         profileImage?
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(Color.black)
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.accentColor)
                             .clipShape(Circle())
                             .overlay(
                                 Circle()
-                                    .stroke(Color("btBlue"), lineWidth: 2)
+                                    .stroke(Color.accentColor, lineWidth: 2)
                             )
                             .onTapGesture {
                                 showingImagePicker = true
                                 sourceType = .photoLibrary
                             }
                         
-                        // Botón para cambiar la imagen de perfil
                         Button(action: {
                             showingImagePicker = true
-                            sourceType = .photoLibrary // Cambiar para seleccionar desde el carrete
+                            sourceType = .photoLibrary
                         }) {
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
                                 .frame(width: 30, height: 30)
-                                .foregroundColor(Color("btBlue"))
-                                .offset(x: 35, y: -30)
+                                .foregroundColor(.cyan)
+                                .offset(x: 30, y: -25)
                         }
                     }
-                    
-                    Divider()
-                        .padding(.vertical, 0.5)
-                        .background(Color("btBlue"))
-                    
-                    Spacer(minLength: 20)
-                    
-                    // Nombre completo
-                    CustomTextField(title: "Nombre Completo", text: $nombreCompleto)
-                    
-                    // Picker para el género y TextField para la fecha de nacimiento
-                    HStack {
-                        VStack {
-                            Text("Género")
-                                .font(CustomFonts.PoppinsSemiBold(size: 12))
-                                .foregroundColor(Color("btBlue"))
-                                .padding(.leading, 5)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Picker(selection: $selectedGender, label: Text(genero).foregroundColor(Color("btBlue"))) {
-                                ForEach(generos, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(MenuPickerStyle())
-                            .padding()
-                            .frame(height: 50)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color("btBlue"), lineWidth: 1)
-                            )
+                                        
+                    // Form Fields
+                    VStack(spacing: 20) {
+                        CustomTextField(title: "Nombre Completo", text: $nombreCompleto)
+                        
+                        HStack {
+                            CustomPicker(title: "Género", selection: $selectedGender, options: generos)
+                            CustomTextField(title: "Fecha de Nacimiento", text: $fechaNacimiento)
                         }
                         
-                        CustomTextField(title: "Fecha de Nacimiento", text: $fechaNacimiento)
-                            .keyboardType(.numbersAndPunctuation)
+                        CustomTextField(title: "Número Celular", text: $numeroCelular)
+                        
+                        CustomTextField(title: "Correo Electrónico", text: $correoElectronico)
                     }
+                    .padding(.horizontal)
                     
-                    // Número Celular
-                    CustomTextField(title: "Número Celular", text: $numeroCelular)
-                        .keyboardType(.phonePad)
-                    
-                    // Correo electrónico
-                    CustomTextField(title: "Correo Electrónico", text: $correoElectronico)
-                        .keyboardType(.emailAddress)
-                    
-                    // Botón Guardar
+                    // Save Button
                     Button(action: {
-                        // Acción de guardar cambios
+                        // Save action
                     }) {
                         Text("Guardar")
-                            .font(CustomFonts.PoppinsSemiBold(size: 16))
-                            .padding()
-                            .frame(maxWidth: .infinity)
+                            .font(.system(size: 16, weight: .semibold))
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 40)
+                            .background(Color.accentColor)
                             .foregroundColor(.white)
-                            .background(Color("btBlue"))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .padding(.top, 30)
+                            .cornerRadius(15)
                     }
+                    .padding(.top, 15)
                 }
-                .padding(.horizontal)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mi Perfil")
-                            .font(CustomFonts.PoppinsBold(size: 20))
-                            .foregroundColor(Color("btBlue"))
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            // Acción para cerrar la vista
-                            dismiss()
-                        }) {
-                            Image(systemName: "arrow.left")
-                                .font(.system(size: 20))
-                                .foregroundColor(Color("btBlue"))
-                        }
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Image("btIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .foregroundStyle(Color("btBlue"))
-                            .frame(width: 27, height: 27)
-                            .padding(.horizontal, 20)
+                .padding(.vertical)
+            }
+            .navigationTitle("Mi Perfil")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "arrow.left")
+                            .font(.system(size: 20))
+                            .foregroundColor(.accentColor)
                     }
                 }
             }
-            .sheet(isPresented: $showingImagePicker) {
-                ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
-                    .onChange(of: selectedImage) {
-                        if let newImage = selectedImage {
-                            profileImage = Image(uiImage: newImage)
-                        }
-                    }
-            }
+            .background(Color("btBackground"))
         }
         .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $showingImagePicker) {
+            ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
+                .onChange(of: selectedImage) { oldValue, newValue in
+                    if let newImage = selectedImage {
+                        profileImage = Image(uiImage: newImage)
+                    }
+                }
+        }
     }
 }
 
-// Componente para el campo de texto con estilo personalizado
 struct CustomTextField: View {
     var title: String
     @Binding var text: String
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(title)
-                .font(CustomFonts.PoppinsSemiBold(size: 12))
-                .foregroundColor(Color("btBlue"))
-                .padding(.leading, 5)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(.accentColor)
             
             TextField("", text: $text)
                 .padding()
-                .frame(height: 50)
+                .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color("btBlue"), lineWidth: 1)
+                        .stroke(Color.accentColor, lineWidth: 1)
                 )
         }
-        .padding(.bottom, 10)
+    }
+}
+
+struct CustomPicker: View {
+    var title: String
+    @Binding var selection: String
+    var options: [String]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(.accentColor)
+            
+            Picker(selection: $selection, label: Text(selection)) {
+                ForEach(options, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .padding()
+            .padding(.vertical, -6)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.accentColor, lineWidth: 1)
+            )
+        }
     }
 }
 
@@ -223,6 +197,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
+
 
 #Preview {
     EditProfileView()

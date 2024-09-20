@@ -22,14 +22,15 @@ struct MultiturnChatView: View {
                 ScrollViewReader(content: { proxy in
                     ScrollView {
                         VStack {
-                            Spacer(minLength: 200)
+                            Spacer(minLength: 180)
                             Image("edit-2")
-                                .font(.system(size: 24))
+                                .resizable()
+                                .frame(width: 28, height: 28)
                                 .foregroundColor(Color(.black))
                                 .padding(.bottom, 4)
                             
                             Text("Consulta de procedimientos")
-                                .font(CustomFonts.NunitoBold(size: 14))
+                                .font(CustomFonts.NunitoBold(size: 16))
                                 .foregroundColor(Color(.black))
                                 .padding(.bottom, 20)
                             
@@ -39,7 +40,7 @@ struct MultiturnChatView: View {
                                     // Acción para la primera pregunta
                                 }) {
                                     Text("¿Cómo se cuál es mi procedimiento legal?")
-                                        .font(CustomFonts.NunitoMedium(size: 14))
+                                        .font(CustomFonts.NunitoMedium(size: 16))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
                                         .padding()
                                         .foregroundColor(.primary)
@@ -55,7 +56,7 @@ struct MultiturnChatView: View {
                                     // Acción para la segunda pregunta
                                 }) {
                                     Text("¿Que papelería debo tener a la mano?")
-                                        .font(CustomFonts.NunitoMedium(size: 14))
+                                        .font(CustomFonts.NunitoMedium(size: 16))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
                                         .padding()
                                         .foregroundColor(.primary)
@@ -71,7 +72,7 @@ struct MultiturnChatView: View {
                                     // Acción para la tercera pregunta
                                 }) {
                                     Text("¿Cómo se cuál procedimiento tomar?")
-                                        .font(CustomFonts.NunitoMedium(size: 14))
+                                        .font(CustomFonts.NunitoMedium(size: 16))
                                         .frame(maxWidth: .infinity, maxHeight: 15)
                                         .padding()
                                         .foregroundColor(.primary)
@@ -83,7 +84,7 @@ struct MultiturnChatView: View {
                                         )
                                 }
                             }
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 32)
                         }
                         ForEach(chatBot.messages) { chatMessage in
                             // Chat Message View
@@ -200,7 +201,7 @@ struct MultiturnChatView: View {
         HStack {
             ChatBubble(direction: message.role == .model ? .left : .right) {
                 Text(LocalizedStringKey(message.message))
-                    .font(CustomFonts.NunitoSemiBold(size: 14))
+                    .font(CustomFonts.NunitoSemiBold(size: 16))
                     .padding(.all, 20)
                     .foregroundStyle(message.role == .model ? .primary : Color(.white))
                     .background(message.role == .model ? Color.clear : Color("btBlue"))

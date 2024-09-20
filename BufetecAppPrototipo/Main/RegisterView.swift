@@ -1,4 +1,18 @@
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
+
+class AppDelegate: UIResponder, UIApplicationDelegate{
+    var window: UIWindow?
+    
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions:
+                     [UIApplication.LaunchOptionsKey: Any]?) -> Bool{
+        FirebaseApp.configure()
+        return true
+    }
+}
+
 
 struct RegisterView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
@@ -9,6 +23,7 @@ struct RegisterView: View {
     @State private var phone: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some View {
         NavigationStack {
@@ -139,7 +154,23 @@ struct RegisterView: View {
                     }
                     .padding(.horizontal)
                     
-                    Spacer()
+                    //Spacer()
+                    //Sing up with google
+                    HStack{
+                        
+                        Image("googleicon")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                        Text("Registrarse con Google")
+                            .fontWeight(.bold)
+                            .font(.system(size: 18))
+                            .frame(maxWidth: 340, minHeight: 55)
+                            .background(colorScheme == .light ? Color.white: Color.black)
+                            .foregroundColor(colorScheme == .light ? Color.mint : Color.black)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    .padding(.horizontal)
                 }
             }
         }

@@ -345,7 +345,6 @@ struct NewsCard: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 310, height: 160)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .transition(.fade(duration: 0.5))
             
             Text(cardTitle)
                 .font(.system(size: 20, weight: .bold))

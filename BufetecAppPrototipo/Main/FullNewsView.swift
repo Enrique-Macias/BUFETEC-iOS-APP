@@ -1,5 +1,4 @@
 import SwiftUI
-import SDWebImageSwiftUI
 import WebKit
 
 struct FullNewsView: View {

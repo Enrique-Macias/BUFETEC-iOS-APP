@@ -42,6 +42,7 @@ struct NewsView: View {
                 .toolbar {
                     CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
                 }
+                
                 .navigationTitle("Noticias")
                 .navigationBarTitleDisplayMode(.inline)
                 .background(Color("btBackground"))

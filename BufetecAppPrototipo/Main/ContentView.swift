@@ -44,8 +44,7 @@ struct ContentView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @State private var selectedTab = 0
-    
-    
+        
     init() {
         let transparentAppearance = UITabBarAppearance()
         transparentAppearance.configureWithTransparentBackground()

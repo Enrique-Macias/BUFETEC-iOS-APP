@@ -13,22 +13,11 @@ struct LoadView: View {
     var body: some View {
         
         ZStack {
-            Color(colorScheme == .light ? Color("btBlue") : .white)
+            Color("btBakground")
                 .edgesIgnoringSafeArea(.all)
             Image("ChatAILogo")
-                .foregroundColor(Color(colorScheme == .light ? .white : Color("btBlue")))
+                .foregroundColor(colorScheme == .light ? Color.accentColor : Color.white)
             
-        }
-    }
-}
-
-struct LoadView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            LoadView()
-                .preferredColorScheme(.light) // Modo claro
-            LoadView()
-                .preferredColorScheme(.dark)  // Modo oscuro
         }
     }
 }

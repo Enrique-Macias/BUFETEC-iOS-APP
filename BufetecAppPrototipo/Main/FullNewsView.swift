@@ -7,7 +7,7 @@ struct FullNewsView: View {
 
     var body: some View {
         WebView(url: URL(string: article.url)!)
-            .navigationTitle(article.title)
+            .navigationTitle("Noticia")
             .navigationBarTitleDisplayMode(.inline)
     }
 }

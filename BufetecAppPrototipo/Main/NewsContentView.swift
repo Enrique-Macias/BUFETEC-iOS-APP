@@ -1,91 +1,66 @@
 import SwiftUI
-import SDWebImageSwiftUI
+import Kingfisher
 
 struct NewsContentView: View {
     @ObservedObject var list = GetData()
-
+    
     var body: some View {
-        NavigationView {
-            List {
-                if list.datas.isEmpty {
-                    Text("No articles available")
-                        .foregroundColor(.gray)
-                } else {
-                    ForEach(list.datas) { article in
-                        NavigationLink(destination: FullNewsView(article: article)) {
-                            HStack(spacing: 15) {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text(article.title)
-                                        .font(.custom("Poppins-Bold", size: 17))
-                                        .foregroundColor(Color(hex: "14397F"))
-                                        .lineLimit(2)
-                                        .minimumScaleFactor(0.8)
-
-                                    Text(article.date)
-                                        .font(.custom("Poppins-Medium", size: 13))
-                                        .foregroundColor(Color(hex: "14397F"))
-                                        .minimumScaleFactor(0.3)
-
-                                    Text(article.desc)
-                                        .font(.custom("Montserrat-Regular", size: 16))
-                                        .foregroundColor(Color(hex: "14397F"))
-                                        .lineLimit(2)
-                                        .minimumScaleFactor(0.6)
-                                }
-
-                                if let imageUrl = URL(string: article.image), !imageUrl.absoluteString.isEmpty {
-                                    WebImage(url: imageUrl, options: .highPriority)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 120, height: 100)
-                                        .cornerRadius(20)
-                                } else {
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .scaledToFit()
-                                        .frame(width: 110, height: 135)
-                                        .cornerRadius(20)
-                                        .foregroundColor(.gray)
-                                }
+        List {
+            if list.datas.isEmpty {
+                Text("No hay artículos disponibles")
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            } else {
+                ForEach(list.datas) { article in
+                    NavigationLink(destination: FullNewsView(article: article)) {
+                        HStack(alignment: .top, spacing: 16) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(article.title)
+                                    .font(.custom("Poppins-Bold", size: 16))
+                                    .foregroundColor(.primary)
+                                    .lineLimit(2)
+                                
+                                Text(article.date)
+                                    .font(.custom("Poppins-Medium", size: 12))
+                                    .foregroundColor(.secondary)
+                                
+                                Text(article.desc)
+                                    .font(.custom("Montserrat-Regular", size: 14))
+                                    .foregroundColor(.primary)
+                                    .lineLimit(3)
+                                    .padding(.top, 4)
                             }
-                            .padding(.vertical, 0)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            KFImage(URL(string: article.image))
+                                .resizable()
+                                .placeholder {
+                                    Rectangle()
+                                        .fill(Color.gray.opacity(0.3))
+                                }
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(8)
                         }
+                        .padding(.vertical, 12)
                     }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Noticias recientes")
-                        .font(.custom("Poppins-ExtraBold", size: 24))
-                        .foregroundColor(Color(hex: "14397F"))
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .listRowBackground(Color.clear)
                 }
             }
         }
+        .listStyle(PlainListStyle())
         .onAppear {
             if list.datas.isEmpty {
                 list.fetchData()
             }
         }
-    }
-}
-
-extension Color {
-    init(hex: String) {
-        let r, g, b: Double
-        
-        // Remove the hash at the start if it's there
-        let hexColor = hex.hasPrefix("#") ? String(hex.dropFirst()) : hex
-        
-        // Convert hex string to Int
-        var hexNumber: UInt64 = 0
-        Scanner(string: hexColor).scanHexInt64(&hexNumber)
-
-        r = Double((hexNumber & 0xFF0000) >> 16) / 255.0
-        g = Double((hexNumber & 0x00FF00) >> 8) / 255.0
-        b = Double(hexNumber & 0x0000FF) / 255.0
-
-        self.init(red: r, green: g, blue: b)
+        .background(Color("btBackground"))
+        .navigationTitle("Noticias")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -103,7 +78,7 @@ class GetData: ObservableObject {
     @Published var datas = [NewsDataType]()
     
     func fetchData() {
-        let apiKey = "c265e314cdec4e99923322a182cc71be" // Replace with your actual API key
+        let apiKey = "c265e314cdec4e99923322a182cc71be"
         let searchQuery = "leyes AND monterrey"
         let apiUrl = "https://newsapi.org/v2/everything?q=\(searchQuery)&apiKey=\(apiKey)"
         
@@ -125,7 +100,7 @@ class GetData: ObservableObject {
                 DispatchQueue.main.async {
                     self.datas = decodedResponse.articles.map { article in
                         let formattedDate = self.formatDate(article.publishedAt)
-                        let bodyContent = article.content ?? "No content available" // Get the body content
+                        let bodyContent = article.content ?? "No content available"
                         
                         return NewsDataType(
                             id: UUID().uuidString,
@@ -153,7 +128,6 @@ class GetData: ObservableObject {
         dateFormatter.timeStyle = .none
         return dateFormatter.string(from: date)
     }
-    
 }
 
 struct Response: Codable {

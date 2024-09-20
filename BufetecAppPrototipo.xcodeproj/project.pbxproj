@@ -18,15 +18,17 @@
 		4104324A2C99F92F00FBC1D6 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 410432492C99F92F00FBC1D6 /* GenerativeAI-Info.plist */; };
 		41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41203A402C6D4187006E1FAC /* SettingsView.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
+		41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41AD45F12C9D274A001E43E2 /* Kingfisher */; };
 		41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */ = {isa = PBXBuildFile; productRef = 41D3F7762C893CD700D44145 /* ObservableUserDefault */; };
 		41D581542C6AB35D00E463CD /* Cosen-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */; };
+		41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF92C9D158E00929E28 /* NewsContentView.swift */; };
+		41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF82C9D158E00929E28 /* FullNewsView.swift */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
 		EC3B53642C8AE91D00684EAC /* OnboardingScreen1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B53632C8AE91D00684EAC /* OnboardingScreen1View.swift */; };
 		EC3B53662C8AEB9F00684EAC /* OnboardingScreen2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B53652C8AEB9F00684EAC /* OnboardingScreen2View.swift */; };
 		EC3B53682C8AEBAD00684EAC /* OnboardingScreen3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B53672C8AEBAD00684EAC /* OnboardingScreen3View.swift */; };
 		EC3B536A2C8AED0D00684EAC /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B53692C8AED0D00684EAC /* OnboardingView.swift */; };
-		EC5F1EAE2C8C316600EE6697 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F1EAD2C8C316600EE6697 /* NewsView.swift */; };
 		EC5F1EB02C8C3A6C00EE6697 /* ChatBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */; };
 		EC69AF712C8635B0003B43F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69AF702C8635B0003B43F3 /* LoginView.swift */; };
 		EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */; };
@@ -76,13 +78,14 @@
 		41284E382C6AAAB200067460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
+		41EB8AF82C9D158E00929E28 /* FullNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNewsView.swift; sourceTree = "<group>"; };
+		41EB8AF92C9D158E00929E28 /* NewsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsContentView.swift; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		EC3B53632C8AE91D00684EAC /* OnboardingScreen1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen1View.swift; sourceTree = "<group>"; };
 		EC3B53652C8AEB9F00684EAC /* OnboardingScreen2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen2View.swift; sourceTree = "<group>"; };
 		EC3B53672C8AEBAD00684EAC /* OnboardingScreen3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen3View.swift; sourceTree = "<group>"; };
 		EC3B53692C8AED0D00684EAC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		EC5F1EAD2C8C316600EE6697 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBot.swift; sourceTree = "<group>"; };
 		EC69AF702C8635B0003B43F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentValidationView.swift; sourceTree = "<group>"; };
@@ -121,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */,
 				41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */,
 				ECE240512C8F96DA00F84D0D /* GoogleGenerativeAI in Frameworks */,
 			);
@@ -174,14 +178,15 @@
 				04CAEF5A29B3029B00A4FB62 /* ContentView.swift */,
 				41203A402C6D4187006E1FAC /* SettingsView.swift */,
 				04CAEF8829B304E600A4FB62 /* LawyerView.swift */,
-				EC5F1EAD2C8C316600EE6697 /* NewsView.swift */,
+				41EB8AF82C9D158E00929E28 /* FullNewsView.swift */,
+				41EB8AF92C9D158E00929E28 /* NewsContentView.swift */,
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
-				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
+				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
+				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				ECB17D542C923C3200B38D64 /* ProfileViews */,
 				EC69AF702C8635B0003B43F3 /* LoginView.swift */,
-				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
 				EC800CA92C8995A100A9FB80 /* RegisterView.swift */,
 				EC800CA52C8974FA00A9FB80 /* DocumentValidationView.swift */,
 				EC800CA72C898AA200A9FB80 /* DocumentScanView.swift */,
@@ -278,6 +283,7 @@
 			packageProductDependencies = (
 				41D3F7762C893CD700D44145 /* ObservableUserDefault */,
 				ECE240502C8F96DA00F84D0D /* GoogleGenerativeAI */,
+				41AD45F12C9D274A001E43E2 /* Kingfisher */,
 			);
 			productName = CustomTabbarSwiftUI;
 			productReference = 04CAEF5529B3029B00A4FB62 /* BufetecAppPrototipo.app */;
@@ -310,6 +316,7 @@
 			packageReferences = (
 				41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
 				ECE2404F2C8F96D900F84D0D /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				41AD45F02C9D274A001E43E2 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 04CAEF5629B3029B00A4FB62 /* Products */;
 			projectDirPath = "";
@@ -365,7 +372,6 @@
 				EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */,
 				04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */,
 				EC800CA62C8974FA00A9FB80 /* DocumentValidationView.swift in Sources */,
-				EC5F1EAE2C8C316600EE6697 /* NewsView.swift in Sources */,
 				EC800CAF2C8A245E00A9FB80 /* WelcomeScreenView.swift in Sources */,
 				ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */,
 				EC3B53682C8AEBAD00684EAC /* OnboardingScreen3View.swift in Sources */,
@@ -377,6 +383,8 @@
 				EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */,
 				41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */,
 				04CAEF5B29B3029B00A4FB62 /* ContentView.swift in Sources */,
+				41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */,
+				41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */,
 				04CAEF8F29B3055000A4FB62 /* ProfileView.swift in Sources */,
 				4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */,
 				EC3B53662C8AEB9F00684EAC /* OnboardingScreen2View.swift in Sources */,
@@ -515,7 +523,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -532,7 +540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.enriquemacias.BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecAppPrototipo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -552,7 +560,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -569,7 +577,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.enriquemacias.BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecAppPrototipo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -605,6 +613,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		41AD45F02C9D274A001E43E2 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
 		41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/davidsteppenbeck/ObservableUserDefault.git";
@@ -624,6 +640,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		41AD45F12C9D274A001E43E2 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41AD45F02C9D274A001E43E2 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		41D3F7762C893CD700D44145 /* ObservableUserDefault */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 41D3F7752C893CD700D44145 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;

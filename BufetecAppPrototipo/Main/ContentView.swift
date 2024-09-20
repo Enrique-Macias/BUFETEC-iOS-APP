@@ -10,7 +10,7 @@ enum TabbedItems: Int, CaseIterable {
     var title: String {
         switch self {
         case .home:
-            return "Noticias"
+            return "Abogado"
         case .favorite:
             return "Casos"
         case .chat:
@@ -44,7 +44,7 @@ struct ContentView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @State private var selectedTab = 0
-        
+    
     init() {
         let transparentAppearance = UITabBarAppearance()
         transparentAppearance.configureWithTransparentBackground()
@@ -52,17 +52,33 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack(alignment: .bottom) {
-                TabView(selection: $selectedTab) {
-                    LawyerView().tag(TabbedItems.home.rawValue)
-                    CasesView().tag(TabbedItems.favorite.rawValue)
-                    AppointmentsView().tag(TabbedItems.chat.rawValue)
-                    ProfileView().tag(TabbedItems.profile.rawValue)
-                }
-                
-                CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                LawyerView().tag(TabbedItems.home.rawValue)
+                CasesView().tag(TabbedItems.favorite.rawValue)
+                AppointmentsView().tag(TabbedItems.chat.rawValue)
+                ProfileView().tag(TabbedItems.profile.rawValue)
             }
+            
+            VStack(spacing: 0) {
+                Spacer()
+                
+                // Gradient overlay
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color.clear,
+                        Color(UIColor.systemBackground).opacity(0.8),
+                        Color(UIColor.systemBackground)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 100)
+                .allowsHitTesting(false)
+            }
+            .ignoresSafeArea()
+            
+            CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme)
         }
     }
 }
@@ -85,9 +101,6 @@ struct CustomTabBar: View {
             }
         }
         .frame(height: 55)
-        .background(
-            colorScheme == .dark ? Color.clear : Color.white
-        )
         .background(.ultraThinMaterial)
         .cornerRadius(20)
         .overlay(

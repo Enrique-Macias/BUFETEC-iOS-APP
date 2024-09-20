@@ -81,22 +81,27 @@ struct AttorneyCard: View {
                         .font(CustomFonts.MontserratMedium(size: 14))
                         .foregroundColor(.black)
                     
-                    // Botón de Agendar Cita
-                    Button(action: {
-                        // Acción para agendar cita
-                    }) {
-                        HStack {
-                            Text("Agendar Cita")
-                                .font(CustomFonts.PoppinsSemiBold(size: 16))
-                            
-                            Image(systemName: "arrow.right")
+                    // Posicionamiento del botón de "Agendar Cita" en la esquina inferior derecha
+                    HStack {
+                        Spacer() // Empuja el botón hacia la derecha
+                        Button(action: {
+                            // Acción para agendar cita
+                        }) {
+                            HStack {
+                                Text("Agendar Cita")
+                                    .font(CustomFonts.PoppinsSemiBold(size: 12))
+                                
+                                Image(systemName: "arrow.right")
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Color("btBlue"))
+                            .cornerRadius(996)
+//                            .frame(height: 28)
                         }
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color("btBlue"))
-                        .cornerRadius(10)
+                        .padding(.trailing, 10)
+                        .padding(.bottom, 10)
                     }
-                    .padding(.top, 10)
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)
@@ -108,3 +113,4 @@ struct AttorneyCard: View {
         .padding(.horizontal)
     }
 }
+

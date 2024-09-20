@@ -10,21 +10,21 @@ import SwiftUI
 struct AttorneysView: View {
     @State private var attorneys: [Attorney] = [
         Attorney(
-            name: "Alfonso Muñoz",
+            name: "Vibiana Agramont",
+            specialty: "Abogada Civil y Mercantil",
+            description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
+            schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
+            examples: "It is a long established fact that a reader will be distracted by the readable..."
+        ),
+        Attorney(
+            name: "Manolo Martínez",
             specialty: "Abogado Familiar",
             description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
             schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
             examples: "It is a long established fact that a reader will be distracted by the readable..."
         ),
         Attorney(
-            name: "Bruno García",
-            specialty: "Abogado Familiar",
-            description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
-            schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
-            examples: "It is a long established fact that a reader will be distracted by the readable..."
-        ),
-        Attorney(
-            name: "Mauricio Pineda",
+            name: "Verónica González",
             specialty: "Abogado Familiar",
             description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
             schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
@@ -40,7 +40,7 @@ struct AttorneysView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         HStack {
                             Text("NUESTROS ABOGADOS")
-                                .font(CustomFonts.PoppinsExtraBold(size: 32))
+                                .font(CustomFonts.PoppinsBold(size: 47))
                                 .foregroundColor(Color("btBlue"))
                             Spacer()
                         }
@@ -57,6 +57,9 @@ struct AttorneysView: View {
                             Image(systemName: "magnifyingglass")
                                 .padding(.trailing, 10)
                                 .foregroundColor(.gray)
+                            Image("Filter")
+                                .padding(.trailing, 5)
+                                .foregroundStyle(Color("btBlue"))
                         }
                         .padding(.horizontal)
                         .frame(height: 50)

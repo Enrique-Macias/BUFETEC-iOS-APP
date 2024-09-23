@@ -15,7 +15,7 @@
 		04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8A29B3051600A4FB62 /* CasesView.swift */; };
 		04CAEF8D29B3053B00A4FB62 /* AppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */; };
 		04CAEF8F29B3055000A4FB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8E29B3055000A4FB62 /* ProfileView.swift */; };
-		4104324A2C99F92F00FBC1D6 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 410432492C99F92F00FBC1D6 /* GenerativeAI-Info.plist */; };
+		4104324A2C99F92F00FBC1D6 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 410432492C99F92F00FBC1D6 /* Secrets.plist */; };
 		41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41203A402C6D4187006E1FAC /* SettingsView.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
 		41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41AD45F12C9D274A001E43E2 /* Kingfisher */; };
@@ -75,7 +75,7 @@
 		04CAEF8A29B3051600A4FB62 /* CasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasesView.swift; sourceTree = "<group>"; };
 		04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsView.swift; sourceTree = "<group>"; };
 		04CAEF8E29B3055000A4FB62 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		410432492C99F92F00FBC1D6 /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
+		410432492C99F92F00FBC1D6 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		41203A402C6D4187006E1FAC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		41284E382C6AAAB200067460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 				413606872C6AA42B0006A3EC /* Fonts */,
 				04CAEF8229B3047900A4FB62 /* Main */,
 				04CAEF5C29B3029D00A4FB62 /* Assets.xcassets */,
-				410432492C99F92F00FBC1D6 /* GenerativeAI-Info.plist */,
+				410432492C99F92F00FBC1D6 /* Secrets.plist */,
 				04CAEF5E29B3029D00A4FB62 /* Preview Content */,
 			);
 			path = BufetecAppPrototipo;
@@ -187,7 +187,6 @@
 				04CAEF8E29B3055000A4FB62 /* ProfileView.swift */,
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
 				ECA58D402C9B4F2B0081ECDE /* AttorneysViews */,
-				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
 				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
 				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
@@ -349,7 +348,7 @@
 			files = (
 				ECB60E352C8B947C007535DB /* Nunito-Bold.ttf in Resources */,
 				ECB60E3D2C8B958D007535DB /* Poppins-Bold.ttf in Resources */,
-				4104324A2C99F92F00FBC1D6 /* GenerativeAI-Info.plist in Resources */,
+				4104324A2C99F92F00FBC1D6 /* Secrets.plist in Resources */,
 				ECB60E2B2C8B93B6007535DB /* Montserrat-Regular.ttf in Resources */,
 				ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */,
 				ECB60E392C8B9509007535DB /* Nunito-Black.ttf in Resources */,

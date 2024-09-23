@@ -78,8 +78,8 @@ struct LawyerView: View {
                             
                             // Cards for "Gestión de Casos" and "Clientes"
                             VStack(spacing: 30) {
-                                CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
-                                CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar")
+                                CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: CasesView())
+                                CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientView())
                             }
                             .padding(.horizontal, 25)
                         }
@@ -388,29 +388,27 @@ struct NewsCard: View {
     }
 }
 
-struct CustomCard: View {
+struct CustomCard<Destination: View>: View {
     @Environment(\.colorScheme) var colorScheme
     var title: String
     var description: String
     var buttonText: String
-    @State private var isPressed = false
+    var destination: Destination  // Vista de destino
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text(title)
-                .font(.system(size: 24, weight: .bold))
+                .font(CustomFonts.PoppinsBold(size: 25))
                 .foregroundColor(Color.accentColor)
             
             Text(description)
-                .font(.system(size: 16))
+                .font(CustomFonts.MontserratRegular(size: 12))
                 .lineSpacing(5)
                 .foregroundStyle(.primary)
             
-            Button(action: {
-                // Acción para visitar la sección
-            }) {
+            NavigationLink(destination: destination) {
                 Text(buttonText)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(CustomFonts.PoppinsSemiBold(size: 12))
                     .padding(.vertical, 12)
                     .padding(.horizontal, 20)
                     .background(Color.clear)
@@ -432,6 +430,8 @@ struct CustomCard: View {
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
 }
+
+
 
 #Preview {
     LawyerView()

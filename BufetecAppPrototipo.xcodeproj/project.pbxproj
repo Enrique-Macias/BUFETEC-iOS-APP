@@ -44,6 +44,7 @@
 		ECB1471B2CA33056009D5B70 /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147112CA33056009D5B70 /* WelcomeScreenView.swift */; };
 		ECB1471F2CA33076009D5B70 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1471C2CA33076009D5B70 /* EditProfileView.swift */; };
 		ECB147202CA33076009D5B70 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1471D2CA33076009D5B70 /* ProfileView.swift */; };
+		ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -105,6 +106,7 @@
 		ECB147112CA33056009D5B70 /* WelcomeScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
 		ECB1471C2CA33076009D5B70 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		ECB1471D2CA33076009D5B70 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAppointmentView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
+				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				ECB147162CA33056009D5B70 /* RegisterView.swift in Sources */,
 				ECB147172CA33056009D5B70 /* OnboardingScreen1View.swift in Sources */,
 				04CAEF5929B3029B00A4FB62 /* BufetecApp.swift in Sources */,
+				ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */,
 				ECB147132CA33056009D5B70 /* DocumentScanView.swift in Sources */,
 				ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */,
 				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,

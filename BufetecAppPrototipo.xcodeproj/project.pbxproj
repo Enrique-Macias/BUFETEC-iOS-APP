@@ -197,6 +197,7 @@
 				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
 				ECA58D402C9B4F2B0081ECDE /* AttorneysViews */,
 				04CAEF8C29B3053B00A4FB62 /* AppointmentsView.swift */,
+				ECB147022CA2596B009D5B70 /* New Group */,
 				EC800CAB2C8A23C900A9FB80 /* OnboardingViews */,
 				EC800CB02C8A31BE00A9FB80 /* ChatBotViews */,
 				ECB17D542C923C3200B38D64 /* ProfileViews */,
@@ -277,6 +278,13 @@
 				ECA58D432C9B51980081ECDE /* Attorneys.swift */,
 			);
 			path = AttorneysViews;
+			sourceTree = "<group>";
+		};
+		ECB147022CA2596B009D5B70 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		ECB17D542C923C3200B38D64 /* ProfileViews */ = {

@@ -312,11 +312,11 @@ struct CustomToolbar: ToolbarContent {
         }
         
         ToolbarItem(placement: .topBarTrailing) {
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.crop.circle")
                     .font(.system(size: 20))
                     .foregroundStyle(Color.accentColor)
-            })
+            }
         }
     }
 }

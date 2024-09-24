@@ -388,37 +388,71 @@ struct NewsCard: View {
     }
 }
 
-struct CustomCard<Destination: View>: View {
+struct CustomCard: View {
     @Environment(\.colorScheme) var colorScheme
     var title: String
     var description: String
     var buttonText: String
-    var destination: Destination  // Vista de destino
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text(title)
-                .font(CustomFonts.PoppinsBold(size: 25))
+                .font(.system(size: 24, weight: .bold))
                 .foregroundColor(Color.accentColor)
             
             Text(description)
-                .font(CustomFonts.MontserratRegular(size: 12))
+                .font(.system(size: 16))
                 .lineSpacing(5)
                 .foregroundStyle(.primary)
             
-            NavigationLink(destination: destination) {
-                Text(buttonText)
-                    .font(CustomFonts.PoppinsSemiBold(size: 12))
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 20)
-                    .background(Color.clear)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.accentColor, lineWidth: 2)
-                    )
+            
+            if title == "Clientes" {
+                NavigationLink(destination: ClientsView()) {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                }
+                .foregroundColor(Color.accentColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+            } else if title == "Gestión de Casos" {
+                NavigationLink(destination: CasesView()) {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                }
+                .foregroundColor(Color.accentColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+            } else {
+                Button(action: {
+                   
+                }) {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                }
+                .foregroundColor(Color.accentColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .foregroundColor(Color.accentColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
         .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)

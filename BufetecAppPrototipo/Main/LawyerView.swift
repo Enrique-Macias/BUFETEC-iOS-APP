@@ -321,9 +321,6 @@ struct CustomToolbar: ToolbarContent {
     }
 }
 
-import SwiftUI
-import Kingfisher
-
 struct NewsCard: View {
     @Environment(\.colorScheme) var colorScheme
     var cardTitle: String
@@ -388,11 +385,12 @@ struct NewsCard: View {
     }
 }
 
-struct CustomCard: View {
+struct CustomCard<Destination: View>: View {
     @Environment(\.colorScheme) var colorScheme
     var title: String
     var description: String
     var buttonText: String
+    var destination: Destination  // Vista de destino
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -405,54 +403,19 @@ struct CustomCard: View {
                 .lineSpacing(5)
                 .foregroundStyle(.primary)
             
-            
-            if title == "Clientes" {
-                NavigationLink(destination: ClientsView()) {
-                    Text(buttonText)
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 20)
-                        .background(Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.accentColor, lineWidth: 2)
-                        )
-                }
-                .foregroundColor(Color.accentColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
-            } else if title == "Gestión de Casos" {
-                NavigationLink(destination: CasesView()) {
-                    Text(buttonText)
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 20)
-                        .background(Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.accentColor, lineWidth: 2)
-                        )
-                }
-                .foregroundColor(Color.accentColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
-            } else {
-                Button(action: {
-                   
-                }) {
-                    Text(buttonText)
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 20)
-                        .background(Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.accentColor, lineWidth: 2)
-                        )
-                }
-                .foregroundColor(Color.accentColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink(destination: destination) {
+                Text(buttonText)
+                    .font(.system(size: 16, weight: .semibold))
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 20)
+                    .background(Color.clear)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.accentColor, lineWidth: 2)
+                    )
             }
+            .foregroundColor(Color.accentColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
         .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
@@ -464,6 +427,7 @@ struct CustomCard: View {
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
 }
+
 
 
 

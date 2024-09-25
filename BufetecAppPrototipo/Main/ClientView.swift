@@ -61,7 +61,7 @@ struct ClientView: View {
                             
                             // Botón "Agendar Cita" usando NavigationLink para navegar a AppointmentsView()
                             HStack {
-                                NavigationLink(destination: AppointmentsView()) {
+                                NavigationLink(destination: CreateAppointmentView()) {
                                     HStack {
                                         Text("Agendar Cita")
                                             .font(CustomFonts.PoppinsSemiBold(size: 14))

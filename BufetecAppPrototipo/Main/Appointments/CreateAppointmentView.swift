@@ -19,7 +19,7 @@ struct CreateAppointmentView: View {
     // Controlar visibilidad de las alertas personalizadas
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
-
+    
     // Disponibilidad de fechas (más de 4 verde, entre 1 y 4 amarillo, 0 rojo)
     let availability: [Date: Int] = [
         Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 25))!: 5, // Verde
@@ -58,7 +58,7 @@ struct CreateAppointmentView: View {
 
                         // Sección de seleccionar fecha
                         VStack(alignment: .leading, spacing: 20) {
-                            Text("Select Date")
+                            Text("Selecciona una fecha")
                                 .font(CustomFonts.PoppinsBold(size: 24))
                                 .foregroundColor(Color("btBlue"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -76,7 +76,7 @@ struct CreateAppointmentView: View {
 
                         // Sección de seleccionar hora o mensaje de no disponibilidad
                         VStack(alignment: .leading, spacing: 20) {
-                            Text("Select Time")
+                            Text("Selecciona un horario")
                                 .font(CustomFonts.PoppinsBold(size: 24))
                                 .foregroundColor(Color("btBlue"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -154,8 +154,8 @@ struct CreateAppointmentView: View {
                     Button(action: {
                         dismiss()
                     }) {
-                        Image(systemName: "arrow.backward.circle.fill")
-                            .font(.system(size: 28))
+                        Image("arrow-left")
+                            .font(.system(size: 20))
                             .foregroundColor(Color("btBlue"))
                     }
                 }
@@ -292,7 +292,7 @@ struct CreateAppointmentView: View {
     }
 }
 
-// Calendario personalizado con puntos de colores y navegación entre meses
+// Calendario personalizado con días de la semana y puntos de colores
 struct CustomCalendarView: View {
     @Binding var selectedDate: Date
     var availability: [Date: Int]
@@ -302,6 +302,9 @@ struct CustomCalendarView: View {
     private var calendar: Calendar {
         Calendar.current
     }
+
+    // Días de la semana (en español) con solo una letra
+    private let daysOfWeek = ["L", "M", "X", "J", "V", "S", "D"]
 
     var body: some View {
         VStack {
@@ -330,6 +333,16 @@ struct CustomCalendarView: View {
                 }
             }
             .padding()
+
+            // Mostrar días de la semana en una fila
+            HStack(spacing: 15) {
+                ForEach(daysOfWeek, id: \.self) { day in
+                    Text(day)
+                        .font(.system(size: 16, weight: .bold))
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.horizontal, 10)
 
             let days = createDaysForMonth(for: selectedDate)
             let columns = Array(repeating: GridItem(.flexible()), count: 7)
@@ -378,15 +391,24 @@ struct CustomCalendarView: View {
     private func createDaysForMonth(for date: Date) -> [Date] {
         let range = calendar.range(of: .day, in: .month, for: date)!
         let startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
-
-        return range.compactMap { day -> Date? in
-            return calendar.date(byAdding: .day, value: day - 1, to: startDate)
+        
+        // Calcular el primer día del mes y su posición en la semana
+        let firstDayOfMonth = calendar.component(.weekday, from: startDate)
+        let leadingEmptyDays = firstDayOfMonth == 1 ? 6 : firstDayOfMonth - 2
+        
+        let days = (1...range.count).compactMap { day -> Date? in
+            calendar.date(byAdding: .day, value: day - 1, to: startDate)
         }
+        
+        // Agregar días vacíos al principio para alinear correctamente
+        let emptyDays = Array(repeating: Date.distantPast, count: leadingEmptyDays)
+        return emptyDays + days
     }
 
     // Obtener el mes y año actual para mostrar
     private func getMonthAndYear() -> String {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "es_ES") // Cambiar a español
         dateFormatter.dateFormat = "MMMM yyyy"
         return dateFormatter.string(from: getCurrentMonthDate())
     }
@@ -479,3 +501,4 @@ struct AppointmentCardInfo: View {
     CreateAppointmentView()
         .environment(AppearanceManager())
 }
+

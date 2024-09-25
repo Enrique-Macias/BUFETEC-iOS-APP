@@ -86,7 +86,7 @@ struct ClientView: View {
                         VStack(alignment: .leading, spacing: 30) {
                             // Cards
                             VStack(spacing: 30) {
-                                CustomCard(title: "Recursos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ResourcesView())
+                                CustomCard(title: "Conoce a nuestros abogados", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: AttorneysView())
                                 CustomCard(title: "Procesos legales", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ResourcesView())
                                 CustomCard(title: "Preguntas Frecuentes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: FAQView())
                             }

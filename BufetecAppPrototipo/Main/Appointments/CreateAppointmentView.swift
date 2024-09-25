@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CreateAppointmentView: View {
-
+    
     @Environment(\.dismiss) var dismiss
     @State private var selectedDate = Date()
     @State private var selectedTime: String? = nil
     @State private var availableTimes: [String] = []
     @State private var isDateAvailable: Bool = true
     @State private var currentMonthOffset: Int = 0
-
+    
     // Controlar visibilidad de las alertas personalizadas
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
@@ -33,7 +33,7 @@ struct CreateAppointmentView: View {
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 4))!: 0, // Rojo
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 5))!: 5  // Verde
     ]
-
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -45,7 +45,7 @@ struct CreateAppointmentView: View {
                             .foregroundColor(Color("btBlue"))
                             .padding(.top, 40)
                             .padding(.horizontal, 20)
-
+                        
                         // Usar AppointmentCardInfo
                         AppointmentCardInfo(
                             name: "Bruno García",
@@ -55,7 +55,7 @@ struct CreateAppointmentView: View {
                             address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L."
                         )
                         .padding(.horizontal, 10)
-
+                        
                         // Sección de seleccionar fecha
                         VStack(alignment: .leading, spacing: 20) {
                             Text("Selecciona una fecha")
@@ -63,7 +63,7 @@ struct CreateAppointmentView: View {
                                 .foregroundColor(Color("btBlue"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal, 20)
-
+                            
                             // Calendario personalizado
                             CustomCalendarView(
                                 selectedDate: $selectedDate,
@@ -71,16 +71,16 @@ struct CreateAppointmentView: View {
                                 currentMonthOffset: $currentMonthOffset,
                                 onDateChange: handleDateChange(for:)
                             )
-                                .padding(.horizontal, 20)
+                            .padding(.horizontal, 20)
                         }
-
+                        
                         // Sección de seleccionar hora o mensaje de no disponibilidad
                         VStack(alignment: .leading, spacing: 20) {
                             Text("Selecciona un horario")
                                 .font(CustomFonts.PoppinsBold(size: 24))
                                 .foregroundColor(Color("btBlue"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
-
+                            
                             if isDateAvailable {
                                 // Grid de horas disponibles
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing: 15) {
@@ -112,7 +112,7 @@ struct CreateAppointmentView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-
+                        
                         // Botón de confirmar cita (deshabilitado si no hay citas disponibles)
                         Button(action: {
                             if selectedTime != nil {
@@ -134,13 +134,13 @@ struct CreateAppointmentView: View {
                         .disabled(!isDateAvailable || selectedTime == nil) // Deshabilitar el botón si no hay disponibilidad
                     }
                     .padding(.bottom, 40)
-
+                    
                     // Mostrar alerta de confirmación si está activa
                     if showingConfirmationAlert {
                         confirmationAlert
                             .transition(.scale)
                     }
-
+                    
                     // Mostrar alerta de error si está activa
                     if showingErrorAlert {
                         errorAlert
@@ -169,8 +169,9 @@ struct CreateAppointmentView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
-
+    
     // Manejar el cambio de fecha seleccionada
     private func handleDateChange(for date: Date) {
         let calendar = Calendar.current
@@ -190,7 +191,7 @@ struct CreateAppointmentView: View {
             isDateAvailable = false
         }
     }
-
+    
     // Alerta de confirmación personalizada
     private var confirmationAlert: some View {
         VStack(spacing: 20) {
@@ -199,23 +200,23 @@ struct CreateAppointmentView: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
                 .foregroundColor(.green)
-
+            
             Text("Cita Confirmada")
                 .font(CustomFonts.PoppinsBold(size: 20))
                 .foregroundColor(.black)
-
+            
             Text("Tu cita con Bruno García ha sido confirmada")
                 .font(CustomFonts.MontserratRegular(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
-
+            
             HStack {
                 Image(systemName: "calendar")
                 Text("\(selectedDate, style: .date)")
                     .font(CustomFonts.MontserratRegular(size: 14))
                     .foregroundColor(.gray)
             }
-
+            
             if let time = selectedTime {
                 HStack {
                     Image(systemName: "clock")
@@ -224,7 +225,7 @@ struct CreateAppointmentView: View {
                         .foregroundColor(.gray)
                 }
             }
-
+            
             HStack {
                 Image(systemName: "mappin.and.ellipse")
                 Text("C. Av. Luis Elizondo y Garza Sada, Tecnológico, 64700 Monterrey, N.L.")
@@ -232,7 +233,7 @@ struct CreateAppointmentView: View {
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
-
+            
             Button(action: {
                 showingConfirmationAlert = false
             }) {
@@ -252,7 +253,7 @@ struct CreateAppointmentView: View {
         .cornerRadius(20)
         .shadow(radius: 20)
     }
-
+    
     // Alerta de error personalizada
     private var errorAlert: some View {
         VStack(spacing: 20) {
@@ -261,16 +262,16 @@ struct CreateAppointmentView: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
                 .foregroundColor(.red)
-
+            
             Text("Error")
                 .font(CustomFonts.PoppinsBold(size: 20))
                 .foregroundColor(.black)
-
+            
             Text("Por favor selecciona una hora para la cita.")
                 .font(CustomFonts.MontserratRegular(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
-
+            
             Button(action: {
                 showingErrorAlert = false
             }) {
@@ -292,20 +293,21 @@ struct CreateAppointmentView: View {
     }
 }
 
+
 // Calendario personalizado con días de la semana y puntos de colores
 struct CustomCalendarView: View {
     @Binding var selectedDate: Date
     var availability: [Date: Int]
     @Binding var currentMonthOffset: Int
     var onDateChange: (Date) -> Void
-
+    
     private var calendar: Calendar {
         Calendar.current
     }
-
+    
     // Días de la semana (en español) con solo una letra
     private let daysOfWeek = ["L", "M", "X", "J", "V", "S", "D"]
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -316,14 +318,14 @@ struct CustomCalendarView: View {
                 }) {
                     Image(systemName: "chevron.left")
                 }
-
+                
                 Spacer()
-
+                
                 Text("\(getMonthAndYear())")
                     .font(.system(size: 18, weight: .medium))
-
+                
                 Spacer()
-
+                
                 Button(action: {
                     currentMonthOffset += 1
                     selectedDate = getCurrentMonthDate()
@@ -333,7 +335,7 @@ struct CustomCalendarView: View {
                 }
             }
             .padding()
-
+            
             // Mostrar días de la semana en una fila
             HStack(spacing: 15) {
                 ForEach(daysOfWeek, id: \.self) { day in
@@ -343,10 +345,10 @@ struct CustomCalendarView: View {
                 }
             }
             .padding(.horizontal, 10)
-
+            
             let days = createDaysForMonth(for: selectedDate)
             let columns = Array(repeating: GridItem(.flexible()), count: 7)
-
+            
             LazyVGrid(columns: columns, spacing: 15) {
                 ForEach(days, id: \.self) { day in
                     VStack {
@@ -362,7 +364,7 @@ struct CustomCalendarView: View {
                                     onDateChange(day)
                                 }
                             }
-
+                        
                         // Mostrar el punto debajo del día
                         if !isPastDate(day) {
                             if let availabilityCount = availability[calendar.startOfDay(for: day)] {
@@ -380,13 +382,13 @@ struct CustomCalendarView: View {
             }
         }
     }
-
+    
     // Obtener la fecha del mes actual basado en el offset
     private func getCurrentMonthDate() -> Date {
         let today = Date()
         return calendar.date(byAdding: .month, value: currentMonthOffset, to: today)!
     }
-
+    
     // Crear días del mes actual para mostrar en el calendario
     private func createDaysForMonth(for date: Date) -> [Date] {
         let range = calendar.range(of: .day, in: .month, for: date)!
@@ -404,7 +406,7 @@ struct CustomCalendarView: View {
         let emptyDays = Array(repeating: Date.distantPast, count: leadingEmptyDays)
         return emptyDays + days
     }
-
+    
     // Obtener el mes y año actual para mostrar
     private func getMonthAndYear() -> String {
         let dateFormatter = DateFormatter()
@@ -412,7 +414,7 @@ struct CustomCalendarView: View {
         dateFormatter.dateFormat = "MMMM yyyy"
         return dateFormatter.string(from: getCurrentMonthDate())
     }
-
+    
     // Definir el color de los puntos según la disponibilidad
     private func getAvailabilityColor(for count: Int) -> Color {
         switch count {
@@ -424,7 +426,7 @@ struct CustomCalendarView: View {
             return .red
         }
     }
-
+    
     // Comprobar si una fecha es anterior al día actual
     private func isPastDate(_ date: Date) -> Bool {
         return calendar.compare(date, to: Date(), toGranularity: .day) == .orderedAscending
@@ -438,7 +440,7 @@ struct AppointmentCardInfo: View {
     var phoneNumber: String
     var email: String
     var address: String
-
+    
     var body: some View {
         HStack(alignment: .top) {
             Image(systemName: "person.circle.fill")
@@ -446,16 +448,16 @@ struct AppointmentCardInfo: View {
                 .frame(width: 60, height: 60)
                 .foregroundColor(Color("btBlue"))
                 .padding(.trailing, 10)
-
+            
             VStack(alignment: .leading, spacing: 5) {
                 Text(name)
                     .font(CustomFonts.PoppinsBold(size: 16))
                     .foregroundColor(Color("btBlue"))
-
+                
                 Text(specialty)
                     .font(CustomFonts.MontserratMedium(size: 12))
                     .foregroundColor(.gray)
-
+                
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 10) {
                         HStack(spacing: 5) {
@@ -464,7 +466,7 @@ struct AppointmentCardInfo: View {
                         }
                         .font(CustomFonts.MontserratBold(size: 12))
                         .foregroundColor(Color("btBlue"))
-
+                        
                         HStack(spacing: 5) {
                             Image(systemName: "envelope.fill")
                             Text(email)
@@ -472,7 +474,7 @@ struct AppointmentCardInfo: View {
                         .font(CustomFonts.MontserratBold(size: 12))
                         .foregroundColor(Color("btBlue"))
                     }
-
+                    
                     HStack(spacing: 5) {
                         Image(systemName: "mappin.and.ellipse")
                         Text(address)
@@ -482,7 +484,7 @@ struct AppointmentCardInfo: View {
                 }
                 .padding(.top, 10)
             }
-
+            
             Spacer()
         }
         .padding()

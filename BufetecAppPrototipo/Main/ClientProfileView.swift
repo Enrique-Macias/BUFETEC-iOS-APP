@@ -23,7 +23,7 @@ struct ClientProfileView: View {
                     VStack(alignment: .leading) {
                         Text("Stephan Guy")
                             .font(.custom("Poppins-Bold", size: 30))
-                            .foregroundColor(Color(hex: "14397F"))
+                            .foregroundColor(Color.blue)
                         
                         
                         HStack(alignment: .firstTextBaseline) {
@@ -172,3 +172,4 @@ struct ClientProfileView: View {
 #Preview {
     ClientProfileView()
 }
+

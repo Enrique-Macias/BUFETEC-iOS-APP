@@ -2,7 +2,7 @@
 //  ClientsView.swift
 //  BufetecAppPrototipo
 //
-//  Created by Μιτχελλ on 23/09/24.
+//  Created by Michelle on 23/09/24.
 //
 
 import SwiftUI
@@ -15,7 +15,7 @@ struct ClientsView: View {
                 HStack {
                     Text("Clientes")
                         .font(.custom("Poppins-Bold", size: 30))
-                        .foregroundColor(Color(hex: "14397F"))
+                        .foregroundColor(Color.blue)
                     
                     
                     Spacer()
@@ -28,7 +28,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color(hex: "14397F"))
+                            .background(Color.blue)
                             .cornerRadius(8)
                     }
                     
@@ -41,7 +41,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color(hex: "14397F"))
+                            .background(Color.blue)
                             .cornerRadius(8)
                     }
                 }
@@ -119,7 +119,7 @@ struct CustomCardClient: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(Color(hex: "14397F"))
+                                .foregroundColor(Color.blue)
                                 .padding()
                         }
         }
@@ -137,3 +137,4 @@ struct CustomCardClient: View {
 #Preview {
     ClientsView()
 }
+

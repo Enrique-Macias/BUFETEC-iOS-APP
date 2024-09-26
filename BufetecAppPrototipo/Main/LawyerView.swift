@@ -80,7 +80,7 @@ struct LawyerView: View {
                             VStack(spacing: 30) {
                                 CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: CasesView())
                                 CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientView())
-                                CustomCard(title: "Gestion de clientes", description: "asas", buttonText: "Visitar", destination: ClientsView())
+                                CustomCard(title: "Gestion de clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientsView())
                             }
                             .padding(.horizontal, 25)
                         }

@@ -15,7 +15,7 @@ struct ClientsView: View {
                 HStack {
                     Text("Clientes")
                         .font(.custom("Poppins-Bold", size: 30))
-                        .foregroundColor(Color("btBlue"))
+                        .foregroundColor(Color(hex: "14397F"))
                     
                     
                     Spacer()
@@ -28,7 +28,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color("btBlue"))
+                            .background(Color(hex: "14397F"))
                             .cornerRadius(8)
                     }
                     
@@ -41,7 +41,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color("btBlue"))
+                            .background(Color(hex: "14397F"))
                             .cornerRadius(8)
                     }
                 }
@@ -119,7 +119,7 @@ struct CustomCardClient: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(Color("btBlue"))
+                                .foregroundColor(Color(hex: "14397F"))
                                 .padding()
                         }
         }

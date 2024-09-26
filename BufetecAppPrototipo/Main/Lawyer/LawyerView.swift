@@ -73,27 +73,9 @@ struct LawyerView: View {
                             
                             // Cards for "Gestión de Casos" and "Clientes"
                             VStack(spacing: 30) {
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Gestión de Casos",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: EmptyView(),
-                                           tabIndex: TabbedItems.favorite.rawValue)
-                                
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Gestion de clientes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: ClientsListView(),
-                                           tabIndex: nil)
-                                
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Clientes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: ClientView(selectedTab: $selectedTab),
-                                           tabIndex: nil)
-                                
+                                CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: CasesView())
+                                CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientView())
+                                CustomCard(title: "Gestion de clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientsView())
                             }
                             .padding(.horizontal, 15)
                         }

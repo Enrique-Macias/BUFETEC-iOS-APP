@@ -9,14 +9,13 @@ class AppState: ObservableObject {
 struct BufetecApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var authModel = AuthModel()
-    @StateObject private var appState = AppState()
     @State var appearanceManager = AppearanceManager()
+    @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(authModel)
-                .environmentObject(appState)
                 .environment(appearanceManager)
                 .onAppear {
                     appearanceManager.initAppearanceStyle()
@@ -26,35 +25,13 @@ struct BufetecApp: App {
 }
 
 struct ContentView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
-    @EnvironmentObject var appState: AppState
     
     var body: some View {
-        ZStack {
-            Group {
-                if hasSeenOnboarding {
-                    AuthenticationView()
-                        .environment(appearanceManager)
-                } else {
-                    OnboardingView()
-                        .environment(appearanceManager)
-                }
-            }
-            .opacity(appState.isShowingSplash ? 0 : 1)
-            .animation(.easeIn(duration: 0.3), value: appState.isShowingSplash)
-            
-            if appState.isShowingSplash {
-                SplashScreenView()
-                    .environment(appearanceManager)
-            }
+        if hasSeenOnboarding {
+            AuthenticationView()
+        } else {
+            WelcomeScreenView()
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .environmentObject(AuthModel())
-        .environmentObject(AppState())
-        .environment(AppearanceManager())
 }

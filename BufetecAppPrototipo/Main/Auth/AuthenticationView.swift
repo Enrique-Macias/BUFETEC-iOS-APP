@@ -3,6 +3,8 @@ import SwiftUI
 struct AuthenticationView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
+    @EnvironmentObject var splashScreenState: SplashScreenState
+    @StateObject private var animationViewModel = LoginAnimationViewModel()
     @State private var isShowingSignUp = false
     @State private var phoneNumber = ""
     @State private var gender = ""
@@ -19,7 +21,8 @@ struct AuthenticationView: View {
                         if isShowingSignUp {
                             SignUpView(isShowingSignUp: $isShowingSignUp)
                         } else {
-                            LoginView(isShowingSignUp: $isShowingSignUp)
+                            LoginView(isShowingSignUp: $isShowingSignUp, logoPosition: $splashScreenState.logoPosition)
+                                .environmentObject(animationViewModel)
                         }
                     case .needsAdditionalInfo:
                         additionalInfoView
@@ -43,7 +46,15 @@ struct AuthenticationView: View {
             }
             .onAppear {
                 authModel.checkUserSession()
+                animationViewModel.startAnimations()
             }
+        }
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -104,4 +115,5 @@ struct AuthenticationView: View {
     AuthenticationView()
         .environment(AppearanceManager())
         .environmentObject(AuthModel())
+        .environmentObject(SplashScreenState())
 }

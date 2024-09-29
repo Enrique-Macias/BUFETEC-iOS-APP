@@ -1,21 +1,22 @@
 import SwiftUI
 
-class AppState: ObservableObject {
-    @Published var isShowingSplash = true
-    @Published var logoPosition: CGPoint = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 - 50)
+class SplashScreenState: ObservableObject {
+    @Published var isFinished = false
+    @Published var logoPosition: CGPoint = .zero
 }
 
 @main
 struct BufetecApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var authModel = AuthModel()
+    @StateObject private var splashScreenState = SplashScreenState()
     @State var appearanceManager = AppearanceManager()
-    @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(authModel)
+                .environmentObject(splashScreenState)
                 .environment(appearanceManager)
                 .onAppear {
                     appearanceManager.initAppearanceStyle()
@@ -26,12 +27,30 @@ struct BufetecApp: App {
 
 struct ContentView: View {
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
+    @EnvironmentObject var splashScreenState: SplashScreenState
     
     var body: some View {
-        if hasSeenOnboarding {
-            AuthenticationView()
-        } else {
-            WelcomeScreenView()
+        ZStack {
+            Group {
+                if hasSeenOnboarding {
+                    AuthenticationView()
+                } else {
+                    WelcomeScreenView()
+                }
+            }
+            .opacity(splashScreenState.isFinished ? 1 : 0)
+            .animation(.easeIn(duration: 0.3), value: splashScreenState.isFinished)
+            
+            if !splashScreenState.isFinished {
+                SplashScreenView()
+            }
         }
     }
+}
+
+#Preview {
+    ContentView()
+        .environmentObject(AuthModel())
+        .environmentObject(SplashScreenState())
+        .environment(AppearanceManager())
 }

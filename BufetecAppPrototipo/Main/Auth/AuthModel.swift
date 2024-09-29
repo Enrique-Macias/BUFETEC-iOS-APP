@@ -22,7 +22,6 @@ class AuthModel: ObservableObject {
         case authenticating
         case authenticated
         case needsEmailVerification
-        case error(String)
     }
     
     @Published var authState: AuthState = .signedOut
@@ -45,7 +44,7 @@ class AuthModel: ObservableObject {
             } else {
                 authState = .authenticated
                 Task {
-                    await fetchUserInfo()
+                    try? await fetchUserInfo()
                 }
             }
         } else {
@@ -54,56 +53,47 @@ class AuthModel: ObservableObject {
     }
     
     @MainActor
-    func signUp(password: String) async {
+    func signUp(password: String) async throws {
         logger.info("Starting sign up process")
         authState = .signingIn
         isLoading = true
-        do {
-            guard ["abogado", "cliente", "admin"].contains(userData.tipo) else {
-                throw NSError(domain: "ValidationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid user type"])
-            }
-            
-            let authResult = try await Auth.auth().createUser(withEmail: userData.email, password: password)
-            userData.firebaseUID = authResult.user.uid
-            try await createUserInfo()
-            try await initiateEmailVerification()
-            authState = .needsEmailVerification
-            logger.info("Sign up successful, email verification needed")
-        } catch {
-            logger.error("Sign up failed: \(error.localizedDescription)")
-            authState = .error(error.localizedDescription)
+        defer { isLoading = false }
+        
+        guard ["abogado", "cliente", "admin"].contains(userData.tipo) else {
+            throw NSError(domain: "ValidationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid user type"])
         }
-        isLoading = false
+        
+        let authResult = try await Auth.auth().createUser(withEmail: userData.email, password: password)
+        userData.firebaseUID = authResult.user.uid
+        try await createUserInfo()
+        try await initiateEmailVerification()
+        authState = .needsEmailVerification
+        logger.info("Sign up successful, email verification needed")
     }
     
     @MainActor
-    func login(email: String, password: String) async {
+    func login(email: String, password: String) async throws {
         logger.info("Starting login process")
         authState = .signingIn
         isLoading = true
-        do {
-            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
-            userData.firebaseUID = authResult.user.uid
-            if !authResult.user.isEmailVerified {
-                authState = .needsEmailVerification
-            } else {
-                await fetchUserInfo()
-                authState = .authenticated
-            }
-            logger.info("Login successful")
-        } catch {
-            logger.error("Login failed: \(error.localizedDescription)")
-            authState = .error(error.localizedDescription)
+        defer { isLoading = false }
+        
+        let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        userData.firebaseUID = authResult.user.uid
+        if !authResult.user.isEmailVerified {
+            authState = .needsEmailVerification
+        } else {
+            try await fetchUserInfo()
+            authState = .authenticated
         }
-        isLoading = false
+        logger.info("Login successful")
     }
     
     @MainActor
-    func signInWithGoogle() async {
+    func signInWithGoogle() async throws {
         logger.info("Starting Google Sign-In process")
         guard let clientID = FirebaseApp.app()?.options.clientID else {
-            authState = .error("Failed to get Google client ID")
-            return
+            throw NSError(domain: "ConfigurationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get Google client ID"])
         }
         
         let config = GIDConfiguration(clientID: clientID)
@@ -112,95 +102,81 @@ class AuthModel: ObservableObject {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let rootViewController = window.rootViewController else {
-            authState = .error("Failed to get root view controller")
-            return
+            throw NSError(domain: "PresentationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get root view controller"])
         }
         
-        do {
-            authState = .signingIn
-            isLoading = true
-            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
-            guard let idToken = result.user.idToken?.tokenString else {
-                throw NSError(domain: "AuthError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get ID token from Google"])
-            }
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
-            let authResult = try await Auth.auth().signIn(with: credential)
-            
-            userData.firebaseUID = authResult.user.uid
-            userData.email = result.user.profile?.email ?? ""
-            userData.nombre = result.user.profile?.name ?? ""
-            userData.tipo = "cliente" // Default type
-            
-            // Attempt to fetch existing user data
-            let userDataExists = await fetchUserInfo()
-            
-            if userDataExists {
-                if userData.celular.isEmpty || userData.genero.isEmpty || userData.fechaDeNacimiento.isEmpty {
-                    authState = .needsAdditionalInfo
-                    logger.info("Google Sign-In successful, requesting additional info for existing user")
-                } else {
-                    authState = .authenticated
-                    logger.info("Google Sign-In successful, existing user profile complete")
-                }
-            } else {
-                authState = .needsAdditionalInfo
-                logger.info("Google Sign-In successful, new user, requesting additional info")
-            }
-        } catch {
-            logger.error("Google Sign-In failed: \(error.localizedDescription)")
-            authState = .error(error.localizedDescription)
+        authState = .signingIn
+        isLoading = true
+        defer { isLoading = false }
+        
+        let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+        guard let idToken = result.user.idToken?.tokenString else {
+            throw NSError(domain: "AuthError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get ID token from Google"])
         }
-        isLoading = false
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
+        let authResult = try await Auth.auth().signIn(with: credential)
+        
+        userData.firebaseUID = authResult.user.uid
+        userData.email = result.user.profile?.email ?? ""
+        userData.nombre = result.user.profile?.name ?? ""
+        userData.tipo = "cliente" // Default type
+        
+        // Attempt to fetch existing user data
+        let userDataExists = try await fetchUserInfo()
+        
+        if userDataExists {
+            if userData.celular.isEmpty || userData.genero.isEmpty || userData.fechaDeNacimiento.isEmpty {
+                authState = .needsAdditionalInfo
+                logger.info("Google Sign-In successful, requesting additional info for existing user")
+            } else {
+                authState = .authenticated
+                logger.info("Google Sign-In successful, existing user profile complete")
+            }
+        } else {
+            authState = .needsAdditionalInfo
+            logger.info("Google Sign-In successful, new user, requesting additional info")
+        }
     }
     
     @MainActor
-    func completeUserProfile(celular: String, genero: String, fechaDeNacimiento: String) async {
+    func completeUserProfile(celular: String, genero: String, fechaDeNacimiento: String) async throws {
         logger.info("Completing user profile")
         authState = .authenticating
         isLoading = true
-        do {
-            userData.celular = celular
-            userData.genero = genero
-            userData.fechaDeNacimiento = fechaDeNacimiento
-            
-            // Check if user already exists in our database
-            let userExists = await fetchUserInfo()
-            
-            if userExists {
-                // Update existing user
-                try await updateUserInfo(newData: [
-                    "celular": celular,
-                    "genero": genero,
-                    "fechaDeNacimiento": fechaDeNacimiento
-                ])
-            } else {
-                // Create new user
-                try await createUserInfo()
-            }
-            
-            await fetchUserInfo() // Fetch updated user info
-            authState = .authenticated
-            logger.info("User profile completed successfully")
-        } catch {
-            logger.error("Failed to complete user profile: \(error.localizedDescription)")
-            authState = .error(error.localizedDescription)
+        defer { isLoading = false }
+        
+        userData.celular = celular
+        userData.genero = genero
+        userData.fechaDeNacimiento = fechaDeNacimiento
+        
+        // Check if user already exists in our database
+        let userExists = try await fetchUserInfo()
+        
+        if userExists {
+            // Update existing user
+            try await updateUserInfo(newData: [
+                "celular": celular,
+                "genero": genero,
+                "fechaDeNacimiento": fechaDeNacimiento
+            ])
+        } else {
+            // Create new user
+            try await createUserInfo()
         }
-        isLoading = false
+        
+        try await fetchUserInfo() // Fetch updated user info
+        authState = .authenticated
+        logger.info("User profile completed successfully")
     }
     
     @MainActor
-    func logout() async {
+    func logout() async throws {
         logger.info("Logging out")
-        do {
-            try Auth.auth().signOut()
-            GIDSignIn.sharedInstance.signOut()
-            authState = .signedOut
-            userData = UserData()
-            logger.info("Logout successful")
-        } catch {
-            logger.error("Logout failed: \(error.localizedDescription)")
-            authState = .error(error.localizedDescription)
-        }
+        try Auth.auth().signOut()
+        GIDSignIn.sharedInstance.signOut()
+        authState = .signedOut
+        userData = UserData()
+        logger.info("Logout successful")
     }
     
     private func createUserInfo() async throws {
@@ -229,40 +205,28 @@ class AuthModel: ObservableObject {
         let jsonData = try JSONSerialization.data(withJSONObject: userDict, options: [])
         request.httpBody = jsonData
         
-        print("Sending JSON for create: \(String(data: jsonData, encoding: .utf8) ?? "")")
-        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
-            logger.error("Server responded with an error when creating user info")
-            if let errorMessage = String(data: data, encoding: .utf8) {
-                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server error: \(errorMessage)"])
-            } else {
-                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when creating user info"])
-            }
+            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when creating user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
         
         // Parse the response
-        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-           let insertedId = json["insertedId"] as? String {
-            logger.info("User info created successfully with ID: \(insertedId)")
-        } else {
+        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+              let insertedId = json["insertedId"] as? String else {
             throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server did not return expected response for user creation"])
         }
+        
+        logger.info("User info created successfully with ID: \(insertedId)")
     }
     
     func updateUserInfo(newData: [String: Any]) async throws {
         logger.info("Updating user info")
-        do {
-            var updateData = newData
-            updateData["firebaseUID"] = userData.firebaseUID
-            try await editUserInfo(newData: updateData)
-            await fetchUserInfo() // Fetch updated user info
-            logger.info("User info updated successfully")
-        } catch {
-            logger.error("Failed to update user info: \(error.localizedDescription)")
-            throw error
-        }
+        var updateData = newData
+        updateData["firebaseUID"] = userData.firebaseUID
+        try await editUserInfo(newData: updateData)
+        try await fetchUserInfo() // Fetch updated user info
+        logger.info("User info updated successfully")
     }
     
     private func editUserInfo(newData: [String: Any]) async throws {
@@ -279,33 +243,26 @@ class AuthModel: ObservableObject {
         let jsonData = try JSONSerialization.data(withJSONObject: newData, options: [])
         request.httpBody = jsonData
         
-        print("Sending JSON for edit: \(String(data: jsonData, encoding: .utf8) ?? "")")
-        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])
         }
         
-        if httpResponse.statusCode == 404 {
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])
-        }
-        
-        if httpResponse.statusCode == 400 {
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Bad request: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
-        }
-        
-        guard 200...299 ~= httpResponse.statusCode else {
-            logger.error("Server responded with an error when editing user info")
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when editing user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
-        }
-        
-        // Parse the response
-        if let updatedUser = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-            logger.info("User info edited successfully")
-            updateUserDataFromResponse(updatedUser)
-        } else {
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server did not return expected response for user edit"])
+        switch httpResponse.statusCode {
+        case 200...299:
+            if let updatedUser = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                logger.info("User info edited successfully")
+                updateUserDataFromResponse(updatedUser)
+            } else {
+                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server did not return expected response for user edit"])
+            }
+        case 404:
+            throw NSError(domain: "ServerError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+        case 400:
+            throw NSError(domain: "ServerError", code: 400, userInfo: [NSLocalizedDescriptionKey: "Bad request: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
+        default:
+            throw NSError(domain: "ServerError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when editing user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
     }
     
@@ -339,85 +296,61 @@ class AuthModel: ObservableObject {
     }
     
     @MainActor
-    func refreshEmailVerificationStatus() async {
+    func refreshEmailVerificationStatus() async throws {
         guard let user = Auth.auth().currentUser else {
             authState = .signedOut
             return
         }
         
-        do {
-            try await user.reload()
-            if user.isEmailVerified {
-                authState = .authenticated
-                await fetchUserInfo()
-            } else {
-                authState = .needsEmailVerification
-            }
-        } catch {
-            logger.error("Failed to refresh email verification status: \(error.localizedDescription)")
-            authState = .error("Failed to refresh email verification status. Please try again.")
+        try await user.reload()
+        if user.isEmailVerified {
+            authState = .authenticated
+            try await fetchUserInfo()
+        } else {
+            authState = .needsEmailVerification
         }
     }
     
     @MainActor
-    func resendVerificationEmail() async {
+    func resendVerificationEmail() async throws {
         guard let user = Auth.auth().currentUser else {
             authState = .signedOut
             return
         }
         
-        do {
-            try await user.sendEmailVerification()
-            logger.info("Verification email resent successfully")
-        } catch {
-            logger.error("Failed to resend verification email: \(error.localizedDescription)")
-            authState = .error("Failed to resend verification email. Please try again later.")
-        }
+        try await user.sendEmailVerification()
+        logger.info("Verification email resent successfully")
     }
     
     @MainActor
-    func fetchUserInfo() async -> Bool {
+    func fetchUserInfo() async throws -> Bool {
         logger.info("Fetching user info from server")
         guard let url = URL(string: "\(baseURL)/getUsuario?uid=\(userData.firebaseUID)") else {
-            authState = .error("Invalid URL")
-            return false
+            throw NSError(domain: "URLError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
         
-        do {
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            request.addValue("Bearer \(try await Auth.auth().currentUser!.getIDToken())", forHTTPHeaderField: "Authorization")
-            
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])
-            }
-            
-            if httpResponse.statusCode == 404 {
-                // User not found, treat as new user
-                logger.info("User not found on server, treating as new user")
-                return false
-            }
-            
-            guard 200...299 ~= httpResponse.statusCode else {
-                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when fetching user info"])
-            }
-            
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(try await Auth.auth().currentUser!.getIDToken())", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])
+        }
+        
+        switch httpResponse.statusCode {
+        case 200...299:
             let fetchedUserData = try JSONDecoder().decode(UserData.self, from: data)
             self.userData = fetchedUserData
             logger.info("User info fetched successfully")
             return true
-        } catch {
-            logger.error("Failed to fetch user info: \(error.localizedDescription)")
-            if (error as NSError).domain == "ServerError" {
-                authState = .error(error.localizedDescription)
-            } else {
-                // If it's not a server error, treat as new user
-                logger.info("Treating as new user due to fetch error")
-                return false
-            }
+        case 404:
+            // User not found, treat as new user
+            logger.info("User not found on server, treating as new user")
+            return false
+        default:
+            throw NSError(domain: "ServerError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when fetching user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
-        return false
     }
 }

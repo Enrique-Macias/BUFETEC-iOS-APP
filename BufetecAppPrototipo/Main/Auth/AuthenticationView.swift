@@ -1,86 +1,44 @@
 import SwiftUI
 
 struct AuthenticationView: View {
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @State private var isShowingSignUp = false
     @State private var phoneNumber = ""
     @State private var gender = ""
     @State private var birthDate = Date()
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
     
     var body: some View {
         NavigationView {
-            VStack {
-                switch authModel.authState {
-                case .signedOut:
-                    if isShowingSignUp {
-                        SignUpView(isShowingSignUp: $isShowingSignUp)
-                    } else {
-                        LoginView(isShowingSignUp: $isShowingSignUp)
-                    }
-                case .signingIn:
-                    ProgressView("Signing in...")
-                case .needsAdditionalInfo:
-                    VStack {
-                        Text("Complete Your Profile")
-                            .font(.title)
-                            .padding()
-                        
-                        TextField("Phone Number", text: $phoneNumber)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.phonePad)
-                            .padding()
-                        
-                        Picker("Gender", selection: $gender) {
-                            Text("Male").tag("male")
-                            Text("Female").tag("female")
-                            Text("Other").tag("other")
+            ZStack {
+                VStack {
+                    switch authModel.authState {
+                    case .signedOut, .signingIn:
+                        if isShowingSignUp {
+                            SignUpView(isShowingSignUp: $isShowingSignUp)
+                        } else {
+                            LoginView(isShowingSignUp: $isShowingSignUp)
                         }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding()
-                        
-                        DatePicker("Birth Date", selection: $birthDate, displayedComponents: .date)
-                            .padding()
-                        
-                        Button("Complete Profile") {
-                            Task {
-                                let dateFormatter = DateFormatter()
-                                dateFormatter.dateFormat = "yyyy-MM-dd"
-                                let birthDateString = dateFormatter.string(from: birthDate)
-                                await authModel.completeUserProfile(celular: phoneNumber, genero: gender, fechaDeNacimiento: birthDateString)
-                            }
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .disabled(phoneNumber.isEmpty || gender.isEmpty)
+                    case .needsAdditionalInfo:
+                        additionalInfoView
+                    case .authenticating:
+                        ProgressView("Completing profile...")
+                    case .authenticated:
+                        CustomTabView()
+                    case .needsEmailVerification:
+                        EmailVerificationView()
                     }
-                    .padding()
-                case .authenticating:
-                    ProgressView("Completing profile...")
-                case .authenticated:
-                    AuthenticatedView()
-                case .needsEmailVerification:
-                    EmailVerificationView()
-                case .error(let message):
-                    VStack {
-                        Text("An error occurred")
-                            .font(.title)
-                            .foregroundColor(.red)
-                        
-                        Text(message)
-                            .foregroundColor(.red)
-                            .padding()
-                        
-                        Button("Try Again") {
-                            authModel.authState = .signedOut
-                        }
+                }
+                .disabled(authModel.isLoading)
+                
+                if authModel.isLoading {
+                    ProgressView()
+                        .scaleEffect(1.5)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                    }
-                    .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(10)
                 }
             }
             .onAppear {
@@ -88,9 +46,62 @@ struct AuthenticationView: View {
             }
         }
     }
+    
+    private var additionalInfoView: some View {
+        VStack {
+            Text("Complete Your Profile")
+                .font(.title)
+                .padding()
+            
+            TextField("Phone Number", text: $phoneNumber)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.phonePad)
+                .padding()
+            
+            Picker("Gender", selection: $gender) {
+                Text("Select Gender").tag("")
+                Text("Male").tag("male")
+                Text("Female").tag("female")
+                Text("Other").tag("other")
+            }
+            .pickerStyle(MenuPickerStyle())
+            .padding()
+            
+            DatePicker("Birth Date", selection: $birthDate, displayedComponents: .date)
+                .padding()
+            
+            Button("Complete Profile") {
+                completeProfile()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .disabled(phoneNumber.isEmpty || gender.isEmpty || authModel.isLoading)
+        }
+        .padding()
+        .disabled(authModel.isLoading)
+    }
+    
+    private func completeProfile() {
+        Task {
+            do {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let birthDateString = dateFormatter.string(from: birthDate)
+                try await authModel.completeUserProfile(celular: phoneNumber, genero: gender, fechaDeNacimiento: birthDateString)
+            } catch {
+                await MainActor.run {
+                    errorMessage = error.localizedDescription
+                    showErrorAlert = true
+                }
+            }
+        }
+    }
 }
 
 #Preview {
     AuthenticationView()
+        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

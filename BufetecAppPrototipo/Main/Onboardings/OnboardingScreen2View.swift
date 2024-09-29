@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct OnboardingScreen2View: View {
+    
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ZStack {
             VStack {
@@ -18,7 +22,7 @@ struct OnboardingScreen2View: View {
                     .font(CustomFonts.PoppinsExtraBold(size: 36))
                     .kerning(-2)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color("btBlue"))
+                    .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
                     .padding(.horizontal, 20)
                     .padding(.top, 40)
 
@@ -29,7 +33,7 @@ struct OnboardingScreen2View: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 250)
-                    .foregroundStyle(Color("btBlue"))
+                    .foregroundStyle(Color(colorScheme == .light ? Color.accentColor : .white))
                     .padding(.bottom, 20)
 
                 Spacer()
@@ -37,55 +41,47 @@ struct OnboardingScreen2View: View {
                 // Texto descriptivo debajo de la imagen
                 Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
                     .font(CustomFonts.MontserratRegular(size: 16))
-                    .foregroundColor(Color("btBlue"))
+                    .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                     .padding(.bottom, 40)
+                
+                Spacer()
 
-                // Indicador de página
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(width: 10, height: 10)
-
-                    Circle()
-                        .fill(Color("btBlue"))
-                        .frame(width: 10, height: 10)
-
-                    Circle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(width: 10, height: 10)
-                    
-                    Circle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(width: 10, height: 10)
-                }
-                .padding(.bottom, 60)
-
-                // Logo de Bufetec en la parte inferior
-                Image("LogoBufetec") // Coloca el nombre de tu logo
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(Color("btBlue"))
-                    .frame(width: 135, height: 35)
-                    .padding(.bottom, 30)
+//                // Indicador de página
+//                HStack(spacing: 8) {
+//                    Circle()
+//                        .fill(Color.gray.opacity(0.5))
+//                        .frame(width: 10, height: 10)
+//
+//                    Circle()
+//                        .fill(Color("btBlue"))
+//                        .frame(width: 10, height: 10)
+//
+//                    Circle()
+//                        .fill(Color.gray.opacity(0.5))
+//                        .frame(width: 10, height: 10)
+//                    
+//                    Circle()
+//                        .fill(Color.gray.opacity(0.5))
+//                        .frame(width: 10, height: 10)
+//                }
+//                .padding(.bottom, 60)
+//
+//                // Logo de Bufetec en la parte inferior
+//                Image("LogoBufetec") // Coloca el nombre de tu logo
+//                    .resizable()
+//                    .scaledToFit()
+//                    .foregroundStyle(Color(colorScheme == .light ? Color.accentColor : .white))
+//                    .frame(width: 135, height: 35)
+//                    .padding(.bottom, 30)
             }
         }
         .edgesIgnoringSafeArea(.all)
     }
 }
 
-struct OnboardingScreen2View_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            OnboardingScreen2View()
-                .preferredColorScheme(.light)
-            OnboardingScreen2View()
-                .preferredColorScheme(.dark)
-        }
-    }
-}
-
 #Preview {
     OnboardingScreen2View()
+        .environment(AppearanceManager())
 }

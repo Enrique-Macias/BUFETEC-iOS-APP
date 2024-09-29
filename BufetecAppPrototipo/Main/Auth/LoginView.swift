@@ -15,6 +15,7 @@ struct LoginView: View {
     @State private var showPassword = false
     @State private var showLogin = false
     @State private var showContent = false
+    
     @FocusState private var focusedField: Field?
     
     @State private var showErrorAlert = false

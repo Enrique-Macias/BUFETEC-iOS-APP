@@ -1,31 +1,37 @@
-//
-//  OnboardingView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/6/24.
-//
-
 import SwiftUI
 
 struct OnboardingView: View {
+    
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var authModel: AuthModel
+    
     var body: some View {
-        TabView {
-            OnboardingScreen1View()
-            OnboardingScreen2View()
-            OnboardingScreen3View()
-            WelcomeScreenView()
+        ZStack{
+            Color("btBackground")
+                .edgesIgnoringSafeArea(.all)
+            TabView {
+                OnboardingScreen1View()
+                OnboardingScreen2View()
+                OnboardingScreen3View()
+                WelcomeScreenView()
+            }
+            .tabViewStyle(PageTabViewStyle())
+            .onAppear {
+                if colorScheme == .light {
+                    UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.black
+                    UIPageControl.appearance().pageIndicatorTintColor = UIColor.gray.withAlphaComponent(0.5)
+                } else {
+                    UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.white
+                    UIPageControl.appearance().pageIndicatorTintColor = UIColor.gray.withAlphaComponent(0.5)
+                }
+            }
         }
-        .tabViewStyle(PageTabViewStyle()) // Desactiva el indicador de página por defecto de TabView
     }
 }
-
-struct OnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingView()
-    }
-}
-
 
 #Preview {
     OnboardingView()
+        .environment(AppearanceManager())
+        .environmentObject(AuthModel())
 }

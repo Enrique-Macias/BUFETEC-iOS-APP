@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct AuthenticatedView: View {
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @State private var isEditingProfile = false
     @State private var editedNombre = ""
     @State private var editedCelular = ""
     @State private var editedGenero = ""
     @State private var editedFechaDeNacimiento = Date()
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
     
     var body: some View {
         NavigationView {
@@ -49,9 +50,7 @@ struct AuthenticatedView: View {
                 
                 Section {
                     Button("Sign Out") {
-                        Task {
-                            await authModel.logout()
-                        }
+                        signOut()
                     }
                     .foregroundColor(.red)
                 }
@@ -64,9 +63,24 @@ struct AuthenticatedView: View {
                     }
                 }
             }
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+        .overlay(
+            Group {
+                if authModel.isLoading {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(10)
+                }
             }
+        )
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -104,8 +118,22 @@ struct AuthenticatedView: View {
                 }
             } catch {
                 await MainActor.run {
-                    showingAlert = true
-                    alertMessage = "Failed to update profile: \(error.localizedDescription)"
+                    errorMessage = "Failed to update profile: \(error.localizedDescription)"
+                    showErrorAlert = true
+                }
+            }
+        }
+    }
+    
+    private func signOut() {
+        Task {
+            do {
+                try await authModel.logout()
+                // Handle successful logout (e.g., navigate to login view)
+            } catch {
+                await MainActor.run {
+                    errorMessage = "Failed to sign out: \(error.localizedDescription)"
+                    showErrorAlert = true
                 }
             }
         }
@@ -114,5 +142,6 @@ struct AuthenticatedView: View {
 
 #Preview {
     AuthenticatedView()
+        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

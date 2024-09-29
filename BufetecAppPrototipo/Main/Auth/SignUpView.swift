@@ -11,6 +11,8 @@ struct SignUpView: View {
     @State private var gender: String?
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
+    @State private var showPassword = false
+    @State private var showConfirmPassword = false
     
     private var isSignUpDisabled: Bool {
         authModel.userData.nombre.isEmpty ||
@@ -31,127 +33,138 @@ struct SignUpView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         Text("Registro")
-                            .font(.system(size: 25))
-                            .fontWeight(.bold)
+                            .font(CustomFonts.MontserratBold(size: 25))
                             .foregroundStyle(.primary)
-                            .padding(.top, 22)
                         
                         VStack(spacing: 15) {
-                            inputField(icon: "person", placeholder: "Nombre", text: $authModel.userData.nombre)
-                            inputField(icon: "phone", placeholder: "Celular", text: $authModel.userData.celular)
+                            InputField(icon: "person", placeholder: "Nombre", text: $authModel.userData.nombre)
+                            InputField(icon: "phone", placeholder: "Celular", text: $authModel.userData.celular)
                                 .keyboardType(.phonePad)
-                            inputField(icon: "envelope", placeholder: "Email", text: $authModel.userData.email)
+                            InputField(icon: "envelope", placeholder: "Email", text: $authModel.userData.email)
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
-                            inputField(icon: "lock", placeholder: "Contraseña", text: $password, isSecure: true)
-                            inputField(icon: "lock", placeholder: "Confirmar Contraseña", text: $confirmPassword, isSecure: true)
+                            PasswordField(password: $password, showPassword: $showPassword, placeholder: "Contraseña")
+                            PasswordField(password: $confirmPassword, showPassword: $showConfirmPassword, placeholder: "Confirmar Contraseña")
                             
-                            Picker("Género", selection: $gender) {
-                                Text("Genero").tag(nil as String?)
-                                Text("Male").tag("male" as String?)
-                                Text("Female").tag("female" as String?)
-                                Text("Other").tag("other" as String?)
-                            }
-                            .pickerStyle(MenuPickerStyle())
-                            
-                            HStack {
-                                Text("Fecha de nacimiento")
-                                Spacer()
-                                DatePicker("", selection: $birthDate, displayedComponents: [.date])
-                                    .labelsHidden()
-                            }
+                            genderPicker
+                            birthdatePicker
                         }
                         .padding(.horizontal)
                         
-                        Button(action: signUp) {
-                            Text("Registrarse")
-                                .fontWeight(.bold)
-                                .font(.system(size: 18))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 55)
-                                .background(isSignUpDisabled ? Color.gray : (colorScheme == .light ? Color.black : Color.white))
-                                .foregroundColor(colorScheme == .light ? Color.white : Color.black)
-                                .cornerRadius(8)
-                        }
-                        .disabled(isSignUpDisabled || authModel.isLoading)
-                        .padding(.horizontal)
-                        
-                        Button(action: signInWithGoogle) {
-                            HStack {
-                                Image(systemName: "g.circle.fill")
-                                    .foregroundColor(.black)
-                                Text("Continuar con Google")
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.white)
-                            .foregroundColor(.black)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                        }
-                        .disabled(authModel.isLoading)
-                        .padding(.horizontal)
-                        
-                        
-                        Button(action: {
-                            isShowingSignUp = false
-                        }) {
-                            Text("¿Ya tienes una cuenta? Inicia sesión")
-                                .foregroundColor(Color.accentColor)
-                                .underline()
-                        }
-                        .padding(.top, 10)
-                        
+                        signUpButton
+                        googleSignInButton
+                        loginPrompt
                     }
                     .padding()
                 }
                 .disabled(authModel.isLoading)
-                .overlay(
-                    Group {
-                        if authModel.isLoading {
-                            ProgressView()
-                                .scaleEffect(1.5)
-                                .padding()
-                                .background(Color.white.opacity(0.8))
-                                .cornerRadius(10)
-                        }
-                    }
-                )
+                .overlay(loadingOverlay)
             }
         }
         .alert(isPresented: $showErrorAlert) {
-            Alert(
-                title: Text("Error"),
-                message: Text(errorMessage),
-                dismissButton: .default(Text("OK"))
+            Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+    
+    private var genderPicker: some View {
+        Menu {
+            Button("Male") { gender = "male" }
+            Button("Female") { gender = "female" }
+            Button("Other") { gender = "other" }
+        } label: {
+            HStack {
+                Image(systemName: "person")
+                Text(gender ?? "Género")
+                Spacer()
+                Image(systemName: "chevron.down")
+            }
+            .padding()
+            .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+            .background(colorScheme == .dark ? Color.clear : Color.white)
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
             )
         }
     }
     
-    private func inputField(icon: String, placeholder: String, text: Binding<String>, isSecure: Bool = false) -> some View {
+    private var birthdatePicker: some View {
         HStack {
-            Image(systemName: icon)
-                .foregroundStyle(.primary)
-                .frame(width: 20)
-            Group {
-                if isSecure {
-                    SecureField(placeholder, text: text)
-                } else {
-                    TextField(placeholder, text: text)
-                }
-            }
-            .padding()
-            .foregroundStyle(.primary)
-            .frame(height: 25)
+            Image(systemName: "calendar")
+            Text("Fecha de nacimiento")
+            Spacer()
+            DatePicker("", selection: $birthDate, displayedComponents: [.date])
+                .labelsHidden()
         }
         .padding()
+        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+        .background(colorScheme == .dark ? Color.clear : Color.white)
+        .cornerRadius(16)
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
         )
+    }
+    
+    private var signUpButton: some View {
+        Button(action: signUp) {
+            Text("Registrarse")
+                .font(CustomFonts.MontserratBold(size: 16))
+                .foregroundColor(colorScheme == .light ? Color.white : Color.black)
+                .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+                .background(isSignUpDisabled ? Color.gray : (colorScheme == .light ? Color.black : Color.white))
+                .cornerRadius(16)
+        }
+        .disabled(isSignUpDisabled || authModel.isLoading)
+    }
+    
+    private var googleSignInButton: some View {
+        Button(action: signInWithGoogle) {
+            HStack {
+                Image(systemName: "g.circle.fill")
+                Text("Continuar con Google")
+                    .font(CustomFonts.MontserratBold(size: 16))
+            }
+            .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+            .foregroundColor(colorScheme == .light ? Color.black : Color.white)
+            .background(colorScheme == .light ? Color.white : Color.clear)
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
+            )
+        }
+        .disabled(authModel.isLoading)
+    }
+    
+    private var loginPrompt: some View {
+        HStack {
+            Text("¿Ya tienes una cuenta?")
+                .font(CustomFonts.MontserratMedium(size: 14))
+                .foregroundColor(.primary.opacity(0.5))
+            
+            Button(action: {
+                isShowingSignUp = false
+            }) {
+                Text("Inicia sesión")
+                    .font(CustomFonts.MontserratBold(size: 14))
+                    .foregroundColor(.primary)
+            }
+        }
+        .padding(.top, 2)
+    }
+    
+    private var loadingOverlay: some View {
+        Group {
+            if authModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.5)
+                    .padding()
+                    .background(Color.white.opacity(0.8))
+                    .cornerRadius(10)
+            }
+        }
     }
     
     private func signUp() {
@@ -187,8 +200,83 @@ struct SignUpView: View {
     }
 }
 
-#Preview {
-    SignUpView(isShowingSignUp: .constant(true))
-        .environment(AppearanceManager())
-        .environmentObject(AuthModel())
+struct InputField: View {
+    let icon: String
+    let placeholder: String
+    @Binding var text: String
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+            TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.gray).kerning(0))
+                .font(.custom("Manrope-Bold", size: 16))
+                .kerning(0.8)
+                .fontWeight(.bold)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .multilineTextAlignment(.leading)
+        }
+        .padding(18)
+        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60, alignment: .leading)
+        .background(colorScheme == .dark ? Color.clear : Color.white)
+        .cornerRadius(16)
+        .foregroundStyle(.primary)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
+        )
+    }
 }
+
+struct PasswordField: View {
+    @Binding var password: String
+    @Binding var showPassword: Bool
+    let placeholder: String
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "lock")
+            Group {
+                if showPassword {
+                    TextField("", text: $password, prompt: Text(placeholder).foregroundStyle(.gray).kerning(0))
+                } else {
+                    SecureField("", text: $password, prompt: Text(placeholder).foregroundStyle(.gray).kerning(0))
+                }
+            }
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+            .kerning(0.8)
+            .font(.custom("Manrope-Bold", size: 16))
+            .multilineTextAlignment(.leading)
+            
+            Spacer()
+            
+            Button(action: { showPassword.toggle() }) {
+                Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
+                    .font(.system(size: 22))
+                    .foregroundColor(.primary)
+                    .opacity(0.5)
+            }
+            .padding(.trailing, 6)
+        }
+        .padding(18)
+        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60, alignment: .leading)
+        .background(colorScheme == .dark ? Color.clear : Color.white)
+        .cornerRadius(16)
+        .foregroundStyle(.primary)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
+        )
+    }
+}
+
+//#Preview {
+//    SignUpView(isShowingSignUp: .constant(true))
+//        .environment(AppearanceManager())
+//        .environmentObject(AuthModel())
+//}

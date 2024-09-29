@@ -3,18 +3,33 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 
+class LoginAnimationViewModel: ObservableObject {
+    @Published var showLogin = false
+    @Published var showContent = false
+    
+    func startAnimations() {
+        self.showLogin = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeIn(duration: 0.3)) {
+                self.showContent = true
+            }
+        }
+    }
+}
+
 struct LoginView: View {
     @EnvironmentObject var authModel: AuthModel
+    @EnvironmentObject var animationViewModel: LoginAnimationViewModel
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var isShowingSignUp: Bool
+    @Binding var logoPosition: CGPoint
     
     @State private var email = ""
     @State private var password = ""
     @State private var showPassword = false
-    @State private var showLogin = false
-    @State private var showContent = false
     
     @FocusState private var focusedField: Field?
     
@@ -25,37 +40,28 @@ struct LoginView: View {
         case email, password
     }
     
-    // Constants
-    private let logoAnimationDelay: Double = 1.5
-    private let logoAnimationDuration: Double = 0.4
-    private let contentAnimationDuration: Double = 0.2
-    
     var body: some View {
-        NavigationStack {
+        GeometryReader { geometry in
             ZStack {
                 backgroundView
                 
-                VStack {
-                    logoView
+                VStack(spacing: 0) {
+                    logoView(in: geometry)
                     
-                    if showLogin {
+                    if animationViewModel.showLogin {
                         loginContent
+                            .opacity(animationViewModel.showContent ? 1 : 0)
+                            .animation(.easeIn(duration: 0.3), value: animationViewModel.showContent)
                     }
                 }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 .edgesIgnoringSafeArea(.all)
-                .transition(.opacity)
             }
-            .disabled(authModel.isLoading)
-            .overlay(loadingOverlay)
         }
-        .onAppear(perform: setupAnimations)
+        .disabled(authModel.isLoading)
+        .overlay(loadingOverlay)
         .alert(isPresented: $showErrorAlert) {
-            Alert(
-                title: Text("Error"),
-                message: Text(errorMessage),
-                dismissButton: .default(Text("OK"))
-            )
+            Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -64,14 +70,18 @@ struct LoginView: View {
             .edgesIgnoringSafeArea(.all)
     }
     
-    private var logoView: some View {
+    private func logoView(in geometry: GeometryProxy) -> some View {
         Image("LogoBufetec")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * (showLogin ? 0.3 : 0.5))
-            .padding(.top, showLogin ? 70 : -30)
-            .foregroundStyle(.primary)
-            .animation(.spring(duration: logoAnimationDuration), value: showLogin)
+            .frame(width: UIScreen.main.bounds.width * 0.5)
+            .padding(.top, 125)
+            .position(logoPosition)
+            .onAppear {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                    logoPosition = CGPoint(x: geometry.size.width / 2, y: 70 + (UIScreen.main.bounds.width * 0.5 * 0.3) / 2)
+                }
+            }
     }
     
     private var loginContent: some View {
@@ -84,7 +94,6 @@ struct LoginView: View {
             googleSignInButton
             passwordRecoveryButton
             signUpPrompt
-            Spacer()
         }
     }
     
@@ -100,24 +109,19 @@ struct LoginView: View {
         InputField(
             icon: "envelope",
             placeholder: "Email",
-            text: $email,
-            field: .email
+            text: $email
         )
         .focused($focusedField, equals: .email)
-        .opacity(showContent ? 1 : 0)
-        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
     }
     
     private var passwordField: some View {
         PasswordField(
             password: $password,
             showPassword: $showPassword,
-            field: .password
+            placeholder: "Contraseña"
         )
         .focused($focusedField, equals: .password)
         .padding(.top, 10)
-        .opacity(showContent ? 1 : 0)
-        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
     }
     
     private var loginButton: some View {
@@ -130,8 +134,6 @@ struct LoginView: View {
                 .cornerRadius(16)
         }
         .disabled(email.isEmpty || password.isEmpty)
-        .opacity(showContent ? 1 : 0)
-        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
         .padding(.vertical)
     }
     
@@ -180,9 +182,6 @@ struct LoginView: View {
             }
         }
         .padding(.top, 2)
-        .padding(.bottom, 40)
-        .opacity(showContent ? 1 : 0)
-        .animation(.easeIn(duration: contentAnimationDuration), value: showContent)
     }
     
     private var loadingOverlay: some View {
@@ -193,19 +192,6 @@ struct LoginView: View {
                     .padding()
                     .background(Color.white.opacity(0.8))
                     .cornerRadius(10)
-            }
-        }
-    }
-    
-    private func setupAnimations() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + logoAnimationDelay) {
-            withAnimation(.spring(duration: logoAnimationDuration)) {
-                showLogin = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + logoAnimationDuration) {
-                withAnimation(.easeIn(duration: contentAnimationDuration)) {
-                    showContent = true
-                }
             }
         }
     }
@@ -239,85 +225,9 @@ struct LoginView: View {
     }
 }
 
-struct InputField: View {
-    let icon: String
-    let placeholder: String
-    @Binding var text: String
-    let field: LoginView.Field
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        HStack {
-            Image(systemName: icon)
-            TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.gray).kerning(0))
-                .font(.custom("Manrope-Bold", size: 16))
-                .kerning(0.8)
-                .fontWeight(.bold)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .keyboardType(.emailAddress)
-                .multilineTextAlignment(.leading)
-        }
-        .padding(18)
-        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60, alignment: .leading)
-        .background(colorScheme == .dark ? Color.clear : Color.white)
-        .cornerRadius(16)
-        .foregroundStyle(.primary)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
-        )
-    }
-}
-
-struct PasswordField: View {
-    @Binding var password: String
-    @Binding var showPassword: Bool
-    let field: LoginView.Field
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "lock")
-            Group {
-                if showPassword {
-                    TextField("", text: $password, prompt: Text("Contraseña").foregroundStyle(.gray).kerning(0))
-                } else {
-                    SecureField("", text: $password, prompt: Text("Contraseña").foregroundStyle(.gray).kerning(0))
-                }
-            }
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-            .kerning(0.8)
-            .font(.custom("Manrope-Medium", size: 16))
-            .multilineTextAlignment(.leading)
-            
-            Spacer()
-            
-            Button(action: { showPassword.toggle() }) {
-                Image(systemName: showPassword ? "eye.fill" : "eye.slash.fill")
-                    .font(.system(size: 22))
-                    .foregroundColor(.primary)
-                    .opacity(0.5)
-            }
-            .padding(.trailing, 6)
-        }
-        .padding(18)
-        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60, alignment: .leading)
-        .background(colorScheme == .dark ? Color.clear : Color.white)
-        .cornerRadius(16)
-        .foregroundStyle(.primary)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
-        )
-    }
-}
-
-#Preview {
-    LoginView(isShowingSignUp: .constant(false))
-        .environment(AppearanceManager())
-        .environmentObject(AuthModel())
-}
+//#Preview {
+//    LoginView(isShowingSignUp: .constant(false), logoPosition: Binding<CGPoint>)
+//        .environment(AppearanceManager())
+//        .environmentObject(AuthModel())
+//        .environmentObject(LoginAnimationViewModel())
+//}

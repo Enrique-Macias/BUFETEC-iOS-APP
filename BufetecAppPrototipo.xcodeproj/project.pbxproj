@@ -234,7 +234,7 @@
 				41E5B0E12CA9229C00D18E89 /* Auth */,
 				ECB1471E2CA33076009D5B70 /* Profile */,
 				ECB1470C2CA33056009D5B70 /* LogIn&Reg [OLD] */,
-				ECB147122CA33056009D5B70 /* Onboardings */,
+				ECB147122CA33056009D5B70 /* Onboarding */,
 				ECB147062CA33015009D5B70 /* Appointments */,
 				ECA58D402C9B4F2B0081ECDE /* AttorneysViews */,
 				EC800CB02C8A31BE00A9FB80 /* ChatBot */,
@@ -336,7 +336,7 @@
 			path = "BufetecAppPrototipo/Main/LogIn&Reg [OLD]";
 			sourceTree = SOURCE_ROOT;
 		};
-		ECB147122CA33056009D5B70 /* Onboardings */ = {
+		ECB147122CA33056009D5B70 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
 				ECB1470D2CA33056009D5B70 /* OnboardingScreen1View.swift */,
@@ -345,8 +345,8 @@
 				ECB147102CA33056009D5B70 /* OnboardingView.swift */,
 				ECB147112CA33056009D5B70 /* WelcomeScreenView.swift */,
 			);
-			name = Onboardings;
-			path = BufetecAppPrototipo/Main/Onboardings;
+			name = Onboarding;
+			path = BufetecAppPrototipo/Main/Onboarding;
 			sourceTree = SOURCE_ROOT;
 		};
 		ECB1471E2CA33076009D5B70 /* Profile */ = {

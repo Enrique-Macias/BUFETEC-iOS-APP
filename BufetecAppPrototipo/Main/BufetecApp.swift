@@ -35,16 +35,16 @@ struct ContentView: View {
                 if hasSeenOnboarding {
                     AuthenticationView()
                 } else {
-                    WelcomeScreenView()
+                    OnboardingView()
                 }
             }
-            .opacity(splashScreenState.isFinished ? 1 : 0)
-            .animation(.easeIn(duration: 0.3), value: splashScreenState.isFinished)
             
-            if !splashScreenState.isFinished {
+            if !splashScreenState.isFinished && hasSeenOnboarding {
                 SplashScreenView()
+                    .transition(.opacity)
             }
         }
+        .animation(.easeIn(duration: 0.3), value: splashScreenState.isFinished)
     }
 }
 

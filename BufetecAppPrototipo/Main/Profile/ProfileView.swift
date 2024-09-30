@@ -1,18 +1,14 @@
-//
-//  ProfileView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/11/24.
-//
-
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var authModel: AuthModel
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
     
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
     }
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -26,7 +22,7 @@ struct ProfileView: View {
                         .frame(width: 80, height: 80)
                         .foregroundColor(.accentColor)
                     
-                    Text("Bruno García")
+                    Text(authModel.userData.nombre)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.accentColor)
                     
@@ -69,7 +65,7 @@ struct ProfileView: View {
                     }
                     
                     ProfileOption(iconName: "arrowshape.turn.up.left.fill", title: "Cerrar Sesión", showChevron: false) {
-                        // Acción para cerrar sesión
+                        signOut()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -77,8 +73,27 @@ struct ProfileView: View {
                 Spacer()
             }
             .navigationTitle("Mi Perfil")
-            .navigationBarTitleDisplayMode(.inline) // Esto mantiene el título centrado
+            .navigationBarTitleDisplayMode(.inline)
             .background(Color("btBackground"))
+        }
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+    }
+    
+    private func signOut() {
+        Task {
+            do {
+                try await authModel.logout()
+                // Handle successful logout (e.g., navigate to login view)
+            } catch {
+                errorMessage = "Failed to sign out: \(error.localizedDescription)"
+                showErrorAlert = true
+            }
         }
     }
 }
@@ -121,4 +136,5 @@ struct ProfileOption: View {
 #Preview {
     ProfileView()
         .environment(AppearanceManager())
+        .environmentObject(AuthModel())
 }

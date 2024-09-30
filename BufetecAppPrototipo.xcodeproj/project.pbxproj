@@ -13,7 +13,9 @@
 		04CAEF6029B3029D00A4FB62 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04CAEF5F29B3029D00A4FB62 /* Preview Assets.xcassets */; };
 		04CAEF8929B304E600A4FB62 /* LawyerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8829B304E600A4FB62 /* LawyerView.swift */; };
 		04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAEF8A29B3051600A4FB62 /* CasesView.swift */; };
+		4114930E2CAA1FCD009B764F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4114930D2CAA1FCD009B764F /* GoogleService-Info.plist */; };
 		41203A412C6D4187006E1FAC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41203A402C6D4187006E1FAC /* SettingsView.swift */; };
+		414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414665642CAA2A510049D153 /* AdditionalInfoView.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
 		41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41AD45F12C9D274A001E43E2 /* Kingfisher */; };
 		41CB1FFC2CAA0CAD00FC0EC5 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */; };
@@ -29,7 +31,6 @@
 		41E5B0F32CA9239500D18E89 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 41E5B0F22CA9239500D18E89 /* GoogleSignIn */; };
 		41E5B0F52CA9239500D18E89 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 41E5B0F42CA9239500D18E89 /* GoogleSignInSwift */; };
 		41E5B0F72CA923C300D18E89 /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */; };
-		41E5B0F92CA924B800D18E89 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41E5B0F82CA924B800D18E89 /* GoogleService-Info.plist */; };
 		41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF92C9D158E00929E28 /* NewsContentView.swift */; };
 		41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF82C9D158E00929E28 /* FullNewsView.swift */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
@@ -96,8 +97,10 @@
 		04CAEF5F29B3029D00A4FB62 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		04CAEF8829B304E600A4FB62 /* LawyerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawyerView.swift; sourceTree = "<group>"; };
 		04CAEF8A29B3051600A4FB62 /* CasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasesView.swift; sourceTree = "<group>"; };
+		4114930D2CAA1FCD009B764F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41203A402C6D4187006E1FAC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		41284E382C6AAAB200067460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		414665642CAA2A510049D153 /* AdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoView.swift; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
 		41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
@@ -108,7 +111,6 @@
 		41E5B0E62CA9229F00D18E89 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		41E5B0EC2CA922A800D18E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
-		41E5B0F82CA924B800D18E89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41EB8AF82C9D158E00929E28 /* FullNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNewsView.swift; sourceTree = "<group>"; };
 		41EB8AF92C9D158E00929E28 /* NewsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsContentView.swift; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
@@ -204,7 +206,7 @@
 			children = (
 				41284E382C6AAAB200067460 /* Info.plist */,
 				ECB147232CA49453009D5B70 /* Secrets.plist */,
-				41E5B0F82CA924B800D18E89 /* GoogleService-Info.plist */,
+				4114930D2CAA1FCD009B764F /* GoogleService-Info.plist */,
 				413606872C6AA42B0006A3EC /* Fonts */,
 				04CAEF8229B3047900A4FB62 /* Main */,
 				04CAEF5C29B3029D00A4FB62 /* Assets.xcassets */,
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				41E5B0E22CA9229F00D18E89 /* AuthenticatedView.swift */,
+				414665642CAA2A510049D153 /* AdditionalInfoView.swift */,
 				41E5B0E32CA9229F00D18E89 /* AuthenticationView.swift */,
 				41E5B0E42CA9229F00D18E89 /* AuthModel.swift */,
 				41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */,
@@ -444,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECB60E352C8B947C007535DB /* Nunito-Bold.ttf in Resources */,
+				4114930E2CAA1FCD009B764F /* GoogleService-Info.plist in Resources */,
 				ECB60E3D2C8B958D007535DB /* Poppins-Bold.ttf in Resources */,
 				ECB60E2B2C8B93B6007535DB /* Montserrat-Regular.ttf in Resources */,
 				ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */,
@@ -459,7 +463,6 @@
 				04CAEF6029B3029D00A4FB62 /* Preview Assets.xcassets in Resources */,
 				ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */,
 				ECB60E312C8B945C007535DB /* Nunito-Medium.ttf in Resources */,
-				41E5B0F92CA924B800D18E89 /* GoogleService-Info.plist in Resources */,
 				ECB147242CA49454009D5B70 /* Secrets.plist in Resources */,
 				ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */,
 				04CAEF5D29B3029D00A4FB62 /* Assets.xcassets in Resources */,
@@ -517,6 +520,7 @@
 				ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */,
 				ECB147132CA33056009D5B70 /* DocumentScanView.swift in Sources */,
 				ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */,
+				414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */,
 				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,
 				ECA58D422C9B4F4D0081ECDE /* AttorneysView.swift in Sources */,
 				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
@@ -652,7 +656,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -669,7 +673,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -689,7 +693,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = 37A8UMU294;
+				DEVELOPMENT_TEAM = XGW3QF7T97;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -706,7 +710,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BufetecAppPrototipo;
+				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

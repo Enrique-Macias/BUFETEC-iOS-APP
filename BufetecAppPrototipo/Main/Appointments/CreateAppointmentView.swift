@@ -33,13 +33,6 @@ struct CreateAppointmentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Título de la vista
-                    //                    Text("Agendar Cita")
-                    //                        .font(CustomFonts.PoppinsBold(size: 32))
-                    //                        .foregroundColor(Color("btBlue"))
-                    //                        .padding(.top, 10)
-                    //                        .padding(.horizontal, 20)
-                    
                     // Usar AppointmentCardInfo
                     AppointmentCardInfo(
                         name: "Bruno García",
@@ -107,7 +100,7 @@ struct CreateAppointmentView: View {
                             Text("No hay horarios disponibles para este día.")
                                 .font(CustomFonts.MontserratRegular(size: 16))
                                 .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity, alignment: .center)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                     .padding(.horizontal, 20)

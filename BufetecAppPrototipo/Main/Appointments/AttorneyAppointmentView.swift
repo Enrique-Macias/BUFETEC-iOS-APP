@@ -11,9 +11,9 @@ struct AttorneyAppointmentView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    //    init() {
-    //        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    //    }
+    init() {
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
     
     var body: some View {
         NavigationView {

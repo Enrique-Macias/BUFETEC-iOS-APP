@@ -6,9 +6,9 @@ struct AppointmentsView: View {
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
     
-//    init() {
-//        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
-//    }
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
     
     var body: some View {
         NavigationView {
@@ -58,6 +58,7 @@ struct AppointmentsView: View {
                 }
             }
             .navigationTitle("Citas")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }}
 

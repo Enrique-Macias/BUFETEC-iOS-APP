@@ -13,7 +13,7 @@ struct LoadView: View {
     var body: some View {
         
         ZStack {
-            Color("btBakground")
+            Color("btBackground")
                 .edgesIgnoringSafeArea(.all)
             Image("ChatAILogo")
                 .foregroundColor(colorScheme == .light ? Color.accentColor : Color.white)

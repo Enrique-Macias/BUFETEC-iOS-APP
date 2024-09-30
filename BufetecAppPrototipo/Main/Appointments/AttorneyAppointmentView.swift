@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct AttorneyAppointmentView: View {
+    
+    @Environment(\.dismiss) var dismiss
+    
+    //    init() {
+    //        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    //    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            ScrollView {
+                ZStack {
+                    VStack(alignment: .leading, spacing: 20) {
+                    }
+                    .padding(.bottom, 40)
+                    
+                }
+            }
+            .navigationTitle("Definir horarios")
+        }
     }
 }
 
+
 #Preview {
     AttorneyAppointmentView()
+        .environment(AppearanceManager())
 }

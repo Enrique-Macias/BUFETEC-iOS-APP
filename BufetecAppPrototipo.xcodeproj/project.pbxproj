@@ -17,6 +17,7 @@
 		414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414665642CAA2A510049D153 /* AdditionalInfoView.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
 		41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41AD45F12C9D274A001E43E2 /* Kingfisher */; };
+		41C4255C2CAB44F3001B56E3 /* AttorneyAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */; };
 		41CB1FFC2CAA0CAD00FC0EC5 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */; };
 		41D3F7772C893CD700D44145 /* ObservableUserDefault in Frameworks */ = {isa = PBXBuildFile; productRef = 41D3F7762C893CD700D44145 /* ObservableUserDefault */; };
 		41D581542C6AB35D00E463CD /* Cosen-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */; };
@@ -101,6 +102,7 @@
 		41284E382C6AAAB200067460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		414665642CAA2A510049D153 /* AdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoView.swift; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
+		41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttorneyAppointmentView.swift; sourceTree = "<group>"; };
 		41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
 		41E5B0E22CA9229F00D18E89 /* AuthenticatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedView.swift; sourceTree = "<group>"; };
@@ -330,10 +332,15 @@
 		ECB147062CA33015009D5B70 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				ECB147052CA33015009D5B70 /* AppointmentsLawyerView.swift */,
 				4C8CD9C22CAF3E3000422C4F /* SeeAppClientView.swift */,
 				4C139DEF2CAB22E900B535CC /* AppointmentsClientView.swift */,
 				4C139DF12CAB238E00B535CC /* DefineTimeView.swift */,
+=======
+				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
+				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
+>>>>>>> 0a74671 (Crea vista para selección de horarios para abogado y cambios de UI en CreateAppointment...)
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
 			);
 			path = Appointments;
@@ -519,6 +526,7 @@
 				04CAEF5929B3029B00A4FB62 /* BufetecApp.swift in Sources */,
 				ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */,
 				ECB147132CA33056009D5B70 /* DocumentScanView.swift in Sources */,
+				41C4255C2CAB44F3001B56E3 /* AttorneyAppointmentView.swift in Sources */,
 				ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */,
 				414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */,
 				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,

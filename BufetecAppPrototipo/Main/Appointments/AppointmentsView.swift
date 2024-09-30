@@ -6,6 +6,10 @@ struct AppointmentsView: View {
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
     
+//    init() {
+//        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+//    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -27,7 +31,7 @@ struct AppointmentsView: View {
                                 .font(.system(size: 18))
                                 .fontWeight(.heavy)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal, 20)
+                                .padding(.horizontal, 10)
                             
                             PreviousAppointmentsCard(
                                 name: "Bruno García",

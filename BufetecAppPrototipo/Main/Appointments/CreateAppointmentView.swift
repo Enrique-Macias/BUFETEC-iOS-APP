@@ -25,16 +25,20 @@ struct CreateAppointmentView: View {
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 5))!: 5  // Verde
     ]
     
+    init() {
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     // Título de la vista
-                    Text("Agendar Cita")
-                        .font(CustomFonts.PoppinsBold(size: 32))
-                        .foregroundColor(Color("btBlue"))
-                        .padding(.top, 10)
-                        .padding(.horizontal, 20)
+                    //                    Text("Agendar Cita")
+                    //                        .font(CustomFonts.PoppinsBold(size: 32))
+                    //                        .foregroundColor(Color("btBlue"))
+                    //                        .padding(.top, 10)
+                    //                        .padding(.horizontal, 20)
                     
                     // Usar AppointmentCardInfo
                     AppointmentCardInfo(
@@ -49,7 +53,8 @@ struct CreateAppointmentView: View {
                     // Sección de seleccionar fecha
                     VStack(alignment: .leading, spacing: 20) {
                         Text("Selecciona una fecha")
-                            .font(CustomFonts.PoppinsBold(size: 24))
+                            .font(.system(size: 24))
+                            .fontWeight(.bold)
                             .foregroundColor(Color("btBlue"))
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 20)
@@ -67,7 +72,8 @@ struct CreateAppointmentView: View {
                     // Sección de seleccionar hora o mensaje de no disponibilidad
                     VStack(alignment: .leading, spacing: 20) {
                         Text("Selecciona un horario")
-                            .font(CustomFonts.PoppinsBold(size: 24))
+                            .font(.system(size: 24))
+                            .fontWeight(.bold)
                             .foregroundColor(Color("btBlue"))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -89,7 +95,10 @@ struct CreateAppointmentView: View {
                                             .background(selectedTime == time ? Color("btBlue") : Color.white)
                                             .foregroundColor(selectedTime == time ? Color.white : Color("btBlue"))
                                             .cornerRadius(10)
-                                            .shadow(radius: 2)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .stroke(Color("btBlue"), lineWidth: 1)
+                                            )
                                     }
                                 }
                             }
@@ -111,7 +120,7 @@ struct CreateAppointmentView: View {
                             showingErrorAlert = true
                         }
                     }) {
-                        Text("Confirm Appointment")
+                        Text("Confirmar cita")
                             .font(CustomFonts.PoppinsSemiBold(size: 18))
                             .foregroundColor(.white)
                             .padding()
@@ -125,7 +134,7 @@ struct CreateAppointmentView: View {
                 }
                 .padding(.bottom, 40)
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Agendar Cita")
             .alert(isPresented: $showingErrorAlert) {
                 Alert(
                     title: Text("Error"),
@@ -336,7 +345,7 @@ struct CustomCalendarView: View {
         dateFormatter.dateFormat = "MMMM yyyy"
         return dateFormatter.string(from: getCurrentMonthDate())
     }
-
+    
     
     // Definir el color de los puntos según la disponibilidad
     private func getAvailabilityColor(for count: Int) -> Color {

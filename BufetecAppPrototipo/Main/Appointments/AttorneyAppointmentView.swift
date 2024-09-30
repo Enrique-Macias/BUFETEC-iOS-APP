@@ -11,25 +11,29 @@ struct AttorneyAppointmentView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    init() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    }
+    //    init() {
+    //        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    //    }
     
     var body: some View {
-        ScrollView {
-            ZStack {
-                VStack(alignment: .leading, spacing: 20) {
+        NavigationView {
+            ScrollView {
+                ZStack {
+                    VStack(alignment: .leading, spacing: 20) {
+                    }
+                    .padding(.bottom, 40)
+                    
                 }
-                .padding(.bottom, 40)
-                
             }
+            .navigationTitle("Definir horarios")
         }
-        .navigationTitle("Definir horarios")
     }
 }
 
 
+
 #Preview {
     AttorneyAppointmentView()
+        .environment(AppearanceManager())
         .environment(AppearanceManager())
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct WelcomeScreenView: View {
+    @EnvironmentObject var appState: AppState
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false

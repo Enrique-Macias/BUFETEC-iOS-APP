@@ -5,6 +5,7 @@ import GoogleSignIn
 
 struct LoginView: View {
     @EnvironmentObject var authModel: AuthModel
+    @EnvironmentObject var appState: AppState
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     
@@ -30,6 +31,8 @@ struct LoginView: View {
                 
                 VStack(spacing: 0) {
                     logoView
+                        .position(appState.logoPosition)
+                        .offset(y: 59)
                     loginContent
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
@@ -53,7 +56,6 @@ struct LoginView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: UIScreen.main.bounds.width * 0.5)
-            .padding(.top, 125)
     }
     
     private var loginContent: some View {
@@ -68,7 +70,7 @@ struct LoginView: View {
             signUpPrompt
         }
     }
-
+    
     
     private var welcomeImage: some View {
         Image("bye")
@@ -198,9 +200,8 @@ struct LoginView: View {
     }
 }
 
-//#Preview {
-//    LoginView(isShowingSignUp: .constant(false), logoPosition: Binding<CGPoint>)
-//        .environment(AppearanceManager())
-//        .environmentObject(AuthModel())
-//        .environmentObject(LoginAnimationViewModel())
-//}
+#Preview {
+    LoginView(isShowingSignUp: .constant(false))
+        .environment(AppearanceManager())
+        .environmentObject(AuthModel())
+}

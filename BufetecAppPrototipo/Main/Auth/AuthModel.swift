@@ -29,7 +29,7 @@ class AuthModel: ObservableObject {
     @Published var isLoading = false
     
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AuthModel")
-    private let baseURL = "http://localhost:3000" // Update this with your actual base URL
+    private let baseURL = "https://buffetec-api.vercel.app"
     
     init() {
         checkUserSession()

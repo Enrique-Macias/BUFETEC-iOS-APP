@@ -3,7 +3,7 @@ import SwiftUI
 struct AuthenticationView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
-    @EnvironmentObject var splashScreenState: SplashScreenState
+    @EnvironmentObject var appState: AppState
     @State private var isShowingSignUp = false
     
     var body: some View {
@@ -42,11 +42,4 @@ struct AuthenticationView: View {
             }
         }
     }
-}
-
-#Preview {
-    AuthenticationView()
-        .environment(AppearanceManager())
-        .environmentObject(AuthModel())
-        .environmentObject(SplashScreenState())
 }

@@ -26,6 +26,7 @@ struct BufetecApp: App {
 }
 
 struct ContentView: View {
+    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
     @EnvironmentObject var appState: AppState
     
@@ -34,8 +35,10 @@ struct ContentView: View {
             Group {
                 if hasSeenOnboarding {
                     AuthenticationView()
+                        .environment(appearanceManager)
                 } else {
                     OnboardingView()
+                        .environment(appearanceManager)
                 }
             }
             .opacity(appState.isShowingSplash ? 0 : 1)
@@ -43,6 +46,7 @@ struct ContentView: View {
             
             if appState.isShowingSplash {
                 SplashScreenView()
+                    .environment(appearanceManager)
             }
         }
     }

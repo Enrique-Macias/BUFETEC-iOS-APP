@@ -43,7 +43,7 @@ struct CreateAppointmentView: View {
                         Text("Agendar Cita")
                             .font(CustomFonts.PoppinsBold(size: 32))
                             .foregroundColor(Color("btBlue"))
-                            .padding(.top, 40)
+                            .padding(.top, 10)
                             .padding(.horizontal, 20)
                         
                         // Usar AppointmentCardInfo
@@ -149,27 +149,7 @@ struct CreateAppointmentView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image("arrow-left")
-                            .font(.system(size: 20))
-                            .foregroundColor(Color("btBlue"))
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Image("btIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .foregroundStyle(Color("btBlue"))
-                        .frame(width: 27, height: 27)
-                        .padding(.horizontal, 20)
-                }
-            }
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     // Manejar el cambio de fecha seleccionada
@@ -460,12 +440,6 @@ struct AppointmentCardInfo: View {
     
     private var header: some View {
         HStack(alignment: .top) {
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .foregroundColor(Color("btBlue"))
-                .offset(y: 3)
-            
             VStack(alignment: .leading) {
                 Text(name)
                     .font(CustomFonts.PoppinsBold(size: 20))
@@ -477,6 +451,12 @@ struct AppointmentCardInfo: View {
             }
             
             Spacer()
+            
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundColor(Color("btBlue"))
+                .offset(y: 3)
         }
     }
     

@@ -37,5 +37,6 @@ xcuserdata/
 
 # -------------- User settings --------------
 
-BufetecAppPrototipo/Secrets.plist
-BufetecAppPrototipo/GenerativeAI-Info.plist
+GoogleService-Info.plist
+Secrets.plist
+GenerativeAI-Info.plist

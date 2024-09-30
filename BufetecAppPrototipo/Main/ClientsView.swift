@@ -13,10 +13,6 @@ struct ClientsView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Clientes")
-                        .font(.custom("Poppins-Bold", size: 30))
-                        .foregroundColor(Color.blue)
-                    
                     
                     Spacer()
                     
@@ -28,7 +24,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color.blue)
+                            .background(Color.accentColor)
                             .cornerRadius(8)
                     }
                     
@@ -41,7 +37,7 @@ struct ClientsView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .background(Color.blue)
+                            .background(Color.accentColor)
                             .cornerRadius(8)
                     }
                 }
@@ -58,16 +54,6 @@ struct ClientsView: View {
                     .padding(.top, 20)
                     
                     Spacer()
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Image("btIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 20, height: 20)
-                            .padding(.horizontal, 20)
-                            .foregroundStyle(Color.accentColor)
-                    }
                 }
             }
         }

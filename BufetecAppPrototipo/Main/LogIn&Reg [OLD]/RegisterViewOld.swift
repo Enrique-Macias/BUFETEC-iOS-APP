@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct RegisterView: View {
+struct RegisterViewOld: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @State private var date = Date()
@@ -157,6 +157,6 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterViewOld()
         .environment(AppearanceManager())
 }

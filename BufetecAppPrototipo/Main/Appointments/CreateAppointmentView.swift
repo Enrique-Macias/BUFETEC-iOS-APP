@@ -13,11 +13,11 @@ struct CreateAppointmentView: View {
     
     // Disponibilidad de fechas (más de 4 verde, entre 1 y 4 amarillo, 0 rojo)
     let availability: [Date: Int] = [
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 25))!: 5, // Verde
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 26))!: 2, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 27))!: 3, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 28))!: 0, // Rojo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 29))!: 6, // Verde
+        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 25))!: 5, // Verde
+        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 26))!: 2, // Amarillo
+        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 27))!: 3, // Amarillo
+        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 28))!: 0, // Rojo
+        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 29))!: 6, // Verde
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 1))!: 0, // Rojo
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 2))!: 4, // Amarillo
         Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 3))!: 1, // Amarillo
@@ -27,117 +27,117 @@ struct CreateAppointmentView: View {
     
     init() {
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+        
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Usar AppointmentCardInfo
+                AppointmentCardInfo(
+                    name: "Bruno García",
+                    specialty: "Abogado Familiar",
+                    phoneNumber: "81 1234 5678",
+                    email: "bruno@bufetec.mx",
+                    address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L."
+                )
+                .padding(.horizontal, 10)
+                
+                // Sección de seleccionar fecha
                 VStack(alignment: .leading, spacing: 20) {
-                    // Usar AppointmentCardInfo
-                    AppointmentCardInfo(
-                        name: "Bruno García",
-                        specialty: "Abogado Familiar",
-                        phoneNumber: "81 1234 5678",
-                        email: "bruno@bufetec.mx",
-                        address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L."
-                    )
-                    .padding(.horizontal, 10)
-                    
-                    // Sección de seleccionar fecha
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Selecciona una fecha")
-                            .font(.system(size: 24))
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("btBlue"))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 20)
-                        
-                        // Calendario personalizado
-                        CustomCalendarView(
-                            selectedDate: $selectedDate,
-                            availability: availability,
-                            currentMonthOffset: $currentMonthOffset,
-                            onDateChange: handleDateChange(for:)
-                        )
+                    Text("Selecciona una fecha")
+                        .font(.system(size: 24))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("btBlue"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
-                    }
                     
-                    // Sección de seleccionar hora o mensaje de no disponibilidad
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Selecciona un horario")
-                            .font(.system(size: 24))
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("btBlue"))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        if isDateAvailable {
-                            // Grid de horas disponibles
-                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing: 15) {
-                                ForEach(availableTimes, id: \.self) { time in
-                                    Button(action: {
-                                        if selectedTime == time {
-                                            selectedTime = nil // Deseleccionar si ya está seleccionada
-                                        } else {
-                                            selectedTime = time
-                                        }
-                                    }) {
-                                        Text(time)
-                                            .font(CustomFonts.PoppinsSemiBold(size: 16))
-                                            .padding()
-                                            .frame(maxWidth: .infinity)
-                                            .background(selectedTime == time ? Color("btBlue") : Color.white)
-                                            .foregroundColor(selectedTime == time ? Color.white : Color("btBlue"))
-                                            .cornerRadius(10)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .stroke(Color("btBlue"), lineWidth: 1)
-                                            )
+                    // Calendario personalizado
+                    CustomCalendarView(
+                        selectedDate: $selectedDate,
+                        availability: availability,
+                        currentMonthOffset: $currentMonthOffset,
+                        onDateChange: handleDateChange(for:)
+                    )
+                    .padding(.horizontal, 20)
+                }
+                
+                // Sección de seleccionar hora o mensaje de no disponibilidad
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Selecciona un horario")
+                        .font(.system(size: 24))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("btBlue"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    if isDateAvailable {
+                        // Grid de horas disponibles
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing: 15) {
+                            ForEach(availableTimes, id: \.self) { time in
+                                Button(action: {
+                                    if selectedTime == time {
+                                        selectedTime = nil // Deseleccionar si ya está seleccionada
+                                    } else {
+                                        selectedTime = time
                                     }
+                                }) {
+                                    Text(time)
+                                        .font(CustomFonts.PoppinsSemiBold(size: 16))
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(selectedTime == time ? Color("btBlue") : Color.white)
+                                        .foregroundColor(selectedTime == time ? Color.white : Color("btBlue"))
+                                        .cornerRadius(10)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(Color("btBlue"), lineWidth: 1)
+                                        )
                                 }
                             }
-                        } else {
-                            // Mensaje de no disponibilidad
-                            Text("No hay horarios disponibles para este día.")
-                                .font(CustomFonts.MontserratRegular(size: 16))
-                                .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                    } else {
+                        // Mensaje de no disponibilidad
+                        Text("No hay horarios disponibles para este día.")
+                            .font(CustomFonts.MontserratRegular(size: 16))
+                            .foregroundColor(.gray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal, 20)
-                    
-                    // Botón de confirmar cita (deshabilitado si no hay citas disponibles)
-                    Button(action: {
-                        if selectedTime != nil {
-                            showingConfirmationAlert = true
-                        } else {
-                            showingErrorAlert = true
-                        }
-                    }) {
-                        Text("Confirmar cita")
-                            .font(CustomFonts.PoppinsSemiBold(size: 18))
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(isDateAvailable && selectedTime != nil ? Color("btBlue") : Color.gray.opacity(0.6))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-                    .disabled(!isDateAvailable || selectedTime == nil)
                 }
-                .padding(.bottom, 40)
+                .padding(.horizontal, 20)
+                
+                // Botón de confirmar cita (deshabilitado si no hay citas disponibles)
+                Button(action: {
+                    if selectedTime != nil {
+                        showingConfirmationAlert = true
+                    } else {
+                        showingErrorAlert = true
+                    }
+                }) {
+                    Text("Confirmar cita")
+                        .font(CustomFonts.PoppinsSemiBold(size: 18))
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(isDateAvailable && selectedTime != nil ? Color("btBlue") : Color.gray.opacity(0.6))
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .disabled(!isDateAvailable || selectedTime == nil)
             }
-            .navigationTitle("Agendar Cita")
-            .alert(isPresented: $showingErrorAlert) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text("Por favor selecciona una hora para la cita."),
-                    dismissButton: .default(Text("Aceptar"))
-                )
-            }
-            .sheet(isPresented: $showingConfirmationAlert) {
-                ConfirmationAlertView(selectedDate: selectedDate, selectedTime: selectedTime ?? "", dismiss: { showingConfirmationAlert = false })
-            }
+            .padding(.bottom, 40)
+        }
+        .navigationTitle("Agendar Cita")
+        .alert(isPresented: $showingErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text("Por favor selecciona una hora para la cita."),
+                dismissButton: .default(Text("Aceptar"))
+            )
+        }
+        .sheet(isPresented: $showingConfirmationAlert) {
+            ConfirmationAlertView(selectedDate: selectedDate, selectedTime: selectedTime ?? "", dismiss: { showingConfirmationAlert = false })
         }
     }
     
@@ -302,7 +302,7 @@ struct CustomCalendarView: View {
                                     .frame(width: 8, height: 8)
                             } else {
                                 Circle()
-                                    .fill(Color.red)
+                                    .fill(Color.gray)
                                     .frame(width: 8, height: 8)
                             }
                         }
@@ -348,7 +348,7 @@ struct CustomCalendarView: View {
         case 1...4:
             return .yellow
         default:
-            return .red
+            return .gray
         }
     }
     

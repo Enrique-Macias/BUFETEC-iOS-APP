@@ -21,73 +21,58 @@ struct EditProfileView: View {
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color("btBackground")
-                    .edgesIgnoringSafeArea(.all)
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        Text("Editar Perfil")
-                            .font(CustomFonts.MontserratBold(size: 25))
-                            .foregroundStyle(.primary)
-                        
-                        // Profile Image
-                        VStack {
-                            profileImage?
-                                .resizable()
-                                .frame(width: 80, height: 80)
-                                .foregroundColor(.accentColor)
-                                .clipShape(Circle())
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.accentColor, lineWidth: 2)
-                                )
-                                .onTapGesture {
-                                    showingImagePicker = true
-                                    sourceType = .photoLibrary
-                                }
-                            
-                            Button(action: {
+        ZStack {
+            Color("btBackground")
+                .edgesIgnoringSafeArea(.all)
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Profile Image
+                    VStack {
+                        profileImage?
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.accentColor)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.accentColor, lineWidth: 2)
+                            )
+                            .onTapGesture {
                                 showingImagePicker = true
                                 sourceType = .photoLibrary
-                            }) {
-                                Image(systemName: "plus.circle.fill")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(.cyan)
-                                    .offset(x: 30, y: -25)
                             }
-                        }
                         
-                        // Form Fields
-                        VStack(spacing: 15) {
-                            InputField(icon: "person", placeholder: "Nombre Completo", text: $nombreCompleto)
-                            InputField(icon: "phone", placeholder: "Número Celular", text: $numeroCelular)
-                                .keyboardType(.phonePad)
-                            
-                            genderPicker
-                            birthdatePicker
-                        }
-                        .padding(.horizontal)
-                        
-                        saveButton
-                    }
-                    .padding()
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "arrow.left")
-                                .font(.system(size: 20))
-                                .foregroundColor(.accentColor)
+                        Button(action: {
+                            showingImagePicker = true
+                            sourceType = .photoLibrary
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.cyan)
+                                .offset(x: 30, y: -25)
                         }
                     }
+                    
+                    // Form Fields
+                    VStack(spacing: 15) {
+                        InputField(icon: "person", placeholder: "Nombre Completo", text: $nombreCompleto)
+                        InputField(icon: "phone", placeholder: "Número Celular", text: $numeroCelular)
+                            .keyboardType(.phonePad)
+                        
+                        genderPicker
+                        birthdatePicker
+                    }
+                    .padding(.horizontal)
+                    
+                    saveButton
                 }
+                .padding()
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Editar Perfil")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
                 .onChange(of: selectedImage) { oldValue, newValue in
@@ -106,6 +91,7 @@ struct EditProfileView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        
     }
     
     private var genderPicker: some View {
@@ -122,6 +108,7 @@ struct EditProfileView: View {
             }
             .padding()
             .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+            .accentColor(.primary)
             .background(colorScheme == .dark ? Color.clear : Color.white)
             .cornerRadius(16)
             .overlay(

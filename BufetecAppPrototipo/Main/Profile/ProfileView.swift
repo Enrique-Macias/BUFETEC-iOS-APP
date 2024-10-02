@@ -45,8 +45,10 @@ struct ProfileView: View {
                     Divider()
                         .background(Color.accentColor)
                     
-                    ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
-                        // Navegar a la vista de Configuración
+                    NavigationLink(destination: SettingsView()) {
+                        ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
+                            // Navegar a la vista de Configuración
+                        }
                     }
                     
                     ProfileOption(iconName: "doc.text.fill", title: "Mis casos", showChevron: true) {
@@ -70,6 +72,7 @@ struct ProfileView: View {
                 }
                 .padding(.horizontal, 20)
                 
+                Spacer()
                 Spacer()
             }
             .navigationTitle("Mi Perfil")
@@ -107,29 +110,27 @@ struct ProfileOption: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            HStack {
-                Image(systemName: iconName)
-                    .foregroundColor(.accentColor)
-                    .frame(width: 30)
-                
-                Text(title)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.accentColor)
-                
-                Spacer()
-                
-                if showChevron {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
-                }
+        HStack {
+            Image(systemName: iconName)
+                .foregroundColor(.accentColor)
+                .frame(width: 30)
+            
+            Text(title)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.accentColor)
+            
+            Spacer()
+            
+            if showChevron {
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
             }
-            .padding()
-            .padding(.vertical, 5)
-            .background(colorScheme == .light ? Color.white : Color.clear)  // Fondo blanco
-            .cornerRadius(15)  // Borde redondeado
-            .shadow(color: Color.black.opacity(0.07), radius: 10, x: 0, y: 5) // Sombra
         }
+        .padding()
+        .padding(.vertical, 5)
+        .background(colorScheme == .light ? Color.white : Color.clear)  // Fondo blanco
+        .cornerRadius(15)  // Borde redondeado
+//        .shadow(color: Color.black.opacity(0.07), radius: 10, x: 0, y: 5) // Sombra
     }
 }
 

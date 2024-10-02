@@ -39,8 +39,9 @@ struct LawyerView: View {
     
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
     }
-    
+
     var body: some View {
         GeometryReader { outer in
             NavigationStack {
@@ -72,7 +73,7 @@ struct LawyerView: View {
                                 .background(Color("btBlue"))
                                 .cornerRadius(15)
                             }
-                            .padding(.horizontal, 25)
+                            .padding(.horizontal, 15)
                             .frame(maxWidth: .infinity, alignment: .center)
 
                             
@@ -82,14 +83,14 @@ struct LawyerView: View {
                                 CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientView())
                                 CustomCard(title: "Gestion de clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientsView())
                             }
-                            .padding(.horizontal, 25)
+                            .padding(.horizontal, 15)
                         }
                         .padding(.bottom, 100)
                     }
                     .background(Color("btBackground"))
-                    .toolbar {
-                        CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
-                    }
+//                    .toolbar {
+//                        CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
+//                    }
                     .navigationTitle("Abogado")
                     .navigationBarTitleDisplayMode(.inline)
                     .sheet(isPresented: $showingSettings) {
@@ -163,7 +164,7 @@ struct NewsHeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Últimas Noticias")
-                .font(.system(size: 30, weight: .heavy))
+                .font(.system(size: 24, weight: .heavy))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundStyle(Color.accentColor)
                 .padding(.top, 20)
@@ -173,7 +174,7 @@ struct NewsHeaderView: View {
                 .lineSpacing(5)
                 .foregroundStyle(.primary)
         }
-        .padding(.horizontal, 25)
+        .padding(.horizontal, 20)
         .padding(.top, 5)
     }
 }
@@ -294,23 +295,23 @@ struct CustomToolbar: ToolbarContent {
     @Binding var showingSettings: Bool
     
     var body: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Image("btIcon")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 20, height: 20)
-                .padding(.horizontal, 20)
-                .foregroundStyle(Color.accentColor)
-        }
-        ToolbarItem(placement: .topBarTrailing) {
-            Button(action: {
-                showingSettings.toggle()
-            }) {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 20))
-                    .foregroundStyle(Color.accentColor)
-            }
-        }
+//        ToolbarItem(placement: .topBarLeading) {
+//            Image("btIcon")
+//                .resizable()
+//                .aspectRatio(contentMode: .fill)
+//                .frame(width: 20, height: 20)
+//                .padding(.horizontal, 20)
+//                .foregroundStyle(Color.accentColor)
+//        }
+//        ToolbarItem(placement: .topBarTrailing) {
+//            Button(action: {
+//                showingSettings.toggle()
+//            }) {
+//                Image(systemName: "gearshape")
+//                    .font(.system(size: 20))
+//                    .foregroundStyle(Color.accentColor)
+//            }
+//        }
         
         ToolbarItem(placement: .topBarTrailing) {
             NavigationLink(destination: ProfileView()) {
@@ -375,7 +376,7 @@ struct NewsCard: View {
             }
         }
         .padding(20)
-        .frame(width: 350, height: 350)
+        .frame(width: 360, height: 350)
         .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay(

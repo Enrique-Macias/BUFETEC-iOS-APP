@@ -1,106 +1,110 @@
 import SwiftUI
 
 struct CasesView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
+    }
+    
     var body: some View {
-        NavigationView(){
-            ScrollView(){
-                VStack(){
-                    Text("Casos")
-                        .font(.system(size: 30, weight: .heavy))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(Color.accentColor)
-                        .padding(.horizontal, 25)
-                        .padding(.bottom, 50)
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        
-                        HStack(){
-                            Text("Asesorías")
-                                .font(.system(size: 25, weight: .heavy))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(Color.black)
-                                .padding(.horizontal, 20)
-                            Text("Expedientes")
-                                .font(.system(size: 25, weight: .heavy))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(Color.black)
-                        }.padding(.top, 25)
-                        
-                        HStack(){
-                            Text("235")
-                                .font(.system(size: 30, weight: .heavy))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(Color.orange)
-                                .padding(.horizontal, 43)
-                            Text("200")
-                                .font(.system(size: 30, weight: .heavy))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(Color.green)
-                                .padding(.horizontal, 40)
-                        }
-                        .padding(.bottom, 25)
-                        .background(Color.white)
-                        .cornerRadius(20)
-                        
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.black, lineWidth: 1))
-                    
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .padding(.horizontal, 25)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Image("btIcon")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 20, height: 20)
-                                .padding(.horizontal, 20)
-                                .foregroundStyle(Color.accentColor)
-                        }
-                    }
-                    .padding(.bottom,30)
-                    Text("Estadísticas")
-                        .font(.system(size: 27, weight: .heavy))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(Color.black)
-                        .padding(.horizontal, 25)
-                        .padding(.bottom, 50)
-                    
-                    RoundedRectangle(cornerRadius: 50)
-                        .stroke(Color.black, lineWidth: 1)
-                        .frame(maxHeight: .infinity, alignment: .top)
-                        .padding(.horizontal, 10)
-                    
-                    Text("Por tipo de caso")
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .foregroundStyle(Color.black)
-                        .padding(.horizontal, 25)
-                        .padding(.bottom, 50)
-                    
-                    RoundedRectangle(cornerRadius: 50)
-                        .stroke(Color.black, lineWidth: 1)
-                        .frame(maxHeight: .infinity, alignment: .top)
-                        .padding(.horizontal, 10)
-                    
-                    Text("Clientes que se quedaron")
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .foregroundStyle(Color.black)
-                        .padding(.horizontal, 25)
-                        .padding(.bottom, 50)
-                    
-                    
-                    
-                
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    summaryCards
+                    statisticsSection
+                    caseTypeChart
+                    clientRetentionChart
                 }
+                .padding()
             }
+            .background(Color("btBackground"))
+            .navigationTitle("Casos")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+    
+    var summaryCards: some View {
+        HStack(spacing: 15) {
+            cardView(title: "Asesorías", count: "235", color: .orange)
+            cardView(title: "Expedientes", count: "200", color: .green)
+        }
+    }
+    
+    func cardView(title: String, count: String, color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.secondary)
+            Text(count)
+                .font(.system(size: 30, weight: .bold))
+                .foregroundColor(color)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.white)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("btBlue"), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+    }
+    
+    var statisticsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Estadísticas")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(Color("btBlue"))
+            
+            Text("Resumen de actividad reciente")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            chartPlaceholder
+        }
+    }
+    
+    var chartPlaceholder: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color("btBlue"))
+            
+            Text("Gráfico de estadísticas")
+                .font(.headline)
+                .foregroundColor(.white)
+        }
+        .frame(height: 200)
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+    }
+    
+    var caseTypeChart: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Por tipo de caso")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(Color("btBlue"))
+            
+            chartPlaceholder
+        }
+    }
+    
+    var clientRetentionChart: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Clientes que se quedaron")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(Color("btBlue"))
+            
+            chartPlaceholder
         }
     }
 }
 
 #Preview {
     CasesView()
-        .environment(AppearanceManager())
 }

@@ -16,17 +16,15 @@ struct AttorneyAppointmentView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                ZStack {
-                    VStack(alignment: .leading, spacing: 20) {
-                    }
-                    .padding(.bottom, 40)
-                    
+        ScrollView {
+            ZStack {
+                VStack(alignment: .leading, spacing: 20) {
                 }
+                .padding(.bottom, 40)
+                
             }
-            .navigationTitle("Definir horarios")
         }
+        .navigationTitle("Definir horarios")
     }
 }
 

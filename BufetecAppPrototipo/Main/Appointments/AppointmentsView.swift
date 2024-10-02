@@ -49,7 +49,7 @@ struct AppointmentsView: View {
                                 date: "Vie, 7 Feb 2024",
                                 hours: "10:00 - 12:00"
                             )
-
+                            
                         }
                         .padding(.horizontal, 10)
                     }
@@ -57,10 +57,12 @@ struct AppointmentsView: View {
                     
                 }
             }
+            .background(Color("btBackground"))
             .navigationTitle("Citas")
             .navigationBarTitleDisplayMode(.inline)
         }
-    }}
+    }
+}
 
 // Componente para la tarjeta de información del abogado
 struct CurrentAppointmentsCard: View {
@@ -83,6 +85,7 @@ struct CurrentAppointmentsCard: View {
         .cornerRadius(15)
         .padding(.horizontal, 10)
         .padding(.vertical, 10)
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
     
     private var header: some View {
@@ -185,13 +188,14 @@ struct PreviousAppointmentsCard: View {
             }
         }
         .padding(20)
-        .background(Color.clear)
+        .background(Color.white)
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.black, lineWidth: 1)
+                .stroke(Color("btBlue"), lineWidth: 1)
         )
         .padding(.horizontal, 10)
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
     
     private var header: some View {
@@ -207,12 +211,6 @@ struct PreviousAppointmentsCard: View {
             }
             .frame(width: 130, alignment: .leading)
             Spacer()
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .foregroundColor(Color.white)
-                .offset(y: 3)
-            
         }
     }
     

@@ -3,26 +3,19 @@ import SwiftUI
 struct CasesView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    init() {
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    }
-    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    summaryCards
-                    statisticsSection
-                    caseTypeChart
-                    clientRetentionChart
-                }
-                .padding()
+        ScrollView {
+            VStack(spacing: 20) {
+                summaryCards
+                statisticsSection
+                caseTypeChart
+                clientRetentionChart
             }
-            .background(Color("btBackground"))
-            .navigationTitle("Casos")
-            .navigationBarTitleDisplayMode(.inline)
+            .padding()
         }
+        .background(Color("btBackground"))
+        .navigationTitle("Casos")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     var summaryCards: some View {

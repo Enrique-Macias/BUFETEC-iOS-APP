@@ -10,90 +10,88 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Spacer()
+        VStack {
+            // Imagen de usuario y nombre
+            VStack(spacing: 15) {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.accentColor)
+                    .padding(.top, 10)
                 
-                // Imagen de usuario y nombre
-                VStack(spacing: 15) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(.accentColor)
-                    
-                    Text(authModel.userData.nombre)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.accentColor)
-                    
-                    // Botón para editar perfil con NavigationLink
-                    NavigationLink(destination: EditProfileView()) {
-                        Text("Editar Perfil")
-                            .font(.system(size: 16, weight: .semibold))
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 40)
-                            .background(Color.accentColor)
-                            .foregroundColor(.white)
-                            .cornerRadius(15)
-                    }
-                }
+                Text(authModel.userData.nombre)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.accentColor)
                 
-                Spacer()
-                
-                // Lista de opciones
-                VStack(spacing: 20) {
-                    Divider()
+                // Botón para editar perfil con NavigationLink
+                NavigationLink(destination: EditProfileView()) {
+                    Text("Editar Perfil")
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 40)
                         .background(Color.accentColor)
-                    
-                    NavigationLink(destination: SettingsView()) {
-                        ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
-                            // Navegar a la vista de Configuración
-                        }
-                    }
-                    
-                    ProfileOption(iconName: "doc.text.fill", title: "Mis casos", showChevron: true) {
-                        // Navegar a la vista de Mis Casos
-                    }
-                    
-                    ProfileOption(iconName: "lock.fill", title: "Cambiar Contraseña", showChevron: true) {
-                        // Navegar a la vista de Cambiar Contraseña
-                    }
-                    
-                    Divider()
-                        .background(Color.accentColor)
-                    
-                    ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
-                        // Navegar a la vista de Ayuda y Soporte
-                    }
-                    
-                    // Cerrar Sesión button
-                    Button(action: signOut) {
-                        HStack {
-                            Image(systemName: "arrowshape.turn.up.left.fill")
-                                .foregroundColor(.accentColor)
-                                .frame(width: 30)
-                            
-                            Text("Cerrar Sesión")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.accentColor)
-                            
-                            Spacer()
-                        }
-                        .padding()
-                        .padding(.vertical, 5)
-                        .background(Color.white)
+                        .foregroundColor(.white)
                         .cornerRadius(15)
+                }
+            }
+            
+            Spacer()
+            
+            // Lista de opciones
+            VStack(spacing: 20) {
+                Divider()
+                    .background(Color.accentColor)
+                
+                NavigationLink(destination: SettingsView()) {
+                    ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
+                        // Navegar a la vista de Configuración
                     }
                 }
-                .padding(.horizontal, 20)
                 
-                Spacer()
-                Spacer()
+                ProfileOption(iconName: "doc.text.fill", title: "Mis casos", showChevron: true) {
+                    // Navegar a la vista de Mis Casos
+                }
+                
+                ProfileOption(iconName: "lock.fill", title: "Cambiar Contraseña", showChevron: true) {
+                    // Navegar a la vista de Cambiar Contraseña
+                }
+                
+                Divider()
+                    .background(Color.accentColor)
+                
+                
+                ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
+                    // Navegar a la vista de Ayuda y Soporte
+                }
+                
+                // Cerrar Sesión button
+                Button(action: signOut) {
+                    HStack {
+                        Image(systemName: "arrowshape.turn.up.left.fill")
+                            .foregroundColor(.accentColor)
+                            .frame(width: 30)
+                        
+                        Text("Cerrar Sesión")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.accentColor)
+                        
+                        Spacer()
+                    }
+                    .padding()
+                    .padding(.vertical, 5)
+                    .background(Color.white)
+                    .cornerRadius(15)
+                }
             }
-            .navigationTitle("Mi Perfil")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color("btBackground"))
+            .padding(.horizontal, 20)
+            
+            Spacer()
+            Spacer()
         }
+        .navigationTitle("Mi Perfil")
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color("btBackground"))
         .alert(isPresented: $showErrorAlert) {
             Alert(
                 title: Text("Error"),
@@ -146,7 +144,7 @@ struct ProfileOption: View {
         .padding(.vertical, 5)
         .background(colorScheme == .light ? Color.white : Color.clear)  // Fondo blanco
         .cornerRadius(15)  // Borde redondeado
-//        .shadow(color: Color.black.opacity(0.07), radius: 10, x: 0, y: 5) // Sombra
+        //        .shadow(color: Color.black.opacity(0.07), radius: 10, x: 0, y: 5) // Sombra
     }
 }
 

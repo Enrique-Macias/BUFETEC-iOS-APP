@@ -15,7 +15,6 @@ struct WelcomeScreenView: View {
             VStack {
                 Spacer()
                 
-                // Título principal con diferentes pesos usando AttributedString
                 Text(attributedMainTitle)
                     .multilineTextAlignment(.center)
                     .kerning(-2)
@@ -56,28 +55,6 @@ struct WelcomeScreenView: View {
                 
                 Spacer()
                 
-                // Indicador de página
-//                HStack(spacing: 8) {
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.accentColor)
-//                        .frame(width: 10, height: 10)
-//                }
-//                .padding(.bottom, 60)
-                
-                
-                // Logo y texto al pie de la vista
                 VStack {
                     Image(logoImageName)
                         .resizable()

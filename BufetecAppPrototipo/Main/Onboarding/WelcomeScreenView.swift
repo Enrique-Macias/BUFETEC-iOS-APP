@@ -15,7 +15,6 @@ struct WelcomeScreenView: View {
             VStack {
                 Spacer()
                 
-                // Título principal con diferentes pesos usando AttributedString
                 Text(attributedMainTitle)
                     .multilineTextAlignment(.center)
                     .kerning(-2)
@@ -24,7 +23,6 @@ struct WelcomeScreenView: View {
                 
                 Spacer()
                 
-                // Subtítulo
                 Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
                     .font(CustomFonts.MontserratSemiBold(size: 18))
                     .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
@@ -32,9 +30,7 @@ struct WelcomeScreenView: View {
                     .padding(.horizontal, 40)
                     .padding(.bottom, 80)
                 
-                // Botón Comenzar
                 Button(action: {
-                    // Acción al presionar el botón
                     hasSeenOnboarding = true
                     showBufetecApp = true
                 }) {
@@ -54,28 +50,6 @@ struct WelcomeScreenView: View {
                 
                 Spacer()
                 
-                // Indicador de página
-//                HStack(spacing: 8) {
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.5))
-//                        .frame(width: 10, height: 10)
-//                    
-//                    Circle()
-//                        .fill(Color.accentColor)
-//                        .frame(width: 10, height: 10)
-//                }
-//                .padding(.bottom, 60)
-                
-                
-                // Logo y texto al pie de la vista
                 VStack {
                     Image(logoImageName)
                         .resizable()

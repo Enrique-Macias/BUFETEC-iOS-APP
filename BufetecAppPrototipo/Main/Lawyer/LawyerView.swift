@@ -13,13 +13,13 @@ struct LawyerView: View {
     @AppStorage("hasSeenChatbotOnboarding") private var hasSeenChatbotOnboarding = false
     @State private var showingChatbotViews = false
     
+    @StateObject private var newsData = GetData()
+    
     // Control Views of ChatBot
     enum ChatBotState {
         case main, load, onboarding, chat
     }
-    
-    private let numberOfTabs = 5
-    
+        
     private func scrollDetector(topInsets: CGFloat) -> some View {
         GeometryReader { proxy in
             let minY = proxy.frame(in: .global).minY
@@ -48,10 +48,10 @@ struct LawyerView: View {
                             NewsHeaderView(showingScrolledTitle: $showingScrolledTitle)
                             VStack {
                                 // TabView for News
-                                NewsTabView(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
+                                NewsTabView(list: newsData, selectedIndex: $selectedIndex)
                                 
                                 // Page Indicator
-                                PageIndicator(numberOfTabs: numberOfTabs, selectedIndex: $selectedIndex)
+                                PageIndicator(list: newsData, selectedIndex: $selectedIndex)
                             }
                             
                             NavigationLink(destination: NewsContentView()){
@@ -103,6 +103,9 @@ struct LawyerView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .sheet(isPresented: $showingSettings) {
                         SettingsView()
+                    }
+                    .onAppear {
+                        newsData.fetchData()
                     }
                     
                     // Floating ChatBot Button
@@ -233,8 +236,7 @@ struct PlaceholderCard: View {
 }
 
 struct NewsTabView: View {
-    var numberOfTabs: Int
-    @ObservedObject var list = GetData()
+    @ObservedObject var list: GetData
     @Binding var selectedIndex: Int
     
     var body: some View {
@@ -246,9 +248,6 @@ struct NewsTabView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 380)
-            .onAppear {
-                list.fetchData()
-            }
         } else {
             TabView(selection: $selectedIndex) {
                 ForEach(0..<min(5, list.datas.count), id: \.self) { index in
@@ -265,28 +264,17 @@ struct NewsTabView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 380)
-            .mask(
-                LinearGradient(gradient: Gradient(stops: [
-                    .init(color: .clear, location: 0),
-                    .init(color: .black.opacity(0.05), location: 0.02),
-                    .init(color: .black, location: 0.05),
-                    .init(color: .black, location: 0.95),
-                    .init(color: .black.opacity(0.05), location: 0.98),
-                    .init(color: .clear, location: 1)
-                ]), startPoint: .leading, endPoint: .trailing)
-            )
         }
     }
 }
 
-// Page Indicator for the TabView
 struct PageIndicator: View {
-    var numberOfTabs: Int
+    @ObservedObject var list: GetData
     @Binding var selectedIndex: Int
     
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(0..<numberOfTabs, id: \.self) { index in
+            ForEach(0..<min(5, list.datas.count), id: \.self) { index in
                 Circle()
                     .fill(index == selectedIndex ? Color.accentColor : Color.gray.opacity(0.3))
                     .frame(width: 8, height: 8)
@@ -294,6 +282,7 @@ struct PageIndicator: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.top, 10) // Add some padding to separate from the TabView
     }
 }
 

@@ -2,18 +2,18 @@ import SwiftUI
 import Kingfisher
 
 struct NewsContentView: View {
-    @ObservedObject var list = GetData()
-    
+    @StateObject private var newsData = GetData()
+
     var body: some View {
         List {
-            if list.datas.isEmpty {
+            if newsData.datas.isEmpty {
                 Text("No hay artículos disponibles")
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
             } else {
-                ForEach(list.datas) { article in
+                ForEach(newsData.datas) { article in
                     NavigationLink(destination: FullNewsView(article: article)) {
                         HStack(alignment: .top, spacing: 16) {
                             VStack(alignment: .leading, spacing: 8) {
@@ -54,9 +54,7 @@ struct NewsContentView: View {
         }
         .listStyle(PlainListStyle())
         .onAppear {
-            if list.datas.isEmpty {
-                list.fetchData()
-            }
+            newsData.fetchData()
         }
         .background(Color("btBackground"))
         .navigationTitle("Noticias")
@@ -78,9 +76,8 @@ class GetData: ObservableObject {
     @Published var datas = [NewsDataType]()
     
     func fetchData() {
-        let apiKey = "c265e314cdec4e99923322a182cc71be"
-        let searchQuery = "leyes AND monterrey"
-        let apiUrl = "https://newsapi.org/v2/everything?q=\(searchQuery)&apiKey=\(apiKey)"
+        
+        let apiUrl = "https://buffetec-api.vercel.app/getNoticias"
         
         guard let url = URL(string: apiUrl) else { return }
         
@@ -99,7 +96,7 @@ class GetData: ObservableObject {
                 let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
                 DispatchQueue.main.async {
                     self.datas = decodedResponse.articles.map { article in
-                        let formattedDate = self.formatDate(article.publishedAt)
+                        let formattedDate = self.formatDate(article.date)
                         let bodyContent = article.content ?? "No content available"
                         
                         return NewsDataType(
@@ -139,12 +136,10 @@ struct Article: Codable {
     let description: String?
     let url: String
     let urlToImage: String?
-    let publishedAt: String
+    let date: String   // Updated key to match API response
     let content: String?
 }
 
-struct NewsContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewsContentView()
-    }
+#Preview {
+    NewsContentView()
 }

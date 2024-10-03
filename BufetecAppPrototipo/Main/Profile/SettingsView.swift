@@ -11,11 +11,6 @@ struct SettingsView: View {
             .headerProminence(.increased)
         }
         .navigationBarTitle(Text("Opciones"), displayMode: .inline)
-        .navigationBarItems(trailing: Button(action: {
-            dismiss()
-        }) {
-            Text("Done").bold()
-        })
     }
 }
 

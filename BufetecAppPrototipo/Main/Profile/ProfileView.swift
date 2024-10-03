@@ -66,8 +66,23 @@ struct ProfileView: View {
                         // Navegar a la vista de Ayuda y Soporte
                     }
                     
-                    ProfileOption(iconName: "arrowshape.turn.up.left.fill", title: "Cerrar Sesión", showChevron: false) {
-                        signOut()
+                    // Cerrar Sesión button
+                    Button(action: signOut) {
+                        HStack {
+                            Image(systemName: "arrowshape.turn.up.left.fill")
+                                .foregroundColor(.accentColor)
+                                .frame(width: 30)
+                            
+                            Text("Cerrar Sesión")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.accentColor)
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        .padding(.vertical, 5)
+                        .background(Color.white)
+                        .cornerRadius(15)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -100,6 +115,7 @@ struct ProfileView: View {
         }
     }
 }
+
 
 // Componente para opciones del perfil
 struct ProfileOption: View {

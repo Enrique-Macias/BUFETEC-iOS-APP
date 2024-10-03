@@ -3,29 +3,13 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 
-class LoginAnimationViewModel: ObservableObject {
-    @Published var showLogin = false
-    @Published var showContent = false
-    
-    func startAnimations() {
-        self.showLogin = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            withAnimation(.easeIn(duration: 0.3)) {
-                self.showContent = true
-            }
-        }
-    }
-}
-
 struct LoginView: View {
     @EnvironmentObject var authModel: AuthModel
-    @EnvironmentObject var animationViewModel: LoginAnimationViewModel
+    @EnvironmentObject var appState: AppState
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var isShowingSignUp: Bool
-    @Binding var logoPosition: CGPoint
     
     @State private var email = ""
     @State private var password = ""
@@ -46,13 +30,10 @@ struct LoginView: View {
                 backgroundView
                 
                 VStack(spacing: 0) {
-                    logoView(in: geometry)
-                    
-                    if animationViewModel.showLogin {
-                        loginContent
-                            .opacity(animationViewModel.showContent ? 1 : 0)
-                            .animation(.easeIn(duration: 0.3), value: animationViewModel.showContent)
-                    }
+                    logoView
+                        .position(appState.logoPosition)
+                        .offset(y: 59)
+                    loginContent
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
                 .edgesIgnoringSafeArea(.all)
@@ -70,18 +51,11 @@ struct LoginView: View {
             .edgesIgnoringSafeArea(.all)
     }
     
-    private func logoView(in geometry: GeometryProxy) -> some View {
+    private var logoView: some View {
         Image("LogoBufetec")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: UIScreen.main.bounds.width * 0.5)
-            .padding(.top, 125)
-            .position(logoPosition)
-            .onAppear {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                    logoPosition = CGPoint(x: geometry.size.width / 2, y: 70 + (UIScreen.main.bounds.width * 0.5 * 0.3) / 2)
-                }
-            }
     }
     
     private var loginContent: some View {
@@ -96,6 +70,7 @@ struct LoginView: View {
             signUpPrompt
         }
     }
+    
     
     private var welcomeImage: some View {
         Image("bye")
@@ -225,9 +200,8 @@ struct LoginView: View {
     }
 }
 
-//#Preview {
-//    LoginView(isShowingSignUp: .constant(false), logoPosition: Binding<CGPoint>)
-//        .environment(AppearanceManager())
-//        .environmentObject(AuthModel())
-//        .environmentObject(LoginAnimationViewModel())
-//}
+#Preview {
+    LoginView(isShowingSignUp: .constant(false))
+        .environment(AppearanceManager())
+        .environmentObject(AuthModel())
+}

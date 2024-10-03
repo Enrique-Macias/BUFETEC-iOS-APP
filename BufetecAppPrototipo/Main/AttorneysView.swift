@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AttorneysListView: View {
+struct AttorneysView: View {
     @State private var searchText = ""
     @State private var sortOption = SortOption.caseName
     
@@ -192,5 +192,5 @@ let attorneys = [
 ]
 
 #Preview {
-    AttorneysListView()
+    AttorneysView()
 }

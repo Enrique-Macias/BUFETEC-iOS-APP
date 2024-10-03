@@ -45,9 +45,10 @@ struct SignUpView: View {
                                 .textInputAutocapitalization(.never)
                             PasswordField(password: $password, showPassword: $showPassword, placeholder: "Contraseña")
                             PasswordField(password: $confirmPassword, showPassword: $showConfirmPassword, placeholder: "Confirmar Contraseña")
-                            
-                            genderPicker
-                            birthdatePicker
+                            HStack {
+                                genderPicker
+                                birthdatePicker
+                            }
                         }
                         .padding(.horizontal)
                         
@@ -79,7 +80,7 @@ struct SignUpView: View {
                 Image(systemName: "chevron.down")
             }
             .padding()
-            .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+            .frame(width: .infinity, height: 60)
             .background(colorScheme == .dark ? Color.clear : Color.white)
             .cornerRadius(16)
             .overlay(
@@ -92,13 +93,13 @@ struct SignUpView: View {
     private var birthdatePicker: some View {
         HStack {
             Image(systemName: "calendar")
-            Text("Fecha de nacimiento")
+//            Text("Fecha de nacimiento")
             Spacer()
             DatePicker("", selection: $birthDate, displayedComponents: [.date])
                 .labelsHidden()
         }
         .padding()
-        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+        .frame(width: .infinity, height: 60)
         .background(colorScheme == .dark ? Color.clear : Color.white)
         .cornerRadius(16)
         .overlay(

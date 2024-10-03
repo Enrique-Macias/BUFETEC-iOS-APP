@@ -50,9 +50,9 @@ struct AdditionalInfoView: View {
     
     private var genderPicker: some View {
         Menu {
-            Button("Male") { gender = "male" }
-            Button("Female") { gender = "female" }
-            Button("Other") { gender = "other" }
+            Button("Masculino") { gender = "Masculino" }
+            Button("Femenino") { gender = "Femenino" }
+            Button("Otro") { gender = "Otro" }
         } label: {
             HStack {
                 Image(systemName: "person")
@@ -116,10 +116,9 @@ struct AdditionalInfoView: View {
     private func completeProfile() {
         Task {
             do {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let birthDateString = dateFormatter.string(from: birthDate)
-                try await authModel.completeUserProfile(celular: phoneNumber, genero: gender ?? "", fechaDeNacimiento: birthDateString)
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                try await authModel.completeUserProfile(celular: phoneNumber, genero: gender ?? "", fechaDeNacimiento: dateFormatter.string(from: birthDate))
             } catch {
                 await MainActor.run {
                     errorMessage = error.localizedDescription

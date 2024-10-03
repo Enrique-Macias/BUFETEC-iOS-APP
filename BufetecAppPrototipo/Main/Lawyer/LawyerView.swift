@@ -338,11 +338,11 @@ struct NewsCard: View {
                 .placeholder {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(width: 310, height: 160)
+                        .frame(width: 320, height: 160)
                         .cornerRadius(15)
                 }
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 310, height: 160)
+                .frame(width: 320, height: 160)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             
             Text(cardTitle)

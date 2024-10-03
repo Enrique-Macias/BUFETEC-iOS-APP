@@ -1,10 +1,3 @@
-//
-//  ClientView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/23/24.
-//
-
 import SwiftUI
 import Kingfisher
 
@@ -13,6 +6,7 @@ struct ClientView: View {
     @State private var showingScrolledTitle = false
     @State private var selectedIndex = 0
     @State private var showingSettings = false
+    @Binding var selectedTab: Int
     
     // ChatBot
     @State private var currentView: ChatBotState = .main
@@ -37,7 +31,8 @@ struct ClientView: View {
         }
     }
     
-    init() {
+    init(selectedTab: Binding<Int>) {
+        self._selectedTab = selectedTab
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
     }
     
@@ -83,12 +78,30 @@ struct ClientView: View {
                         .cornerRadius(15) // Borde redondeado
                         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5) // Sombra del card
                         .padding() // Padding externo
+                        
                         VStack(alignment: .leading, spacing: 30) {
                             // Cards
                             VStack(spacing: 30) {
-                                CustomCard(title: "Conoce a nuestros abogados", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: AttorneysListView())
-                                CustomCard(title: "Procesos legales", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ResourcesView())
-                                CustomCard(title: "Preguntas Frecuentes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: FAQView())
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Conoce a nuestros abogados",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: AttorneysListView(),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Procesos legales",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: ResourcesView(),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Preguntas Frecuentes",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: FAQView(),
+                                           tabIndex: nil)
                             }
                             .padding()
                         }
@@ -129,7 +142,6 @@ struct ClientView: View {
     }
 }
 
-
 // ChatBotFlowView: Esta vista maneja el flujo de vistas de carga, onboarding y el chat del ChatBot
 struct ChatBotFlowClientView: View {
     @Binding var currentView: ClientView.ChatBotState
@@ -166,9 +178,7 @@ struct ChatBotFlowClientView: View {
     }
 }
 
-
-
 #Preview {
-    ClientView()
+    ClientView(selectedTab: .constant(0))
         .environment(AppearanceManager())
 }

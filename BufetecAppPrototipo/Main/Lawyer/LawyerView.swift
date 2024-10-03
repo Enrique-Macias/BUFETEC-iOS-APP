@@ -1,10 +1,3 @@
-//
-//  LawyerView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/7/24.
-//
-
 import SwiftUI
 import Kingfisher
 
@@ -13,6 +6,7 @@ struct LawyerView: View {
     @State private var showingScrolledTitle = false
     @State private var selectedIndex = 0
     @State private var showingSettings = false
+    @Binding var selectedTab: Int
     
     // ChatBot
     @State private var currentView: ChatBotState = .main
@@ -37,11 +31,12 @@ struct LawyerView: View {
         }
     }
     
-    init() {
+    init(selectedTab: Binding<Int>) {
+        self._selectedTab = selectedTab
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
     }
-
+    
     var body: some View {
         GeometryReader { outer in
             NavigationStack {
@@ -75,22 +70,35 @@ struct LawyerView: View {
                             }
                             .padding(.horizontal, 15)
                             .frame(maxWidth: .infinity, alignment: .center)
-
                             
                             // Cards for "Gestión de Casos" and "Clientes"
                             VStack(spacing: 30) {
-                                CustomCard(title: "Gestión de Casos", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: CasesView())
-                                CustomCard(title: "Clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientView())
-                                CustomCard(title: "Gestion de clientes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ClientsListView())
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Gestión de Casos",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: EmptyView(),
+                                           tabIndex: TabbedItems.favorite.rawValue)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Clientes",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: ClientView(selectedTab: $selectedTab),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Gestion de clientes",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: ClientsListView(),
+                                           tabIndex: nil)
                             }
                             .padding(.horizontal, 15)
                         }
                         .padding(.bottom, 100)
                     }
                     .background(Color("btBackground"))
-//                    .toolbar {
-//                        CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
-//                    }
                     .navigationTitle("Abogado")
                     .navigationBarTitleDisplayMode(.inline)
                     .sheet(isPresented: $showingSettings) {
@@ -121,6 +129,7 @@ struct LawyerView: View {
         }
     }
 }
+
 
 // ChatBotFlowView: Esta vista maneja el flujo de vistas de carga, onboarding y el chat del ChatBot
 struct ChatBotFlowView: View {
@@ -295,24 +304,6 @@ struct CustomToolbar: ToolbarContent {
     @Binding var showingSettings: Bool
     
     var body: some ToolbarContent {
-//        ToolbarItem(placement: .topBarLeading) {
-//            Image("btIcon")
-//                .resizable()
-//                .aspectRatio(contentMode: .fill)
-//                .frame(width: 20, height: 20)
-//                .padding(.horizontal, 20)
-//                .foregroundStyle(Color.accentColor)
-//        }
-//        ToolbarItem(placement: .topBarTrailing) {
-//            Button(action: {
-//                showingSettings.toggle()
-//            }) {
-//                Image(systemName: "gearshape")
-//                    .font(.system(size: 20))
-//                    .foregroundStyle(Color.accentColor)
-//            }
-//        }
-        
         ToolbarItem(placement: .topBarTrailing) {
             NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.crop.circle")
@@ -389,10 +380,12 @@ struct NewsCard: View {
 
 struct CustomCard<Destination: View>: View {
     @Environment(\.colorScheme) var colorScheme
+    @Binding var selectedTab: Int
     var title: String
     var description: String
     var buttonText: String
-    var destination: Destination  // Vista de destino
+    var destination: Destination
+    var tabIndex: Int?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -405,19 +398,37 @@ struct CustomCard<Destination: View>: View {
                 .lineSpacing(5)
                 .foregroundStyle(.primary)
             
-            NavigationLink(destination: destination) {
-                Text(buttonText)
-                    .font(.system(size: 16, weight: .semibold))
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 20)
-                    .background(Color.clear)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.accentColor, lineWidth: 2)
-                    )
+            if let tabIndex = tabIndex {
+                Button(action: {
+                    selectedTab = tabIndex
+                }) {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                }
+                .foregroundColor(Color.accentColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                NavigationLink(destination: destination) {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                }
+                .foregroundColor(Color.accentColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .foregroundColor(Color.accentColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
         .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
@@ -430,10 +441,7 @@ struct CustomCard<Destination: View>: View {
     }
 }
 
-
-
-
 #Preview {
-    LawyerView()
+    LawyerView(selectedTab: .constant(0))
         .environment(AppearanceManager())
 }

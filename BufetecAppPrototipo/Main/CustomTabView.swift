@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 enum TabbedItems: Int, CaseIterable {
     case home = 0
     case favorite
@@ -43,8 +42,8 @@ struct NoEffectButton: ButtonStyle {
 struct CustomTabView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
-    @State private var selectedTab = 0
-    
+    @State private var selectedTab: Int = 0
+
     init() {
         let transparentAppearance = UITabBarAppearance()
         transparentAppearance.configureWithTransparentBackground()
@@ -54,10 +53,25 @@ struct CustomTabView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                LawyerView().tag(TabbedItems.home.rawValue)
-                CasesView().tag(TabbedItems.favorite.rawValue)
-                AppointmentsView().tag(TabbedItems.chat.rawValue)
-                ProfileView().tag(TabbedItems.profile.rawValue)
+                NavigationStack {
+                    LawyerView(selectedTab: $selectedTab)
+                }
+                .tag(TabbedItems.home.rawValue)
+                
+                NavigationStack {
+                    CasesView()
+                }
+                .tag(TabbedItems.favorite.rawValue)
+                
+                NavigationStack {
+                    AppointmentsView()
+                }
+                .tag(TabbedItems.chat.rawValue)
+                
+                NavigationStack {
+                    ProfileView()
+                }
+                .tag(TabbedItems.profile.rawValue)
             }
             
             VStack(spacing: 0) {

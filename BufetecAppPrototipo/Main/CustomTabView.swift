@@ -9,7 +9,7 @@ enum TabbedItems: Int, CaseIterable {
     var title: String {
         switch self {
         case .home:
-            return "Abogado"
+            return "Inicio"
         case .favorite:
             return "Casos"
         case .chat:
@@ -22,7 +22,7 @@ enum TabbedItems: Int, CaseIterable {
     var iconName: String {
         switch self {
         case .home:
-            return "newspaper"
+            return "house"
         case .favorite:
             return "book.closed"
         case .chat:
@@ -42,8 +42,9 @@ struct NoEffectButton: ButtonStyle {
 struct CustomTabView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var authModel: AuthModel
     @State private var selectedTab: Int = 0
-
+    
     init() {
         let transparentAppearance = UITabBarAppearance()
         transparentAppearance.configureWithTransparentBackground()
@@ -54,7 +55,11 @@ struct CustomTabView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 NavigationStack {
-                    LawyerView(selectedTab: $selectedTab)
+                    if authModel.userData.tipo == "cliente" {
+                        ClientView(selectedTab: $selectedTab)
+                    } else {
+                        LawyerView(selectedTab: $selectedTab)
+                    }
                 }
                 .tag(TabbedItems.home.rawValue)
                 
@@ -154,4 +159,5 @@ struct CustomTabItem: View {
 #Preview {
     CustomTabView()
         .environment(AppearanceManager())
+        .environmentObject(AuthModel())
 }

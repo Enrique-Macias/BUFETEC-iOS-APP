@@ -50,7 +50,7 @@ struct ClientView: View {
                                 .lineSpacing(5)
                             
                             HStack {
-                                NavigationLink(destination: CreateAppointmentView()) {
+                                NavigationLink(destination: AttorneysListView()) {
                                     HStack {
                                         Text("Agendar Cita")
                                             .font(CustomFonts.PoppinsSemiBold(size: 14))

@@ -11,11 +11,28 @@ struct AppointmentsView: View {
 //    }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                ZStack {
+        ScrollView {
+            ZStack {
+                VStack(alignment: .leading, spacing: 20) {
+                    CurrentAppointmentsCard(
+                        name: "Bruno García",
+                        specialty: "Abogado Familiar",
+                        address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L.",
+                        reason: "Asesoría Legal",
+                        date: "Vie, 7 Feb 2024",
+                        hours: "10:00 - 12:00"
+                    )
+                    .padding(.horizontal, 10)
+                    
+                    // Sección de seleccionar fecha
                     VStack(alignment: .leading, spacing: 20) {
-                        CurrentAppointmentsCard(
+                        Text("Citas previas")
+                            .font(.system(size: 18))
+                            .fontWeight(.heavy)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 10)
+                        
+                        PreviousAppointmentsCard(
                             name: "Bruno García",
                             specialty: "Abogado Familiar",
                             address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L.",
@@ -23,43 +40,27 @@ struct AppointmentsView: View {
                             date: "Vie, 7 Feb 2024",
                             hours: "10:00 - 12:00"
                         )
-                        .padding(.horizontal, 10)
+                        PreviousAppointmentsCard(
+                            name: "Bruno García",
+                            specialty: "Abogado Familiar",
+                            address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L.",
+                            reason: "Asesoría Legal",
+                            date: "Vie, 7 Feb 2024",
+                            hours: "10:00 - 12:00"
+                        )
                         
-                        // Sección de seleccionar fecha
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Citas previas")
-                                .font(.system(size: 18))
-                                .fontWeight(.heavy)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal, 10)
-                            
-                            PreviousAppointmentsCard(
-                                name: "Bruno García",
-                                specialty: "Abogado Familiar",
-                                address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L.",
-                                reason: "Asesoría Legal",
-                                date: "Vie, 7 Feb 2024",
-                                hours: "10:00 - 12:00"
-                            )
-                            PreviousAppointmentsCard(
-                                name: "Bruno García",
-                                specialty: "Abogado Familiar",
-                                address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L.",
-                                reason: "Asesoría Legal",
-                                date: "Vie, 7 Feb 2024",
-                                hours: "10:00 - 12:00"
-                            )
-
-                        }
-                        .padding(.horizontal, 10)
                     }
-                    .padding(.bottom, 40)
-                    
+                    .padding(.horizontal, 10)
                 }
+                .padding(.bottom, 40)
+                
             }
-            .navigationTitle("Citas")
         }
-    }}
+        .background(Color("btBackground"))
+        .navigationTitle("Citas")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
 
 // Componente para la tarjeta de información del abogado
 struct CurrentAppointmentsCard: View {

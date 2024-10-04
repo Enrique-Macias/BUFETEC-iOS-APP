@@ -40,11 +40,7 @@ struct CasesView: View {
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color.white)
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
     }
     
     var statisticsSection: some View {

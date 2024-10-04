@@ -54,7 +54,7 @@ struct LawyerView: View {
                                 PageIndicator(list: newsData, selectedIndex: $selectedIndex)
                             }
                             
-                            NavigationLink(destination: NewsContentView()){
+                            NavigationLink(destination: NewsListView()){
                                 HStack {
                                     Text("Todas las noticias")
                                         .font(.system(size: 16, weight: .semibold))

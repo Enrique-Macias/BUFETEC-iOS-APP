@@ -20,6 +20,12 @@ struct EditProfileView: View {
     @State private var selectedImage: UIImage?
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
+    private let dateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    
     var body: some View {
         ZStack {
             Color("btBackground")
@@ -91,14 +97,13 @@ struct EditProfileView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
     }
     
     private var genderPicker: some View {
         Menu {
-            Button("Masculino") { genero = "Masculino" }
-            Button("Femenino") { genero = "Femenino" }
-            Button("Otro") { genero = "Otro" }
+            ForEach(generos, id: \.self) { gender in
+                Button(gender) { genero = gender }
+            }
         } label: {
             HStack {
                 Image(systemName: "person")
@@ -152,26 +157,29 @@ struct EditProfileView: View {
         genero = authModel.userData.genero
         numeroCelular = authModel.userData.celular
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         if let date = dateFormatter.date(from: authModel.userData.fechaDeNacimiento) {
             fechaNacimiento = date
+        } else {
+            print("Failed to parse date: \(authModel.userData.fechaDeNacimiento)")
+            // Set a default date or handle the error as appropriate
+            fechaNacimiento = Date()
         }
     }
     
     private func saveChanges() {
         Task {
             do {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
                 let birthDateString = dateFormatter.string(from: fechaNacimiento)
                 
-                try await authModel.updateUserInfo(newData: [
-                    "nombre": nombreCompleto,
-                    "celular": numeroCelular,
-                    "genero": genero,
-                    "fechaDeNacimiento": birthDateString
-                ])
+                try await authModel.updateUserProfile(
+                    name: nombreCompleto,
+                    phone: numeroCelular,
+                    gender: genero
+                )
+                
+                // Update birth date separately as it's not included in updateUserProfile
+                try await authModel.updateUserInfo(fields: ["fechaDeNacimiento": birthDateString])
+                
                 dismiss()
             } catch {
                 errorMessage = "Failed to update profile: \(error.localizedDescription)"
@@ -180,7 +188,6 @@ struct EditProfileView: View {
         }
     }
 }
-
 
 struct CustomPicker: View {
     var title: String

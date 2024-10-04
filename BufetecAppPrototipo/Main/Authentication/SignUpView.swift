@@ -69,9 +69,9 @@ struct SignUpView: View {
     
     private var genderPicker: some View {
         Menu {
-            Button("Male") { gender = "male" }
-            Button("Female") { gender = "female" }
-            Button("Other") { gender = "other" }
+            Button("Masculino") { gender = "Masculino" }
+            Button("Femenino") { gender = "Femenino" }
+            Button("Otro") { gender = "Otro" }
         } label: {
             HStack {
                 Image(systemName: "person")
@@ -171,10 +171,13 @@ struct SignUpView: View {
     private func signUp() {
         Task {
             do {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                
+                // Assuming birthDate is a Date object
                 authModel.userData.fechaDeNacimiento = dateFormatter.string(from: birthDate)
                 authModel.userData.genero = gender ?? ""
+                
                 try await authModel.signUp(password: password)
                 // Handle successful sign up (e.g., navigate to email verification view)
             } catch {

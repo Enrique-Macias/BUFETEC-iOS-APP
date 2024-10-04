@@ -1,7 +1,7 @@
 import SwiftUI
 import Kingfisher
 
-struct NewsContentView: View {
+struct NewsListView: View {
     @StateObject private var newsData = GetData()
 
     var body: some View {
@@ -141,5 +141,5 @@ struct Article: Codable {
 }
 
 #Preview {
-    NewsContentView()
+    NewsListView()
 }

@@ -31,7 +31,7 @@
 		41E5B0F52CA9239500D18E89 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 41E5B0F42CA9239500D18E89 /* GoogleSignInSwift */; };
 		41E5B0F72CA923C300D18E89 /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */; };
 		41E7CB452CAA680A008CBCD9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */; };
-		41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF92C9D158E00929E28 /* NewsContentView.swift */; };
+		41EB8AFA2C9D158E00929E28 /* NewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF92C9D158E00929E28 /* NewsListView.swift */; };
 		41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF82C9D158E00929E28 /* FullNewsView.swift */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
@@ -103,7 +103,7 @@
 		41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
 		41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41EB8AF82C9D158E00929E28 /* FullNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNewsView.swift; sourceTree = "<group>"; };
-		41EB8AF92C9D158E00929E28 /* NewsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsContentView.swift; sourceTree = "<group>"; };
+		41EB8AF92C9D158E00929E28 /* NewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListView.swift; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBot.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				04CAEF8829B304E600A4FB62 /* LawyerView.swift */,
-				41EB8AF92C9D158E00929E28 /* NewsContentView.swift */,
+				41EB8AF92C9D158E00929E28 /* NewsListView.swift */,
 				41EB8AF82C9D158E00929E28 /* FullNewsView.swift */,
 				ECB147292CA5D97F009D5B70 /* ClientsListView.swift */,
 				ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */,
@@ -473,7 +473,7 @@
 				04CAEF5B29B3029B00A4FB62 /* CustomTabView.swift in Sources */,
 				ECB1471F2CA33076009D5B70 /* EditProfileView.swift in Sources */,
 				ECB1472A2CA5D97F009D5B70 /* ClientsListView.swift in Sources */,
-				41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */,
+				41EB8AFA2C9D158E00929E28 /* NewsListView.swift in Sources */,
 				ECB1471B2CA33056009D5B70 /* WelcomeScreenView.swift in Sources */,
 				41E5B0E72CA9229F00D18E89 /* SignUpView.swift in Sources */,
 				41E5B0E82CA9229F00D18E89 /* AuthModel.swift in Sources */,

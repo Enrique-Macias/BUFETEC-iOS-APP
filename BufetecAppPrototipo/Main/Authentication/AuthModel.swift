@@ -5,7 +5,7 @@ import GoogleSignIn
 import os
 
 struct UserData: Codable {
-    var firebaseUID: String = ""
+    var uid: String = ""
     var nombre: String = ""
     var genero: String = ""
     var celular: String = ""
@@ -29,7 +29,7 @@ class AuthModel: ObservableObject {
     @Published var isLoading = false
     
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AuthModel")
-    private let baseURL = "https://buffetec-api.vercel.app"
+    private let baseURL = "http://localhost:3000"
     
     init() {
         checkUserSession()
@@ -38,7 +38,7 @@ class AuthModel: ObservableObject {
     func checkUserSession() {
         logger.info("Checking user session")
         if let user = Auth.auth().currentUser {
-            userData.firebaseUID = user.uid
+            userData.uid = user.uid
             if !user.isEmailVerified {
                 authState = .needsEmailVerification
             } else {
@@ -64,7 +64,7 @@ class AuthModel: ObservableObject {
         }
         
         let authResult = try await Auth.auth().createUser(withEmail: userData.email, password: password)
-        userData.firebaseUID = authResult.user.uid
+        userData.uid = authResult.user.uid
         try await createUserInfo()
         try await initiateEmailVerification()
         authState = .needsEmailVerification
@@ -79,7 +79,7 @@ class AuthModel: ObservableObject {
         defer { isLoading = false }
         
         let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        userData.firebaseUID = authResult.user.uid
+        userData.uid = authResult.user.uid
         if !authResult.user.isEmailVerified {
             authState = .needsEmailVerification
         } else {
@@ -116,7 +116,7 @@ class AuthModel: ObservableObject {
         let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
         let authResult = try await Auth.auth().signIn(with: credential)
         
-        userData.firebaseUID = authResult.user.uid
+        userData.uid = authResult.user.uid
         userData.email = result.user.profile?.email ?? ""
         userData.nombre = result.user.profile?.name ?? ""
         userData.tipo = "cliente" // Default type
@@ -145,26 +145,12 @@ class AuthModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         
-        userData.celular = celular
-        userData.genero = genero
-        userData.fechaDeNacimiento = fechaDeNacimiento
+        try await updateUserInfo(fields: [
+            "celular": celular,
+            "genero": genero,
+            "fechaDeNacimiento": fechaDeNacimiento
+        ])
         
-        // Check if user already exists in our database
-        let userExists = try await fetchUserInfo()
-        
-        if userExists {
-            // Update existing user
-            try await updateUserInfo(newData: [
-                "celular": celular,
-                "genero": genero,
-                "fechaDeNacimiento": fechaDeNacimiento
-            ])
-        } else {
-            // Create new user
-            try await createUserInfo()
-        }
-        
-        try await fetchUserInfo() // Fetch updated user info
         authState = .authenticated
         logger.info("User profile completed successfully")
     }
@@ -181,29 +167,16 @@ class AuthModel: ObservableObject {
     
     private func createUserInfo() async throws {
         logger.info("Creating user info on server")
-        guard let url = URL(string: "\(baseURL)/crearUsuario") else {
+        guard let url = URL(string: "\(baseURL)/createUser") else {
             throw NSError(domain: "URLError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("Bearer \(try await Auth.auth().currentUser!.getIDToken())", forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let userDict: [String: Any] = [
-            "user": [
-                "firebaseUID": userData.firebaseUID,
-                "nombre": userData.nombre,
-                "email": userData.email,
-                "tipo": userData.tipo,
-                "genero": userData.genero,
-                "celular": userData.celular,
-                "fechaDeNacimiento": userData.fechaDeNacimiento
-            ]
-        ]
-        
-        let jsonData = try JSONSerialization.data(withJSONObject: userDict, options: [])
-        request.httpBody = jsonData
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode(userData)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -211,82 +184,37 @@ class AuthModel: ObservableObject {
             throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when creating user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
         
-        // Parse the response
-        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-              let insertedId = json["insertedId"] as? String else {
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server did not return expected response for user creation"])
-        }
-        
-        logger.info("User info created successfully with ID: \(insertedId)")
+        logger.info("User info created successfully")
     }
     
-    func updateUserInfo(newData: [String: Any]) async throws {
+    func updateUserInfo(fields: [String: Any]) async throws {
         logger.info("Updating user info")
-        var updateData = newData
-        updateData["firebaseUID"] = userData.firebaseUID
-        try await editUserInfo(newData: updateData)
-        try await fetchUserInfo() // Fetch updated user info
-        logger.info("User info updated successfully")
-    }
-    
-    private func editUserInfo(newData: [String: Any]) async throws {
-        logger.info("Editing user info on server")
-        guard let url = URL(string: "\(baseURL)/editarUsuario") else {
+        guard let url = URL(string: "\(baseURL)/updateUser") else {
             throw NSError(domain: "URLError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.addValue("Bearer \(try await Auth.auth().currentUser!.getIDToken())", forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let jsonData = try JSONSerialization.data(withJSONObject: newData, options: [])
+        var updateData = fields
+        updateData["uid"] = userData.uid
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: updateData)
         request.httpBody = jsonData
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])
+        guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+            throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when updating user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
         
-        switch httpResponse.statusCode {
-        case 200...299:
-            if let updatedUser = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                logger.info("User info edited successfully")
-                updateUserDataFromResponse(updatedUser)
-            } else {
-                throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server did not return expected response for user edit"])
-            }
-        case 404:
-            throw NSError(domain: "ServerError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
-        case 400:
-            throw NSError(domain: "ServerError", code: 400, userInfo: [NSLocalizedDescriptionKey: "Bad request: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
-        default:
-            throw NSError(domain: "ServerError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when editing user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
-        }
-    }
-    
-    private func updateUserDataFromResponse(_ response: [String: Any]) {
+        let updatedUser = try JSONDecoder().decode(UserData.self, from: data)
         DispatchQueue.main.async {
-            if let nombre = response["nombre"] as? String {
-                self.userData.nombre = nombre
-            }
-            if let celular = response["celular"] as? String {
-                self.userData.celular = celular
-            }
-            if let email = response["email"] as? String {
-                self.userData.email = email
-            }
-            if let genero = response["genero"] as? String {
-                self.userData.genero = genero
-            }
-            if let fechaDeNacimiento = response["fechaDeNacimiento"] as? String {
-                self.userData.fechaDeNacimiento = fechaDeNacimiento
-            }
-            if let tipo = response["tipo"] as? String {
-                self.userData.tipo = tipo
-            }
+            self.userData = updatedUser
         }
+        
+        logger.info("User info updated successfully")
     }
     
     private func initiateEmailVerification() async throws {
@@ -325,15 +253,11 @@ class AuthModel: ObservableObject {
     @MainActor
     func fetchUserInfo() async throws -> Bool {
         logger.info("Fetching user info from server")
-        guard let url = URL(string: "\(baseURL)/getUsuario?uid=\(userData.firebaseUID)") else {
+        guard let url = URL(string: "\(baseURL)/getUser?uid=\(userData.uid)") else {
             throw NSError(domain: "URLError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(try await Auth.auth().currentUser!.getIDToken())", forHTTPHeaderField: "Authorization")
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NSError(domain: "ServerError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])
@@ -352,5 +276,25 @@ class AuthModel: ObservableObject {
         default:
             throw NSError(domain: "ServerError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server responded with an error when fetching user info: \(String(data: data, encoding: .utf8) ?? "Unknown error")"])
         }
+    }
+}
+
+// MARK: - Convenience methods for updating user info
+extension AuthModel {
+    func updateUserName(newName: String) async throws {
+        try await updateUserInfo(fields: ["nombre": newName])
+    }
+    
+    func updateUserPhone(newPhone: String) async throws {
+        try await updateUserInfo(fields: ["celular": newPhone])
+    }
+    
+    func updateUserProfile(name: String? = nil, phone: String? = nil, gender: String? = nil) async throws {
+        var fields: [String: Any] = [:]
+        if let name = name { fields["nombre"] = name }
+        if let phone = phone { fields["celular"] = phone }
+        if let gender = gender { fields["genero"] = gender }
+        
+        try await updateUserInfo(fields: fields)
     }
 }

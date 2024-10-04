@@ -19,7 +19,7 @@ struct LawyerView: View {
     enum ChatBotState {
         case main, load, onboarding, chat
     }
-        
+    
     private func scrollDetector(topInsets: CGFloat) -> some View {
         GeometryReader { proxy in
             let minY = proxy.frame(in: .global).minY
@@ -81,18 +81,19 @@ struct LawyerView: View {
                                            tabIndex: TabbedItems.favorite.rawValue)
                                 
                                 CustomCard(selectedTab: $selectedTab,
+                                           title: "Gestion de clientes",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: ClientsListView(),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
                                            title: "Clientes",
                                            description: "It is a long established fact that a reader will be distracted by the readable content",
                                            buttonText: "Visitar",
                                            destination: ClientView(selectedTab: $selectedTab),
                                            tabIndex: nil)
                                 
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Gestion de clientes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: ClientsListView(),
-                                           tabIndex: nil)
                             }
                             .padding(.horizontal, 15)
                         }

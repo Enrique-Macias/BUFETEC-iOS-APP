@@ -133,6 +133,7 @@ class AuthModel: ObservableObject {
                 logger.info("Google Sign-In successful, existing user profile complete")
             }
         } else {
+            try await createUserInfo()
             authState = .needsAdditionalInfo
             logger.info("Google Sign-In successful, new user, requesting additional info")
         }

@@ -1,175 +1,129 @@
 import SwiftUI
 
-struct CreateAppointmentView: View {
-    @Environment(\.dismiss) var dismiss
-    @State private var selectedDate = Date()
-    @State private var selectedTime: String? = nil
-    @State private var availableTimes: [String] = []
-    @State private var isDateAvailable: Bool = true
-    @State private var currentMonthOffset: Int = 0
-    
-    @State private var showingConfirmationAlert = false
-    @State private var showingErrorAlert = false
-    
-    // Disponibilidad de fechas (más de 4 verde, entre 1 y 4 amarillo, 0 rojo)
-    let availability: [Date: Int] = [
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 25))!: 5, // Verde
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 26))!: 2, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 27))!: 3, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 28))!: 0, // Rojo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 29))!: 6, // Verde
-        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 1))!: 0, // Rojo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 2))!: 4, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 3))!: 1, // Amarillo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 4))!: 0, // Rojo
-        Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 5))!: 5  // Verde
-    ]
-    
-    init() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    }
+struct CalendarDay: Identifiable {
+    let date: Date
+    let id: UUID
+}
+
+struct AppointmentCardInfo: View {
+    var name: String
+    var specialty: String
+    var phoneNumber: String
+    var email: String
+    var address: String
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Título de la vista
-                    //                    Text("Agendar Cita")
-                    //                        .font(CustomFonts.PoppinsBold(size: 32))
-                    //                        .foregroundColor(Color("btBlue"))
-                    //                        .padding(.top, 10)
-                    //                        .padding(.horizontal, 20)
-                    
-                    // Usar AppointmentCardInfo
-                    AppointmentCardInfo(
-                        name: "Bruno García",
-                        specialty: "Abogado Familiar",
-                        phoneNumber: "81 1234 5678",
-                        email: "bruno@bufetec.mx",
-                        address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L."
-                    )
-                    .padding(.horizontal, 10)
-                    
-                    // Sección de seleccionar fecha
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Selecciona una fecha")
-                            .font(.system(size: 24))
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("btBlue"))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 20)
-                        
-                        // Calendario personalizado
-                        CustomCalendarView(
-                            selectedDate: $selectedDate,
-                            availability: availability,
-                            currentMonthOffset: $currentMonthOffset,
-                            onDateChange: handleDateChange(for:)
-                        )
-                        .padding(.horizontal, 20)
-                    }
-                    
-                    // Sección de seleccionar hora o mensaje de no disponibilidad
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Selecciona un horario")
-                            .font(.system(size: 24))
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("btBlue"))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        if isDateAvailable {
-                            // Grid de horas disponibles
-                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing: 15) {
-                                ForEach(availableTimes, id: \.self) { time in
-                                    Button(action: {
-                                        if selectedTime == time {
-                                            selectedTime = nil // Deseleccionar si ya está seleccionada
-                                        } else {
-                                            selectedTime = time
-                                        }
-                                    }) {
-                                        Text(time)
-                                            .font(CustomFonts.PoppinsSemiBold(size: 16))
-                                            .padding()
-                                            .frame(maxWidth: .infinity)
-                                            .background(selectedTime == time ? Color("btBlue") : Color.white)
-                                            .foregroundColor(selectedTime == time ? Color.white : Color("btBlue"))
-                                            .cornerRadius(10)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .stroke(Color("btBlue"), lineWidth: 1)
-                                            )
-                                    }
-                                }
-                            }
-                        } else {
-                            // Mensaje de no disponibilidad
-                            Text("No hay horarios disponibles para este día.")
-                                .font(CustomFonts.MontserratRegular(size: 16))
-                                .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity, alignment: .center)
+        HStack(alignment: .top) {
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .foregroundColor(Color("btBlue"))
+                .padding(.trailing, 10)
+            
+            VStack(alignment: .leading, spacing: 5) {
+                Text(name)
+                    .font(CustomFonts.PoppinsBold(size: 16))
+                    .foregroundColor(Color("btBlue"))
+                
+                Text(specialty)
+                    .font(CustomFonts.MontserratMedium(size: 12))
+                    .foregroundColor(.gray)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 10) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "phone.fill")
+                            Text(phoneNumber)
                         }
-                    }
-                    .padding(.horizontal, 20)
-                    
-                    // Botón de confirmar cita (deshabilitado si no hay citas disponibles)
-                    Button(action: {
-                        if selectedTime != nil {
-                            showingConfirmationAlert = true
-                        } else {
-                            showingErrorAlert = true
+                        .font(CustomFonts.MontserratBold(size: 12))
+                        .foregroundColor(Color("btBlue"))
+                        
+                        HStack(spacing: 5) {
+                            Image(systemName: "envelope.fill")
+                            Text(email)
                         }
-                    }) {
-                        Text("Confirmar cita")
-                            .font(CustomFonts.PoppinsSemiBold(size: 18))
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(isDateAvailable && selectedTime != nil ? Color("btBlue") : Color.gray.opacity(0.6))
-                            .cornerRadius(10)
+                        .font(CustomFonts.MontserratBold(size: 12))
+                        .foregroundColor(Color("btBlue"))
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-                    .disabled(!isDateAvailable || selectedTime == nil)
+                    
+                    HStack(spacing: 5) {
+                        Image(systemName: "mappin.and.ellipse")
+                        Text(address)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                    }
+                    .foregroundColor(Color("btBlue"))
                 }
-                .padding(.bottom, 40)
+                .padding(.top, 10)
             }
-            .navigationTitle("Agendar Cita")
-            .alert(isPresented: $showingErrorAlert) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text("Por favor selecciona una hora para la cita."),
-                    dismissButton: .default(Text("Aceptar"))
-                )
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("btBlue"), lineWidth: 1)
+        )
+        .padding(.horizontal, 10)
+        .padding(.vertical, 10)
+    }
+    
+    private var header: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(CustomFonts.PoppinsBold(size: 20))
+                    .foregroundColor(Color("btBlue"))
+                
+                Text(specialty)
+                    .font(CustomFonts.MontserratMedium(size: 14))
+                    .foregroundColor(.gray)
             }
-            .sheet(isPresented: $showingConfirmationAlert) {
-                ConfirmationAlertView(selectedDate: selectedDate, selectedTime: selectedTime ?? "", dismiss: { showingConfirmationAlert = false })
-            }
+            
+            Spacer()
+            
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundColor(Color("btBlue"))
+                .offset(y: 3)
         }
     }
     
-    // Manejar el cambio de fecha seleccionada
-    private func handleDateChange(for date: Date) {
-        let calendar = Calendar.current
-        if let availabilityForDate = availability[calendar.startOfDay(for: date)] {
-            if availabilityForDate > 0 {
-                isDateAvailable = true
-                // Configura horarios disponibles según la disponibilidad
-                if availabilityForDate > 4 {
-                    availableTimes = ["9:00 am", "10:00 am", "11:00 am", "1:00 pm", "2:00 pm", "3:00 pm"]
-                } else {
-                    availableTimes = ["10:00 am", "1:00 pm"] // Ejemplo de pocos horarios
-                }
-            } else {
-                isDateAvailable = false
-            }
-        } else {
-            isDateAvailable = false
+    private var contactInfo: some View {
+        HStack(spacing: 10) {
+            contactInfoItem(icon: "phone.fill", text: phoneNumber)
+            contactInfoItem(icon: "envelope.fill", text: email)
         }
     }
     
-    // Alerta de confirmación personalizada
-    private var confirmationAlert: some View {
+    private func contactInfoItem(icon: String, text: String) -> some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon)
+            Text(text)
+        }
+        .font(CustomFonts.MontserratBold(size: 12))
+        .foregroundColor(Color("btBlue"))
+    }
+    
+    private var addressInfo: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "mappin.and.ellipse")
+            Text(address)
+                .font(CustomFonts.MontserratMedium(size: 12))
+        }
+        .foregroundColor(Color("btBlue"))
+    }
+}
+
+struct ConfirmationAlertView: View {
+    let name: String
+    let selectedDate: Date
+    let selectedTime: String
+    let dismiss: () -> Void
+    
+    var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "checkmark.circle.fill")
                 .resizable()
@@ -632,10 +586,8 @@ struct CustomCalendarView: View {
         return dateFormatter.string(from: getCurrentMonthDate())
     }
     
-    
-    // Definir el color de los puntos según la disponibilidad
-    private func getAvailabilityColor(for count: Int) -> Color {
-        switch count {
+    private func getAvailabilityColor(for availableTimes: [String]) -> Color {
+        switch availableTimes.count {
         case 5...:
             return .green
         case 1...4:
@@ -650,120 +602,8 @@ struct CustomCalendarView: View {
     }
 }
 
-// Componente para la tarjeta de información del abogado
-struct AppointmentCardInfo: View {
-    var name: String
-    var specialty: String
-    var phoneNumber: String
-    var email: String
-    var address: String
-    
-    var body: some View {
-        HStack(alignment: .top) {
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 60, height: 60)
-                .foregroundColor(Color("btBlue"))
-                .padding(.trailing, 10)
-            
-            VStack(alignment: .leading, spacing: 5) {
-                Text(name)
-                    .font(CustomFonts.PoppinsBold(size: 16))
-                    .foregroundColor(Color("btBlue"))
-                
-                Text(specialty)
-                    .font(CustomFonts.MontserratMedium(size: 12))
-                    .foregroundColor(.gray)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 10) {
-                        HStack(spacing: 5) {
-                            Image(systemName: "phone.fill")
-                            Text(phoneNumber)
-                        }
-                        .font(CustomFonts.MontserratBold(size: 12))
-                        .foregroundColor(Color("btBlue"))
-                        
-                        HStack(spacing: 5) {
-                            Image(systemName: "envelope.fill")
-                            Text(email)
-                        }
-                        .font(CustomFonts.MontserratBold(size: 12))
-                        .foregroundColor(Color("btBlue"))
-                    }
-                    
-                    HStack(spacing: 5) {
-                        Image(systemName: "mappin.and.ellipse")
-                        Text(address)
-                            .font(CustomFonts.MontserratMedium(size: 12))
-                    }
-                    .foregroundColor(Color("btBlue"))
-                }
-                .padding(.top, 10)
-            }
-            
-            Spacer()
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(15)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
-        )
-        .padding(.horizontal, 10)
-        .padding(.vertical, 10)
-    }
-    
-    private var header: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading) {
-                Text(name)
-                    .font(CustomFonts.PoppinsBold(size: 20))
-                    .foregroundColor(Color("btBlue"))
-                
-                Text(specialty)
-                    .font(CustomFonts.MontserratMedium(size: 14))
-                    .foregroundColor(.gray)
-            }
-            
-            Spacer()
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .foregroundColor(Color("btBlue"))
-                .offset(y: 3)
-        }
-    }
-    
-    private var contactInfo: some View {
-        HStack(spacing: 10) {
-            contactInfoItem(icon: "phone.fill", text: phoneNumber)
-            contactInfoItem(icon: "envelope.fill", text: email)
-        }
-    }
-    
-    private func contactInfoItem(icon: String, text: String) -> some View {
-        HStack(spacing: 5) {
-            Image(systemName: icon)
-            Text(text)
-        }
-        .font(CustomFonts.MontserratBold(size: 12))
-        .foregroundColor(Color("btBlue"))
-    }
-    
-    private var addressInfo: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "mappin.and.ellipse")
-            Text(address)
-                .font(CustomFonts.MontserratMedium(size: 12))
-        }
-        .foregroundColor(Color("btBlue"))
-    }
-}
-
-#Preview {
-    CreateAppointmentView()
-        .environment(AppearanceManager())
-}
+// Uncomment this for previews
+// #Preview {
+//     CreateAppointmentView(attorney: Attorney.sampleData)
+//         .environmentObject(AuthModel())
+// }

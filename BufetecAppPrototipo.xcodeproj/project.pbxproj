@@ -50,7 +50,9 @@
 		ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB146FC2CA1F401009D5B70 /* ClientView.swift */; };
 		ECB146FF2CA20516009D5B70 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB146FE2CA20516009D5B70 /* ResourcesView.swift */; };
 		ECB147012CA2056C009D5B70 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147002CA2056C009D5B70 /* FAQView.swift */; };
-		ECB147072CA33015009D5B70 /* AppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147052CA33015009D5B70 /* AppointmentsView.swift */; };
+		ECB147072CA33015009D5B70 /* AppointmentsLawyerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147052CA33015009D5B70 /* AppointmentsLawyerView.swift */; };
+		ECB147132CA33056009D5B70 /* DocumentScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147082CA33056009D5B70 /* DocumentScanView.swift */; };
+		ECB147142CA33056009D5B70 /* DocumentValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147092CA33056009D5B70 /* DocumentValidationView.swift */; };
 		ECB147152CA33056009D5B70 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470A2CA33056009D5B70 /* LoginView.swift */; };
 		ECB147172CA33056009D5B70 /* OnboardingScreen1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470D2CA33056009D5B70 /* OnboardingScreen1View.swift */; };
 		ECB147182CA33056009D5B70 /* OnboardingScreen2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470E2CA33056009D5B70 /* OnboardingScreen2View.swift */; };
@@ -60,9 +62,6 @@
 		ECB1471F2CA33076009D5B70 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1471C2CA33076009D5B70 /* EditProfileView.swift */; };
 		ECB147202CA33076009D5B70 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1471D2CA33076009D5B70 /* ProfileView.swift */; };
 		ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */; };
-		ECB147242CA49454009D5B70 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECB147232CA49453009D5B70 /* Secrets.plist */; };
-		ECB1472A2CA5D97F009D5B70 /* ClientsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147292CA5D97F009D5B70 /* ClientsListView.swift */; };
-		ECB1472C2CA5D9BD009D5B70 /* ClientProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -127,7 +126,9 @@
 		ECB146FC2CA1F401009D5B70 /* ClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientView.swift; sourceTree = "<group>"; };
 		ECB146FE2CA20516009D5B70 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		ECB147002CA2056C009D5B70 /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
-		ECB147052CA33015009D5B70 /* AppointmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentsView.swift; sourceTree = "<group>"; };
+		ECB147052CA33015009D5B70 /* AppointmentsLawyerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = AppointmentsLawyerView.swift; sourceTree = "<group>"; };
+		ECB147082CA33056009D5B70 /* DocumentScanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentScanView.swift; sourceTree = "<group>"; };
+		ECB147092CA33056009D5B70 /* DocumentValidationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentValidationView.swift; sourceTree = "<group>"; };
 		ECB1470A2CA33056009D5B70 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		ECB1470D2CA33056009D5B70 /* OnboardingScreen1View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen1View.swift; sourceTree = "<group>"; };
 		ECB1470E2CA33056009D5B70 /* OnboardingScreen2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen2View.swift; sourceTree = "<group>"; };
@@ -137,9 +138,6 @@
 		ECB1471C2CA33076009D5B70 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		ECB1471D2CA33076009D5B70 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAppointmentView.swift; sourceTree = "<group>"; };
-		ECB147232CA49453009D5B70 /* Secrets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
-		ECB147292CA5D97F009D5B70 /* ClientsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsListView.swift; sourceTree = "<group>"; };
-		ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProfileView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -199,8 +197,6 @@
 			isa = PBXGroup;
 			children = (
 				41284E382C6AAAB200067460 /* Info.plist */,
-				ECB147232CA49453009D5B70 /* Secrets.plist */,
-				41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */,
 				413606872C6AA42B0006A3EC /* Fonts */,
 				04CAEF8229B3047900A4FB62 /* Main */,
 				04CAEF5C29B3029D00A4FB62 /* Assets.xcassets */,
@@ -225,10 +221,20 @@
 				41E5B0E12CA9229C00D18E89 /* Authentication */,
 				41E5B0EC2CA922A800D18E89 /* AppDelegate.swift */,
 				04CAEF5829B3029B00A4FB62 /* BufetecApp.swift */,
-				04CAEF5A29B3029B00A4FB62 /* CustomTabView.swift */,
-				41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */,
-				4169444C2CAE254E00AAC48C /* Lawyer */,
-				4169444E2CAE25AB00AAC48C /* Client */,
+				04CAEF5A29B3029B00A4FB62 /* ContentView.swift */,
+				41203A402C6D4187006E1FAC /* SettingsView.swift */,
+				04CAEF8829B304E600A4FB62 /* LawyerView.swift */,
+				41EB8AF82C9D158E00929E28 /* FullNewsView.swift */,
+				ECB146FC2CA1F401009D5B70 /* ClientView.swift */,
+				41EB8AF92C9D158E00929E28 /* NewsContentView.swift */,
+				ECB147002CA2056C009D5B70 /* FAQView.swift */,
+				4C8CD9C42CAF3ED700422C4F /* ClientsView.swift */,
+				4C8CD9C62CAF3EE500422C4F /* ClientProfileView.swift */,
+				ECB146FE2CA20516009D5B70 /* ResourcesView.swift */,
+				04CAEF8A29B3051600A4FB62 /* CasesView.swift */,
+				ECB1471E2CA33076009D5B70 /* Profile */,
+				ECB1470C2CA33056009D5B70 /* LogIn&Reg */,
+				ECB147122CA33056009D5B70 /* Onboardings */,
 				ECB147062CA33015009D5B70 /* Appointments */,
 				ECB1471E2CA33076009D5B70 /* Profile */,
 				EC800CB02C8A31BE00A9FB80 /* Chatbot */,
@@ -326,11 +332,10 @@
 		ECB147062CA33015009D5B70 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
-				ECA58D412C9B4F4D0081ECDE /* AttorneysListView.swift */,
-				414E9D332CB0BB8C0004EF9D /* Attorney.swift */,
-				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
-				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
->>>>>>> 0a74671 (Crea vista para selección de horarios para abogado y cambios de UI en CreateAppointment...)
+				ECB147052CA33015009D5B70 /* AppointmentsLawyerView.swift */,
+				4C8CD9C22CAF3E3000422C4F /* SeeAppClientView.swift */,
+				4C139DEF2CAB22E900B535CC /* AppointmentsClientView.swift */,
+				4C139DF12CAB238E00B535CC /* DefineTimeView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
 			);
 			path = Appointments;
@@ -448,7 +453,6 @@
 				04CAEF6029B3029D00A4FB62 /* Preview Assets.xcassets in Resources */,
 				ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */,
 				ECB60E312C8B945C007535DB /* Nunito-Medium.ttf in Resources */,
-				ECB147242CA49454009D5B70 /* Secrets.plist in Resources */,
 				ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */,
 				04CAEF5D29B3029D00A4FB62 /* Assets.xcassets in Resources */,
 				ECB60E3B2C8B955B007535DB /* Nunito-Regular.ttf in Resources */,
@@ -464,7 +468,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41E5B0ED2CA922A800D18E89 /* AppDelegate.swift in Sources */,
+				4C8CD9C32CAF3E3000422C4F /* SeeAppClientView.swift in Sources */,
+				4C8CD9C52CAF3ED700422C4F /* ClientsView.swift in Sources */,
 				EC5F1EB02C8C3A6C00EE6697 /* ChatBot.swift in Sources */,
 				ECB147152CA33056009D5B70 /* LoginView.swift in Sources */,
 				04CAEF8B29B3051600A4FB62 /* CasesView.swift in Sources */,
@@ -484,10 +489,12 @@
 				ECB1471A2CA33056009D5B70 /* OnboardingView.swift in Sources */,
 				41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */,
 				ECB147192CA33056009D5B70 /* OnboardingScreen3View.swift in Sources */,
-				04CAEF5B29B3029B00A4FB62 /* CustomTabView.swift in Sources */,
+				04CAEF5B29B3029B00A4FB62 /* ContentView.swift in Sources */,
+				4C8CD9C72CAF3EE500422C4F /* ClientProfileView.swift in Sources */,
 				ECB1471F2CA33076009D5B70 /* EditProfileView.swift in Sources */,
-				ECB1472A2CA5D97F009D5B70 /* ClientsListView.swift in Sources */,
-				41EB8AFA2C9D158E00929E28 /* NewsListView.swift in Sources */,
+				4C139DF02CAB22E900B535CC /* AppointmentsClientView.swift in Sources */,
+				41EB8AFA2C9D158E00929E28 /* NewsContentView.swift in Sources */,
+				ECB147142CA33056009D5B70 /* DocumentValidationView.swift in Sources */,
 				ECB1471B2CA33056009D5B70 /* WelcomeScreenView.swift in Sources */,
 				41E5B0E72CA9229F00D18E89 /* SignUpView.swift in Sources */,
 				41E5B0E82CA9229F00D18E89 /* AuthModel.swift in Sources */,

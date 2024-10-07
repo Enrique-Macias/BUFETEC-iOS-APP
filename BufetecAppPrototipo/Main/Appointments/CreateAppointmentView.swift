@@ -16,9 +16,16 @@ struct CreateAppointmentView: View {
     @State private var isDateAvailable: Bool = true
     @State private var currentMonthOffset: Int = 0
     
+    // Variables para el motivo y comentarios adicionales
+    @State private var appointmentReason: String = ""
+    @State private var additionalComments: String = ""
+    
     // Controlar visibilidad de las alertas personalizadas
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
+    
+    // Para la navegación a ClientView
+    @State private var navigateToClientView = false
     
     // Disponibilidad de fechas (más de 4 verde, entre 1 y 4 amarillo, 0 rojo)
     let availability: [Date: Int] = [
@@ -36,8 +43,8 @@ struct CreateAppointmentView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                ZStack {
+            ZStack {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         // Título de la vista
                         Text("Agendar Cita")
@@ -55,6 +62,45 @@ struct CreateAppointmentView: View {
                             address: "C. Av. Luis Elizondo y Garza Sada,\nTecnológico, 64700 Monterrey, N.L."
                         )
                         .padding(.horizontal, 10)
+                        
+                        // Sección de Datos de la Cita
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Datos de la cita")
+                                .font(CustomFonts.PoppinsBold(size: 24))
+                                .foregroundColor(Color("btBlue"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("It is a long established fact ")
+                                .font(CustomFonts.MontserratRegular(size: 14))
+                                .foregroundColor(Color.gray)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            VStack(alignment: .leading, spacing: 10) {
+                                // Campo de motivo
+                                Text("Motivo:")
+                                    .font(CustomFonts.PoppinsSemiBold(size: 16))
+                                    .foregroundColor(Color("btBlue"))
+                                
+                                TextField("Escribe el motivo de la cita", text: $appointmentReason)
+                                    .padding()
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("btBlue"), lineWidth: 1))
+                                    .background(Color.white)
+                                    .cornerRadius(8)
+                                
+                                // Campo de comentarios adicionales
+                                Text("Comentarios Adicionales:")
+                                    .font(CustomFonts.PoppinsSemiBold(size: 16))
+                                    .foregroundColor(Color("btBlue"))
+                                
+                                TextEditor(text: $additionalComments)
+                                    .frame(height: 100)
+                                    .padding()
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("btBlue"), lineWidth: 1))
+                                    .background(Color.white)
+                                    .cornerRadius(8)
+                            }
+                        }
+                        .padding(.horizontal, 20)
                         
                         // Sección de seleccionar fecha
                         VStack(alignment: .leading, spacing: 20) {
@@ -115,13 +161,15 @@ struct CreateAppointmentView: View {
                         
                         // Botón de confirmar cita (deshabilitado si no hay citas disponibles)
                         Button(action: {
-                            if selectedTime != nil {
+                            if appointmentReason.isEmpty {
+                                showingErrorAlert = true
+                            } else if selectedTime != nil {
                                 showingConfirmationAlert = true
                             } else {
                                 showingErrorAlert = true
                             }
                         }) {
-                            Text("Confirm Appointment")
+                            Text("Confirmar Cita")
                                 .font(CustomFonts.PoppinsSemiBold(size: 18))
                                 .foregroundColor(.white)
                                 .padding()
@@ -134,18 +182,29 @@ struct CreateAppointmentView: View {
                         .disabled(!isDateAvailable || selectedTime == nil) // Deshabilitar el botón si no hay disponibilidad
                     }
                     .padding(.bottom, 40)
-                    
-                    // Mostrar alerta de confirmación si está activa
-                    if showingConfirmationAlert {
+                }
+                
+                // Mostrar alerta de confirmación si está activa
+                if showingConfirmationAlert {
+                    VStack {
                         confirmationAlert
                             .transition(.scale)
                     }
-                    
-                    // Mostrar alerta de error si está activa
-                    if showingErrorAlert {
+                    .background(Color.black.opacity(0.5).ignoresSafeArea()) // Fondo oscuro transparente detrás de la alerta
+                }
+                
+                // Mostrar alerta de error si está activa
+                if showingErrorAlert {
+                    VStack {
                         errorAlert
                             .transition(.scale)
                     }
+                    .background(Color.black.opacity(0.5).ignoresSafeArea()) // Fondo oscuro transparente detrás de la alerta
+                }
+                
+                // Navegación a la vista ClientView
+                NavigationLink(destination: ClientView().navigationBarBackButtonHidden(true), isActive: $navigateToClientView) {
+                    EmptyView()
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -236,6 +295,7 @@ struct CreateAppointmentView: View {
             
             Button(action: {
                 showingConfirmationAlert = false
+                navigateToClientView = true // Navegar a ClientView al presionar "Continuar"
             }) {
                 Text("Continuar")
                     .font(CustomFonts.PoppinsSemiBold(size: 16))
@@ -267,7 +327,7 @@ struct CreateAppointmentView: View {
                 .font(CustomFonts.PoppinsBold(size: 20))
                 .foregroundColor(.black)
             
-            Text("Por favor selecciona una hora para la cita.")
+            Text("Por favor escribe un motivo de la cita.")
                 .font(CustomFonts.MontserratRegular(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -292,6 +352,7 @@ struct CreateAppointmentView: View {
         .shadow(radius: 20)
     }
 }
+
 
 
 // Calendario personalizado con días de la semana y puntos de colores

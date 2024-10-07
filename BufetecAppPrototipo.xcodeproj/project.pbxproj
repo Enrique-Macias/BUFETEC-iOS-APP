@@ -48,6 +48,7 @@
 		ECB147242CA49454009D5B70 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECB147232CA49453009D5B70 /* Secrets.plist */; };
 		ECB1472A2CA5D97F009D5B70 /* ClientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147292CA5D97F009D5B70 /* ClientsView.swift */; };
 		ECB1472C2CA5D9BD009D5B70 /* ClientProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */; };
+		ECB1472E2CA5F02B009D5B70 /* ShowAppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -113,6 +114,7 @@
 		ECB147232CA49453009D5B70 /* Secrets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		ECB147292CA5D97F009D5B70 /* ClientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsView.swift; sourceTree = "<group>"; };
 		ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProfileView.swift; sourceTree = "<group>"; };
+		ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAppointmentsView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			children = (
 				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
+				ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
 				ECA58D442C9B51980081ECDE /* Attorneys.swift in Sources */,
 				EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */,
+				ECB1472E2CA5F02B009D5B70 /* ShowAppointmentsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

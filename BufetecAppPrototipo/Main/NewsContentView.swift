@@ -78,9 +78,8 @@ class GetData: ObservableObject {
     @Published var datas = [NewsDataType]()
     
     func fetchData() {
-        let apiKey = "c265e314cdec4e99923322a182cc71be"
-        let searchQuery = "leyes AND monterrey"
-        let apiUrl = "https://newsapi.org/v2/everything?q=\(searchQuery)&apiKey=\(apiKey)"
+       
+        let apiUrl = "https://buffetec-api.vercel.app/?route=getNoticias"
         
         guard let url = URL(string: apiUrl) else { return }
         

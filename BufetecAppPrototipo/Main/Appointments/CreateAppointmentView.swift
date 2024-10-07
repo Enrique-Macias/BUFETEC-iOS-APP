@@ -503,4 +503,3 @@ struct AppointmentCardInfo: View {
     CreateAppointmentView()
         .environment(AppearanceManager())
 }
-

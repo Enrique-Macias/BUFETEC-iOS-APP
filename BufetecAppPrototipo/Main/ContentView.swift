@@ -56,7 +56,7 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 LawyerView().tag(TabbedItems.home.rawValue)
                 CasesView().tag(TabbedItems.favorite.rawValue)
-                AppointmentsView().tag(TabbedItems.chat.rawValue)
+                AppointmentsLawyerView().tag(TabbedItems.chat.rawValue)
                 ProfileView().tag(TabbedItems.profile.rawValue)
             }
             

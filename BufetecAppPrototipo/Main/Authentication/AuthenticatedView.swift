@@ -107,7 +107,7 @@ struct AuthenticatedView: View {
                 dateFormatter.dateFormat = "yyyy-MM-dd"
                 let birthDateString = dateFormatter.string(from: editedFechaDeNacimiento)
                 
-                try await authModel.updateUserInfo(fields: [
+                try await authModel.updateUserInfo(newData: [
                     "nombre": editedNombre,
                     "celular": editedCelular,
                     "genero": editedGenero,

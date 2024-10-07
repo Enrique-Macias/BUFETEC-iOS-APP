@@ -20,15 +20,9 @@ struct ProfileView: View {
                     .foregroundColor(.accentColor)
                     .padding(.top, 10)
                 
-                VStack(spacing: 5) {
-                    Text(authModel.userData.nombre)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.accentColor)
-                    
-                    Text(authModel.userData.tipo.capitalized)
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.secondary)
-                }
+                Text(authModel.userData.nombre)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.accentColor)
                 
                 NavigationLink(destination: EditProfileView()) {
                     Text("Editar Perfil")

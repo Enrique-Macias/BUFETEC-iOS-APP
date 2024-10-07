@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AttorneysListView: View {
-    @StateObject private var viewModel = AttorneysViewModel()
     @State private var searchText = ""
     @State private var sortOption = SortOption.caseName
     
@@ -15,9 +14,6 @@ struct AttorneysListView: View {
         }
         .navigationTitle("Nuestros Abogados")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            viewModel.fetchAttorneys()
-        }
     }
     
     private var searchBar: some View {
@@ -32,27 +28,23 @@ struct AttorneysListView: View {
         .padding(.horizontal)
         .padding(.top)
     }
-    
+
     private var filterButtons: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 ForEach(SortOption.allCases, id: \.self) { option in
-                    filterButton(for: option)
+                    Button(action: { sortOption = option }) {
+                        Text(option.rawValue)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(sortOption == option ? Color("btBlue") : Color(UIColor.systemGray5))
+                            .foregroundColor(sortOption == option ? .white : Color("btBlue"))
+                            .cornerRadius(20)
+                    }
                 }
             }
             .padding()
-        }
-    }
-    
-    private func filterButton(for option: SortOption) -> some View {
-        Button(action: { sortOption = option }) {
-            Text(option.rawValue)
-                .font(CustomFonts.MontserratMedium(size: 12))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(sortOption == option ? Color("btBlue") : Color(UIColor.systemGray5))
-                .foregroundColor(sortOption == option ? .white : Color("btBlue"))
-                .cornerRadius(20)
         }
     }
     
@@ -68,17 +60,17 @@ struct AttorneysListView: View {
     }
     
     private var filteredAttorneys: [Attorney] {
-        viewModel.attorneys.filter { attorney in
-            searchText.isEmpty || attorney.nombre.localizedCaseInsensitiveContains(searchText) || attorney.especialidad.localizedCaseInsensitiveContains(searchText)
+        attorneys.filter { attorney in
+            searchText.isEmpty || attorney.name.localizedCaseInsensitiveContains(searchText) || attorney.specialty.localizedCaseInsensitiveContains(searchText)
         }.sorted { sortAttorney($0, isLessThan: $1) }
     }
     
     private func sortAttorney(_ lhs: Attorney, isLessThan rhs: Attorney) -> Bool {
         switch sortOption {
         case .caseName:
-            return lhs.nombre < rhs.nombre
+            return lhs.name < rhs.name
         case .specialty:
-            return lhs.especialidad < rhs.especialidad
+            return lhs.specialty < rhs.specialty
         }
     }
 }
@@ -101,10 +93,10 @@ struct AttorneyCard: View {
                         .foregroundColor(Color("btBlue"))
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(attorney.nombre)
+                        Text(attorney.name)
                             .font(CustomFonts.PoppinsBold(size: 16))
                             .foregroundColor(Color("btBlue"))
-                        Text(attorney.especialidad)
+                        Text(attorney.specialty)
                             .font(CustomFonts.MontserratMedium(size: 12))
                             .foregroundColor(.secondary)
                     }
@@ -120,11 +112,13 @@ struct AttorneyCard: View {
             
             if isExpanded {
                 VStack(alignment: .leading, spacing: 10) {
-                    descriptionSection("Descripción:", text: attorney.descripcion)
-                    descriptionSection("Horario:", text: formatSchedule(attorney.horarioSemanal))
-                    descriptionSection("Ejemplos de Casos:", text: attorney.casosEjemplo)
+                    descriptionSection("Descripción:", text: attorney.description)
+                    descriptionSection("Horario:", text: attorney.schedule)
+                    descriptionSection("Ejemplos de Casos:", text: attorney.examples)
                     
-                    NavigationLink(destination: CreateAppointmentView(attorney: attorney)) {
+                    Button(action: {
+                        // Acción para agendar cita
+                    }) {
                         HStack {
                             Text("Agendar Cita")
                                 .font(CustomFonts.PoppinsSemiBold(size: 12))
@@ -156,63 +150,15 @@ struct AttorneyCard: View {
                 .foregroundColor(.black)
         }
     }
-    
-    private func formatSchedule(_ schedule: [String: [String]]) -> String {
-        let days = [
-            "lun": "Lunes",
-            "mar": "Martes",
-            "mie": "Miércoles",
-            "jue": "Jueves",
-            "vie": "Viernes",
-            "sab": "Sábado",
-            "dom": "Domingo"
-        ]
-        
-        return schedule.map { key, value in
-            let dayName = days[key] ?? key
-            let hours = value.joined(separator: ", ")
-            return "\(dayName): \(hours)"
-        }.joined(separator: "\n")
-    }
 }
 
-class AttorneysViewModel: ObservableObject {
-    @Published var attorneys: [Attorney] = []
-    
-    func fetchAttorneys() {
-        guard let url = URL(string: "http://localhost:3000/getAttorneys") else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                print("No data received: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                // Use custom date decoding strategy
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                let fetchedAttorneys = try decoder.decode([Attorney].self, from: data)
-                DispatchQueue.main.async {
-                    self.attorneys = fetchedAttorneys
-                }
-            } catch {
-                print("Error decoding attorneys: \(error)")
-                if let decodingError = error as? DecodingError {
-                    switch decodingError {
-                    case .dataCorrupted(let context):
-                        print("Data corrupted: \(context)")
-                    default:
-                        print("Decoding error: \(decodingError)")
-                    }
-                }
-            }
-        }.resume()
-    }
+struct Attorney: Identifiable {
+    let id = UUID()
+    let name: String
+    let specialty: String
+    let description: String
+    let schedule: String
+    let examples: String
 }
 
 private enum SortOption: String, CaseIterable {
@@ -220,8 +166,31 @@ private enum SortOption: String, CaseIterable {
     case specialty = "Especialidad"
 }
 
+// Sample data
+let attorneys = [
+    Attorney(
+        name: "Vibiana Agramont",
+        specialty: "Abogada Civil y Mercantil",
+        description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
+        schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
+        examples: "It is a long established fact that a reader will be distracted by the readable..."
+    ),
+    Attorney(
+        name: "Manolo Martínez",
+        specialty: "Abogado Familiar",
+        description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
+        schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
+        examples: "It is a long established fact that a reader will be distracted by the readable..."
+    ),
+    Attorney(
+        name: "Verónica González",
+        specialty: "Abogado Familiar",
+        description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its It is a long established fact that a reader...",
+        schedule: "Lunes, Miércoles y Jueves de 1 a 5 P.M.",
+        examples: "It is a long established fact that a reader will be distracted by the readable..."
+    )
+]
+
 #Preview {
     AttorneysListView()
-        .environment(AppearanceManager())
-        .environmentObject(AuthModel())
 }

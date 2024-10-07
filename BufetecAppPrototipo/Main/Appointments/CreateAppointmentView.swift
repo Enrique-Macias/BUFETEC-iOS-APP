@@ -602,8 +602,73 @@ struct CustomCalendarView: View {
     }
 }
 
-// Uncomment this for previews
-// #Preview {
-//     CreateAppointmentView(attorney: Attorney.sampleData)
-//         .environmentObject(AuthModel())
-// }
+// Componente para la tarjeta de información del abogado
+struct AppointmentCardInfo: View {
+    var name: String
+    var specialty: String
+    var phoneNumber: String
+    var email: String
+    var address: String
+    
+    var body: some View {
+        HStack(alignment: .top) {
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .foregroundColor(Color("btBlue"))
+                .padding(.trailing, 10)
+            
+            VStack(alignment: .leading, spacing: 5) {
+                Text(name)
+                    .font(CustomFonts.PoppinsBold(size: 16))
+                    .foregroundColor(Color("btBlue"))
+                
+                Text(specialty)
+                    .font(CustomFonts.MontserratMedium(size: 12))
+                    .foregroundColor(.gray)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 10) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "phone.fill")
+                            Text(phoneNumber)
+                        }
+                        .font(CustomFonts.MontserratBold(size: 12))
+                        .foregroundColor(Color("btBlue"))
+                        
+                        HStack(spacing: 5) {
+                            Image(systemName: "envelope.fill")
+                            Text(email)
+                        }
+                        .font(CustomFonts.MontserratBold(size: 12))
+                        .foregroundColor(Color("btBlue"))
+                    }
+                    
+                    HStack(spacing: 5) {
+                        Image(systemName: "mappin.and.ellipse")
+                        Text(address)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                    }
+                    .foregroundColor(Color("btBlue"))
+                }
+                .padding(.top, 10)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("btBlue"), lineWidth: 1)
+        )
+        .padding(.horizontal, 10)
+        .padding(.vertical, 10)
+    }
+}
+
+#Preview {
+    CreateAppointmentView()
+        .environment(AppearanceManager())
+}

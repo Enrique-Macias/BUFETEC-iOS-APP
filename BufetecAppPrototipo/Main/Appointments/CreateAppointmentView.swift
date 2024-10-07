@@ -5,6 +5,11 @@ struct CalendarDay: Identifiable {
     let id: UUID
 }
 
+struct CalendarDay: Identifiable {
+    let date: Date
+    let id: UUID
+}
+
 struct AppointmentCardInfo: View {
     let name: String
     let specialty: String

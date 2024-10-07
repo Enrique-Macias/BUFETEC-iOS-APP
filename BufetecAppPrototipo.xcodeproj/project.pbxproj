@@ -332,10 +332,10 @@
 		ECB147062CA33015009D5B70 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
-				ECB147052CA33015009D5B70 /* AppointmentsLawyerView.swift */,
-				4C8CD9C22CAF3E3000422C4F /* SeeAppClientView.swift */,
-				4C139DEF2CAB22E900B535CC /* AppointmentsClientView.swift */,
-				4C139DF12CAB238E00B535CC /* DefineTimeView.swift */,
+				ECA58D412C9B4F4D0081ECDE /* AttorneysListView.swift */,
+				414E9D332CB0BB8C0004EF9D /* Attorney.swift */,
+				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
+				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
 			);
 			path = Appointments;

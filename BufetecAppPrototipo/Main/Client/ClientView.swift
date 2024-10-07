@@ -1,10 +1,3 @@
-//
-//  ClientView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Enrique Macias on 9/23/24.
-//
-
 import SwiftUI
 import Kingfisher
 
@@ -13,13 +6,12 @@ struct ClientView: View {
     @State private var showingScrolledTitle = false
     @State private var selectedIndex = 0
     @State private var showingSettings = false
+    @Binding var selectedTab: Int
     
-    // ChatBot
     @State private var currentView: ChatBotState = .main
     @AppStorage("hasSeenChatbotOnboarding") private var hasSeenChatbotOnboarding = false
     @State private var showingChatbotViews = false
     
-    // Control Views of ChatBot
     enum ChatBotState {
         case main, load, onboarding, chat
     }
@@ -37,7 +29,8 @@ struct ClientView: View {
         }
     }
     
-    init() {
+    init(selectedTab: Binding<Int>) {
+        self._selectedTab = selectedTab
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
     }
     
@@ -45,23 +38,19 @@ struct ClientView: View {
         GeometryReader { outer in
             NavigationStack {
                 ZStack {
-                    // Scrollable content in the background
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
-                            // Título del Card
-                            Text("LISTOS PARA AYUDARTE")
-                                .font(CustomFonts.PoppinsBold(size: 35))
+                            Text("Listos para ayudarte")
+                                .font(CustomFonts.PoppinsBold(size: 25))
                                 .foregroundColor(.white)
                             
-                            // Descripción
                             Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.")
                                 .font(CustomFonts.MontserratRegular(size: 14))
                                 .foregroundColor(.white)
                                 .lineSpacing(5)
                             
-                            // Botón "Agendar Cita" usando NavigationLink para navegar a AppointmentsView()
                             HStack {
-                                NavigationLink(destination: CreateAppointmentView()) {
+                                NavigationLink(destination: AttorneysListView()) {
                                     HStack {
                                         Text("Agendar Cita")
                                             .font(CustomFonts.PoppinsSemiBold(size: 14))
@@ -72,23 +61,40 @@ struct ClientView: View {
                                     }
                                     .padding()
                                     .background(Color.white)
-                                    .cornerRadius(30)
+                                    .cornerRadius(15)
                                 }
                                 .padding(.top, 15)
-                                .padding(.bottom, 10) // Padding para que no quede pegado al borde inferior
+                                .padding(.bottom, 10)
                             }
                         }
-                        .padding(25) // Padding interno
+                        .padding(25)
                         .background(Color("btBlue"))
-                        .cornerRadius(15) // Borde redondeado
-                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5) // Sombra del card
-                        .padding() // Padding externo
+                        .cornerRadius(15)
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .padding()
+                        
                         VStack(alignment: .leading, spacing: 30) {
-                            // Cards
                             VStack(spacing: 30) {
-                                CustomCard(title: "Conoce a nuestros abogados", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: AttorneysView())
-                                CustomCard(title: "Procesos legales", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: ResourcesView())
-                                CustomCard(title: "Preguntas Frecuentes", description: "It is a long established fact that a reader will be distracted by the readable content", buttonText: "Visitar", destination: FAQView())
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Conoce a nuestros abogados",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: AttorneysListView(),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Procesos legales",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: ResourcesView(),
+                                           tabIndex: nil)
+                                
+                                CustomCard(selectedTab: $selectedTab,
+                                           title: "Preguntas Frecuentes",
+                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           buttonText: "Visitar",
+                                           destination: FAQView(),
+                                           tabIndex: nil)
                             }
                             .padding()
                         }
@@ -104,7 +110,6 @@ struct ClientView: View {
                         SettingsView()
                     }
                     
-                    // Floating ChatBot Button
                     VStack {
                         Spacer()
                         HStack {
@@ -129,8 +134,6 @@ struct ClientView: View {
     }
 }
 
-
-// ChatBotFlowView: Esta vista maneja el flujo de vistas de carga, onboarding y el chat del ChatBot
 struct ChatBotFlowClientView: View {
     @Binding var currentView: ClientView.ChatBotState
     @Binding var hasSeenChatbotOnboarding: Bool
@@ -166,9 +169,7 @@ struct ChatBotFlowClientView: View {
     }
 }
 
-
-
 #Preview {
-    ClientView()
+    ClientView(selectedTab: .constant(0))
         .environment(AppearanceManager())
 }

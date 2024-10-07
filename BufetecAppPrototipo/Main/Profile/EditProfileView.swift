@@ -3,30 +3,36 @@ import PhotosUI
 
 struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var nombreCompleto: String = "Bruno García"
-    @State private var genero: String = "Masculino"
-    @State private var fechaNacimiento: String = "05/01/1995"
-    @State private var numeroCelular: String = "+52 81 1234 5678"
-    @State private var correoElectronico: String = "bruno.garcia@bufetec.mx"
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var authModel: AuthModel
+    @State private var nombreCompleto: String = ""
+    @State private var genero: String = ""
+    @State private var fechaNacimiento: Date = Date()
+    @State private var numeroCelular: String = ""
     
-    @State private var selectedGender: String = "Masculino"
-    let generos = ["Masculino", "Femenino"]
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
+    
+    let generos = ["Masculino", "Femenino", "Otro"]
     
     @State private var profileImage: Image? = Image(systemName: "person.circle.fill")
     @State private var showingImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
-    init() {
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    }
+    private let dateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
     
     var body: some View {
-        NavigationView {
+        ZStack {
+            Color("btBackground")
+                .edgesIgnoringSafeArea(.all)
+            
             ScrollView {
                 VStack(spacing: 20) {
-                    Spacer()
-                    
                     // Profile Image
                     VStack {
                         profileImage?
@@ -54,52 +60,25 @@ struct EditProfileView: View {
                                 .offset(x: 30, y: -25)
                         }
                     }
-                                        
+                    
                     // Form Fields
-                    VStack(spacing: 20) {
-                        CustomTextField(title: "Nombre Completo", text: $nombreCompleto)
+                    VStack(spacing: 15) {
+                        InputField(icon: "person", placeholder: "Nombre Completo", text: $nombreCompleto)
+                        InputField(icon: "phone", placeholder: "Número Celular", text: $numeroCelular)
+                            .keyboardType(.phonePad)
                         
-                        HStack {
-                            CustomPicker(title: "Género", selection: $selectedGender, options: generos)
-                            CustomTextField(title: "Fecha de Nacimiento", text: $fechaNacimiento)
-                        }
-                        
-                        CustomTextField(title: "Número Celular", text: $numeroCelular)
-                        
-                        CustomTextField(title: "Correo Electrónico", text: $correoElectronico)
+                        genderPicker
+                        birthdatePicker
                     }
                     .padding(.horizontal)
                     
-                    // Save Button
-                    Button(action: {
-                        // Save action
-                    }) {
-                        Text("Guardar")
-                            .font(.system(size: 16, weight: .semibold))
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 40)
-                            .background(Color.accentColor)
-                            .foregroundColor(.white)
-                            .cornerRadius(15)
-                    }
-                    .padding(.top, 15)
+                    saveButton
                 }
-                .padding(.vertical)
+                .padding()
             }
-            .navigationTitle("Mi Perfil")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "arrow.left")
-                            .font(.system(size: 20))
-                            .foregroundColor(.accentColor)
-                    }
-                }
-            }
-            .background(Color("btBackground"))
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Editar Perfil")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
                 .onChange(of: selectedImage) { oldValue, newValue in
@@ -108,26 +87,104 @@ struct EditProfileView: View {
                     }
                 }
         }
+        .onAppear {
+            loadUserData()
+        }
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
-}
-
-struct CustomTextField: View {
-    var title: String
-    @Binding var text: String
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text(title)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.accentColor)
-            
-            TextField("", text: $text)
-                .padding()
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.accentColor, lineWidth: 1)
+    private var genderPicker: some View {
+        Menu {
+            ForEach(generos, id: \.self) { gender in
+                Button(gender) { genero = gender }
+            }
+        } label: {
+            HStack {
+                Image(systemName: "person")
+                Text(genero.isEmpty ? "Género" : genero)
+                Spacer()
+                Image(systemName: "chevron.down")
+            }
+            .padding()
+            .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+            .accentColor(.primary)
+            .background(colorScheme == .dark ? Color.clear : Color.white)
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
+            )
+        }
+    }
+    
+    private var birthdatePicker: some View {
+        HStack {
+            Image(systemName: "calendar")
+            Text("Fecha de nacimiento")
+            Spacer()
+            DatePicker("", selection: $fechaNacimiento, displayedComponents: [.date])
+                .labelsHidden()
+        }
+        .padding()
+        .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+        .background(colorScheme == .dark ? Color.clear : Color.white)
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(colorScheme == .light ? Color.black : Color.white, lineWidth: 0.8)
+        )
+    }
+    
+    private var saveButton: some View {
+        Button(action: saveChanges) {
+            Text("Guardar Cambios")
+                .font(CustomFonts.MontserratBold(size: 16))
+                .foregroundColor(colorScheme == .light ? Color.white : Color.black)
+                .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+                .background(colorScheme == .light ? Color.black : Color.white)
+                .cornerRadius(16)
+        }
+    }
+    
+    private func loadUserData() {
+        nombreCompleto = authModel.userData.nombre
+        genero = authModel.userData.genero
+        numeroCelular = authModel.userData.celular
+        
+        if let date = dateFormatter.date(from: authModel.userData.fechaDeNacimiento) {
+            fechaNacimiento = date
+        } else {
+            print("Failed to parse date: \(authModel.userData.fechaDeNacimiento)")
+            // Set a default date or handle the error as appropriate
+            fechaNacimiento = Date()
+        }
+    }
+    
+    private func saveChanges() {
+        Task {
+            do {
+                let birthDateString = dateFormatter.string(from: fechaNacimiento)
+                
+                try await authModel.updateUserProfile(
+                    name: nombreCompleto,
+                    phone: numeroCelular,
+                    gender: genero
                 )
+                
+                // Update birth date separately as it's not included in updateUserProfile
+                try await authModel.updateUserInfo(fields: ["fechaDeNacimiento": birthDateString])
+                
+                dismiss()
+            } catch {
+                errorMessage = "Failed to update profile: \(error.localizedDescription)"
+                showErrorAlert = true
+            }
         }
     }
 }
@@ -160,7 +217,6 @@ struct CustomPicker: View {
     }
 }
 
-// ImagePicker para seleccionar imagen del carrete o tomar una foto
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     var sourceType: UIImagePickerController.SourceType
@@ -198,8 +254,8 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-
 #Preview {
     EditProfileView()
         .environment(AppearanceManager())
+        .environmentObject(AuthModel())
 }

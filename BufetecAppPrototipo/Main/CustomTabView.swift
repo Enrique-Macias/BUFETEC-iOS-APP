@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 enum TabbedItems: Int, CaseIterable {
     case home = 0
     case favorite
@@ -10,7 +9,7 @@ enum TabbedItems: Int, CaseIterable {
     var title: String {
         switch self {
         case .home:
-            return "Abogado"
+            return "Inicio"
         case .favorite:
             return "Casos"
         case .chat:
@@ -23,7 +22,7 @@ enum TabbedItems: Int, CaseIterable {
     var iconName: String {
         switch self {
         case .home:
-            return "newspaper"
+            return "house"
         case .favorite:
             return "book.closed"
         case .chat:
@@ -40,10 +39,11 @@ struct NoEffectButton: ButtonStyle {
     }
 }
 
-struct ContentView: View {
+struct CustomTabView: View {
     @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
-    @State private var selectedTab = 0
+    @EnvironmentObject var authModel: AuthModel
+    @State private var selectedTab: Int = 0
     
     init() {
         let transparentAppearance = UITabBarAppearance()
@@ -54,10 +54,29 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                LawyerView().tag(TabbedItems.home.rawValue)
-                CasesView().tag(TabbedItems.favorite.rawValue)
-                AppointmentsView().tag(TabbedItems.chat.rawValue)
-                ProfileView().tag(TabbedItems.profile.rawValue)
+                NavigationStack {
+                    if authModel.userData.tipo == "cliente" {
+                        ClientView(selectedTab: $selectedTab)
+                    } else {
+                        LawyerView(selectedTab: $selectedTab)
+                    }
+                }
+                .tag(TabbedItems.home.rawValue)
+                
+                NavigationStack {
+                    CasesView()
+                }
+                .tag(TabbedItems.favorite.rawValue)
+                
+                NavigationStack {
+                    AppointmentsView()
+                }
+                .tag(TabbedItems.chat.rawValue)
+                
+                NavigationStack {
+                    ProfileView()
+                }
+                .tag(TabbedItems.profile.rawValue)
             }
             
             VStack(spacing: 0) {
@@ -138,6 +157,7 @@ struct CustomTabItem: View {
 }
 
 #Preview {
-    ContentView()
+    CustomTabView()
         .environment(AppearanceManager())
+        .environmentObject(AuthModel())
 }

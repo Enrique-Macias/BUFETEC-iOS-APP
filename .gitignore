@@ -37,4 +37,6 @@ xcuserdata/
 
 # -------------- User settings --------------
 
+GoogleService-Info.plist
 Secrets.plist
+GenerativeAI-Info.plist

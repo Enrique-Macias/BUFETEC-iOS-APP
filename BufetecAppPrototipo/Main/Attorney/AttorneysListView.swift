@@ -1,88 +1,5 @@
 import SwiftUI
 
-struct AttorneysListView: View {
-    @StateObject private var viewModel = AttorneysViewModel()
-    @State private var searchText = ""
-    @State private var sortOption = SortOption.caseName
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                searchBar
-                filterButtons
-                attorneyList
-            }
-        }
-        .navigationTitle("Nuestros Abogados")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            viewModel.fetchAttorneys()
-        }
-    }
-    
-    private var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(.secondary)
-            TextField("Buscar abogados", text: $searchText)
-        }
-        .padding(10)
-        .background(Color(UIColor.systemBackground))
-        .cornerRadius(10)
-        .padding(.horizontal)
-        .padding(.top)
-    }
-    
-    private var filterButtons: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(SortOption.allCases, id: \.self) { option in
-                    filterButton(for: option)
-                }
-            }
-            .padding()
-        }
-    }
-    
-    private func filterButton(for option: SortOption) -> some View {
-        Button(action: { sortOption = option }) {
-            Text(option.rawValue)
-                .font(CustomFonts.MontserratMedium(size: 12))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(sortOption == option ? Color("btBlue") : Color(UIColor.systemGray5))
-                .foregroundColor(sortOption == option ? .white : Color("btBlue"))
-                .cornerRadius(20)
-        }
-    }
-    
-    private var attorneyList: some View {
-        ScrollView {
-            LazyVStack(spacing: 15) {
-                ForEach(filteredAttorneys) { attorney in
-                    AttorneyCard(attorney: attorney)
-                }
-            }
-            .padding()
-        }
-    }
-    
-    private var filteredAttorneys: [Attorney] {
-        viewModel.attorneys.filter { attorney in
-            searchText.isEmpty || attorney.nombre.localizedCaseInsensitiveContains(searchText) || attorney.especialidad.localizedCaseInsensitiveContains(searchText)
-        }.sorted { sortAttorney($0, isLessThan: $1) }
-    }
-    
-    private func sortAttorney(_ lhs: Attorney, isLessThan rhs: Attorney) -> Bool {
-        switch sortOption {
-        case .caseName:
-            return lhs.nombre < rhs.nombre
-        case .specialty:
-            return lhs.especialidad < rhs.especialidad
-        }
-    }
-}
-
 struct AttorneyCard: View {
     let attorney: Attorney
     @State private var isExpanded = false
@@ -176,53 +93,105 @@ struct AttorneyCard: View {
     }
 }
 
-class AttorneysViewModel: ObservableObject {
-    @Published var attorneys: [Attorney] = []
-    private let baseURL = APIURL.default
+struct AttorneysListView: View {
+    @StateObject private var viewModel = AttorneysViewModel()
+    @State private var searchText = ""
+    @State private var sortOption = SortOption.caseName
     
-    func fetchAttorneys() {
-        guard let url = URL(string: "\(baseURL)/getAttorneys") else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                print("No data received: \(error?.localizedDescription ?? "Unknown error")")
-                return
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                searchBar
+                filterButtons
+                attorneyList
             }
-            
-            do {
-                let decoder = JSONDecoder()
-                // Use custom date decoding strategy
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                let fetchedAttorneys = try decoder.decode([Attorney].self, from: data)
-                DispatchQueue.main.async {
-                    self.attorneys = fetchedAttorneys
+        }
+        .navigationTitle("Nuestros Abogados")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.fetchAttorneys()
+        }
+    }
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+            TextField("Buscar abogados", text: $searchText)
+        }
+        .padding(10)
+        .background(Color(UIColor.systemBackground))
+        .cornerRadius(10)
+        .padding(.horizontal)
+        .padding(.top)
+    }
+    
+    private var filterButtons: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(SortOption.allCases, id: \.self) { option in
+                    filterButton(for: option)
                 }
-            } catch {
-                print("Error decoding attorneys: \(error)")
-                if let decodingError = error as? DecodingError {
-                    switch decodingError {
-                    case .dataCorrupted(let context):
-                        print("Data corrupted: \(context)")
-                    default:
-                        print("Decoding error: \(decodingError)")
+            }
+            .padding()
+        }
+    }
+    
+    private func filterButton(for option: SortOption) -> some View {
+        Button(action: { sortOption = option }) {
+            Text(option.rawValue)
+                .font(CustomFonts.MontserratMedium(size: 12))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(sortOption == option ? Color("btBlue") : Color(UIColor.systemGray5))
+                .foregroundColor(sortOption == option ? .white : Color("btBlue"))
+                .cornerRadius(20)
+        }
+    }
+    
+    private var attorneyList: some View {
+        ScrollView {
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
+            } else if filteredAttorneys.isEmpty {
+                VStack {
+                    Spacer()
+                    Text("No hay abogados registrados.")
+                        .font(CustomFonts.MontserratMedium(size: 16))
+                        .foregroundColor(.secondary)
+                        .padding()
+                    Spacer()
+                }
+                .frame(minHeight: 200)
+            } else {
+                LazyVStack(spacing: 15) {
+                    ForEach(filteredAttorneys) { attorney in
+                        AttorneyCard(attorney: attorney)
                     }
                 }
+                .padding()
             }
-        }.resume()
+        }
+    }
+    
+    private var filteredAttorneys: [Attorney] {
+        viewModel.attorneys.filter { attorney in
+            searchText.isEmpty || attorney.nombre.localizedCaseInsensitiveContains(searchText) || attorney.especialidad.localizedCaseInsensitiveContains(searchText)
+        }.sorted { sortAttorney($0, isLessThan: $1) }
+    }
+    
+    private func sortAttorney(_ lhs: Attorney, isLessThan rhs: Attorney) -> Bool {
+        switch sortOption {
+        case .caseName:
+            return lhs.nombre < rhs.nombre
+        case .specialty:
+            return lhs.especialidad < rhs.especialidad
+        }
     }
 }
 
 private enum SortOption: String, CaseIterable {
     case caseName = "Nombre"
     case specialty = "Especialidad"
-}
-
-#Preview {
-    AttorneysListView()
-        .environment(AppearanceManager())
-        .environmentObject(AuthModel())
 }

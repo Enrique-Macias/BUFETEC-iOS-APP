@@ -35,121 +35,6 @@ struct UserBasic: Codable {
     let tipo: String
 }
 
-class AppointmentViewModel: ObservableObject {
-    @Published var appointments: [Appointment] = []
-    @Published var attorneys: [String: AttorneyBasic] = [:]
-    @Published var clients: [String: UserBasic] = [:]
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return formatter
-    }()
-    
-    func fetchAppointments(userId: String, userType: String) {
-        isLoading = true
-        errorMessage = nil
-        
-        guard let url = URL(string: "http://localhost:3000/getAppointments?userId=\(userId)&userType=\(userType)") else {
-            errorMessage = "Invalid URL"
-            isLoading = false
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                if let error = error {
-                    self.errorMessage = "Network error: \(error.localizedDescription)"
-                    return
-                }
-                
-                guard let data = data else {
-                    self.errorMessage = "No data received"
-                    return
-                }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(self.dateFormatter)
-                    self.appointments = try decoder.decode([Appointment].self, from: data)
-                    if userType == "cliente" {
-                        self.fetchAttorneyInfo()
-                    } else {
-                        self.fetchClientInfo()
-                    }
-                } catch {
-                    self.errorMessage = "Decoding error: \(error.localizedDescription)"
-                    print("Decoding error details: \(error)")
-                }
-            }
-        }.resume()
-    }
-    
-    private func fetchAttorneyInfo() {
-        let attorneyUids = Set(appointments.map { $0.abogadoUid })
-        fetchUserInfo(uids: attorneyUids, userType: "attorney")
-    }
-    
-    private func fetchClientInfo() {
-        let clientUids = Set(appointments.map { $0.clienteUid })
-        fetchUserInfo(uids: clientUids, userType: "client")
-    }
-    
-    private func fetchUserInfo(uids: Set<String>, userType: String) {
-        let group = DispatchGroup()
-        
-        for uid in uids {
-            group.enter()
-            guard let url = URL(string: "http://localhost:3000/getUser?uid=\(uid)") else {
-                group.leave()
-                continue
-            }
-            
-            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                defer { group.leave() }
-                guard let self = self else { return }
-                
-                if let error = error {
-                    print("Error fetching user data: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let data = data else {
-                    print("No data received for user: \(uid)")
-                    return
-                }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(self.dateFormatter)
-                    
-                    if userType == "attorney" {
-                        let attorney = try decoder.decode(AttorneyBasic.self, from: data)
-                        DispatchQueue.main.async {
-                            self.attorneys[uid] = attorney
-                        }
-                    } else {
-                        let user = try decoder.decode(UserBasic.self, from: data)
-                        DispatchQueue.main.async {
-                            self.clients[uid] = user
-                        }
-                    }
-                } catch {
-                    print("Error decoding user data for \(uid): \(error)")
-                }
-            }.resume()
-        }
-        
-        group.notify(queue: .main) { [weak self] in
-            self?.isLoading = false
-        }
-    }
-}
-
 struct AppointmentsView: View {
     @StateObject private var viewModel = AppointmentViewModel()
     @EnvironmentObject var authModel: AuthModel
@@ -188,21 +73,28 @@ struct AppointmentsView: View {
                 .fontWeight(.heavy)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
-            ForEach(viewModel.appointments.filter { $0.estado == "pendiente" }) { appointment in
-                if authModel.userData.tipo == "cliente" {
-                    CurrentAppointmentsCard(
-                        appointment: appointment,
-                        attorney: viewModel.attorneys[appointment.abogadoUid],
-                        userType: authModel.userData.tipo
-                    )
-                    .padding(.horizontal, 10)
-                } else {
-                    CurrentAppointmentsCard(
-                        appointment: appointment,
-                        client: viewModel.clients[appointment.clienteUid],
-                        userType: authModel.userData.tipo
-                    )
-                    .padding(.horizontal, 10)
+            
+            let currentAppointments = viewModel.appointments.filter { $0.estado == "pendiente" }
+            
+            if currentAppointments.isEmpty {
+                noNextAppointmentView
+            } else {
+                ForEach(currentAppointments) { appointment in
+                    if authModel.userData.tipo == "cliente" {
+                        CurrentAppointmentsCard(
+                            appointment: appointment,
+                            attorney: viewModel.attorneys[appointment.abogadoUid],
+                            userType: authModel.userData.tipo
+                        )
+                        .padding(.horizontal, 10)
+                    } else {
+                        CurrentAppointmentsCard(
+                            appointment: appointment,
+                            client: viewModel.clients[appointment.clienteUid],
+                            userType: authModel.userData.tipo
+                        )
+                        .padding(.horizontal, 10)
+                    }
                 }
             }
         }
@@ -240,6 +132,35 @@ struct AppointmentsView: View {
                 }
             }
         }
+    }
+    
+    private var noNextAppointmentView: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "calendar.badge.exclamationmark")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 60, height: 60)
+                .foregroundColor(Color("btBlue"))
+            
+            Text("No hay cita proxima")
+                .font(CustomFonts.PoppinsBold(size: 16))
+                .foregroundColor(Color.primary)
+            
+            Text("Cuando tengas citas una cita agendada, aparecera aqui.")
+                .font(CustomFonts.MontserratMedium(size: 14))
+                .foregroundColor(Color.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("btBlue"), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .padding(.horizontal, 10)
     }
     
     private var noPreviousAppointmentsView: some View {

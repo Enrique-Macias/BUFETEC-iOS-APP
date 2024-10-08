@@ -1,3 +1,12 @@
+//
+//  CustomCalendarView.swift
+//  BufetecAppPrototipo
+//
+//  Created by Ramiro Uziel Rodriguez Pineda on 08/10/24.
+//
+
+import SwiftUI
+
 struct CustomCalendarView: View {
     @Binding var selectedDate: Date
     var availability: [Date: [String]]

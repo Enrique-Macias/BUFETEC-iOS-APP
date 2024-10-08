@@ -1,3 +1,12 @@
+//
+//  AppointmentViewModel.swift
+//  BufetecAppPrototipo
+//
+//  Created by Ramiro Uziel Rodriguez Pineda on 08/10/24.
+//
+
+import SwiftUI
+
 class AppointmentViewModel: ObservableObject {
     @Published var appointments: [Appointment] = []
     @Published var attorneys: [String: AttorneyBasic] = [:]

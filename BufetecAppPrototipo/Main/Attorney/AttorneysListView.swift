@@ -178,9 +178,10 @@ struct AttorneyCard: View {
 
 class AttorneysViewModel: ObservableObject {
     @Published var attorneys: [Attorney] = []
+    private let baseURL = APIURL.default
     
     func fetchAttorneys() {
-        guard let url = URL(string: "http://localhost:3000/getAttorneys") else { return }
+        guard let url = URL(string: "\(baseURL)/getAttorneys") else { return }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else {

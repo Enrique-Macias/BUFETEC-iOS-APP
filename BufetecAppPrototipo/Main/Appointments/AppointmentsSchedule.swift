@@ -136,7 +136,7 @@ struct AppointmentScheduleView: View {
                         // Mostrar el calendario
                         ScrollView {
                             VStack {
-                                DatePicker("Seleccionar fecha", selection: $selectedCalendarDate, displayedComponents: .date)
+                                DatePicker("Seleccionar fecha", selection: $selectedCalendarDate, in: Date()..., displayedComponents: .date)
                                     .datePickerStyle(GraphicalDatePickerStyle())
                                     .padding()
                                     .onChange(of: selectedCalendarDate) { newDate in
@@ -154,7 +154,7 @@ struct AppointmentScheduleView: View {
                                         ForEach(horariosFecha, id: \.self) { horario in
                                             HStack {
                                                 Text("\(formattedTime(for: horario))")
-                                                    .font(CustomFonts.PoppinsMedium(size: 12))
+                                                    .font(CustomFonts.PoppinsMedium(size: 10))
                                                     .padding(.horizontal)
                                                     .padding(.vertical, 8)
                                                     .background(Color.white)

@@ -163,9 +163,9 @@ struct CreateAppointmentView: View {
                 AppointmentCardInfo(
                     name: attorney.nombre,
                     specialty: attorney.especialidad,
-                    phoneNumber: attorney.celular,
-                    email: attorney.email,
-                    address: "N/A"
+                    phoneNumber: attorney.celular, // Add this to the Attorney model if available
+                    email: attorney.email, // Add this to the Attorney model if available
+                    address: "N/A" // Add this to the Attorney model if available
                 )
                 .padding(.horizontal, 10)
                 
@@ -188,7 +188,7 @@ struct CreateAppointmentView: View {
         }
         .onAppear {
             viewModel.fetchAvailability(for: attorney, month: selectedDate)
-            handleDateChange(for: selectedDate)
+            viewModel.handleDateChange(for: selectedDate)
         }
     }
     
@@ -268,7 +268,7 @@ struct CreateAppointmentView: View {
     }
     
     private func handleDateChange(for date: Date) {
-        viewModel.handleDateChange(for: date, attorney: attorney)
+        viewModel.handleDateChange(for: date)
         selectedTime = nil
     }
     
@@ -295,8 +295,6 @@ struct CreateAppointmentView: View {
         }
     }
 }
-
-
 
 
 // Uncomment this for previews

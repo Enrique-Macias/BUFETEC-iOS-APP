@@ -52,8 +52,8 @@ class CreateAppointmentViewModel: ObservableObject {
             }
         }
     }
-    
-    func handleDateChange(for date: Date, attorney: Attorney) {
+    //     func handleDateChange(for date: Date, attorney: Attorney) {
+    func handleDateChange(for date: Date) {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
         
@@ -99,7 +99,7 @@ class CreateAppointmentViewModel: ObservableObject {
             "estado": "pendiente",
             "notas": "Cita agendada a través de la aplicación"
         ]
-        
+                
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

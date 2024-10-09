@@ -31,11 +31,12 @@
 		41E5B0F32CA9239500D18E89 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 41E5B0F22CA9239500D18E89 /* GoogleSignIn */; };
 		41E5B0F52CA9239500D18E89 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 41E5B0F42CA9239500D18E89 /* GoogleSignInSwift */; };
 		41E5B0F72CA923C300D18E89 /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */; };
-		41E7CB452CAA680A008CBCD9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */; };
 		41EB8AFA2C9D158E00929E28 /* NewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF92C9D158E00929E28 /* NewsListView.swift */; };
 		41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB8AF82C9D158E00929E28 /* FullNewsView.swift */; };
 		41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */; };
 		41F2B1A02C6FB48700DE8B10 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2B19F2C6FB48700DE8B10 /* Appearance.swift */; };
+		EC5A37CF2CB465E40077E2B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC5A37CE2CB465E40077E2B4 /* GoogleService-Info.plist */; };
+		EC5A37D12CB5AA480077E2B4 /* AppointmentsSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5A37D02CB5AA480077E2B4 /* AppointmentsSchedule.swift */; };
 		EC5F1EB02C8C3A6C00EE6697 /* ChatBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */; };
 		EC800CB22C8A31FB00A9FB80 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB12C8A31FB00A9FB80 /* LoadView.swift */; };
 		EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */; };
@@ -58,7 +59,6 @@
 		ECB147242CA49454009D5B70 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECB147232CA49453009D5B70 /* Secrets.plist */; };
 		ECB1472A2CA5D97F009D5B70 /* ClientsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147292CA5D97F009D5B70 /* ClientsListView.swift */; };
 		ECB1472C2CA5D9BD009D5B70 /* ClientProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */; };
-		ECB1472E2CA5F02B009D5B70 /* ShowAppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */; };
 		ECB60E212C8B923F007535DB /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */; };
 		ECB60E232C8B92F6007535DB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */; };
 		ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */; };
@@ -104,11 +104,12 @@
 		41E5B0E62CA9229F00D18E89 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		41E5B0EC2CA922A800D18E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41E5B0F62CA923C300D18E89 /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
-		41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41EB8AF82C9D158E00929E28 /* FullNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNewsView.swift; sourceTree = "<group>"; };
 		41EB8AF92C9D158E00929E28 /* NewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListView.swift; sourceTree = "<group>"; };
 		41F2B19D2C6FB46600DE8B10 /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		41F2B19F2C6FB48700DE8B10 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		EC5A37CE2CB465E40077E2B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EC5A37D02CB5AA480077E2B4 /* AppointmentsSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsSchedule.swift; sourceTree = "<group>"; };
 		EC5F1EAF2C8C3A6C00EE6697 /* ChatBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBot.swift; sourceTree = "<group>"; };
 		EC800CB12C8A31FB00A9FB80 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
 		EC800CB32C8A322200A9FB80 /* OnboardingChatBotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatBotView.swift; sourceTree = "<group>"; };
@@ -131,7 +132,6 @@
 		ECB147232CA49453009D5B70 /* Secrets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		ECB147292CA5D97F009D5B70 /* ClientsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsListView.swift; sourceTree = "<group>"; };
 		ECB1472B2CA5D9BD009D5B70 /* ClientProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProfileView.swift; sourceTree = "<group>"; };
-		ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAppointmentsView.swift; sourceTree = "<group>"; };
 		ECB60E202C8B923F007535DB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECB60E222C8B92F6007535DB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E242C8B9312007535DB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 			children = (
 				41284E382C6AAAB200067460 /* Info.plist */,
 				ECB147232CA49453009D5B70 /* Secrets.plist */,
-				41E7CB442CAA6809008CBCD9 /* GoogleService-Info.plist */,
+				EC5A37CE2CB465E40077E2B4 /* GoogleService-Info.plist */,
 				413606872C6AA42B0006A3EC /* Fonts */,
 				04CAEF8229B3047900A4FB62 /* Main */,
 				04CAEF5C29B3029D00A4FB62 /* Assets.xcassets */,
@@ -323,7 +323,7 @@
 				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
 				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
-				ECB1472D2CA5F02B009D5B70 /* ShowAppointmentsView.swift */,
+				EC5A37D02CB5AA480077E2B4 /* AppointmentsSchedule.swift */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";
@@ -443,8 +443,8 @@
 				ECB147242CA49454009D5B70 /* Secrets.plist in Resources */,
 				ECB60E252C8B9312007535DB /* Montserrat-Medium.ttf in Resources */,
 				04CAEF5D29B3029D00A4FB62 /* Assets.xcassets in Resources */,
+				EC5A37CF2CB465E40077E2B4 /* GoogleService-Info.plist in Resources */,
 				ECB60E3B2C8B955B007535DB /* Nunito-Regular.ttf in Resources */,
-				41E7CB452CAA680A008CBCD9 /* GoogleService-Info.plist in Resources */,
 				ECB60E2D2C8B93E6007535DB /* Poppins-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,6 +492,7 @@
 				4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */,
 				ECB147172CA33056009D5B70 /* OnboardingScreen1View.swift in Sources */,
 				04CAEF5929B3029B00A4FB62 /* BufetecApp.swift in Sources */,
+				EC5A37D12CB5AA480077E2B4 /* AppointmentsSchedule.swift in Sources */,
 				ECB147222CA33715009D5B70 /* CreateAppointmentView.swift in Sources */,
 				41C4255C2CAB44F3001B56E3 /* AttorneyAppointmentView.swift in Sources */,
 				ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */,
@@ -500,7 +501,6 @@
 				ECA58D422C9B4F4D0081ECDE /* AttorneysListView.swift in Sources */,
 				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
 				EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */,
-				ECB1472E2CA5F02B009D5B70 /* ShowAppointmentsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,7 +631,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = XGW3QF7T97;
+				DEVELOPMENT_TEAM = 37A8UMU294;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -648,7 +648,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
+				PRODUCT_BUNDLE_IDENTIFIER = icodecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -668,7 +668,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = XGW3QF7T97;
+				DEVELOPMENT_TEAM = 37A8UMU294;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -685,7 +685,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
+				PRODUCT_BUNDLE_IDENTIFIER = icodecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

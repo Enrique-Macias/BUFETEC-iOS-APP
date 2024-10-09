@@ -75,7 +75,7 @@ struct AppointmentsListView: View {
                 .padding(.horizontal, 10)
                 .padding(.leading, 3)
             
-            let currentAppointments = viewModel.appointments.filter { $0.estado == "pendiente" }
+            let currentAppointments = viewModel.appointments.filter { $0.estado != "completada" && $0.estado != "cancelada" }
             
             if currentAppointments.isEmpty {
                 noNextAppointmentView
@@ -110,7 +110,7 @@ struct AppointmentsListView: View {
                 .padding(.horizontal, 10)
                 .padding(.leading, 3)
             
-            let previousAppointments = viewModel.appointments.filter { $0.estado != "pendiente" }
+            let previousAppointments = viewModel.appointments.filter { $0.estado == "completada" || $0.estado == "cancelada" }
             
             if previousAppointments.isEmpty {
                 noPreviousAppointmentsView
@@ -195,9 +195,13 @@ struct AppointmentsListView: View {
     }
 }
 
+import SwiftUI
+
 struct CurrentAppointmentsCard: View {
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
+    @State private var showCancelConfirmation = false
+    @State private var showCompleteConfirmation = false
     let appointment: Appointment
     let attorney: AttorneyBasic?
     let client: UserBasic?
@@ -221,6 +225,24 @@ struct CurrentAppointmentsCard: View {
         .background(Color("btBlue"))
         .cornerRadius(15)
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .alert(isPresented: $showCancelConfirmation) {
+            Alert(
+                title: Text("Confirmar Cancelación"),
+                message: Text("¿Estás seguro de que quieres cancelar esta cita?"),
+                primaryButton: .destructive(Text("Cancelar Cita")) {
+                    cancelAppointment()
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        .alert("Confirmar Completar", isPresented: $showCompleteConfirmation) {
+            Button("Completar", role: .destructive) {
+                updateAppointmentStatus(to: "completada")
+            }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("¿Estás seguro de que quieres marcar esta cita como completada?")
+        }
     }
     
     private var header: some View {
@@ -247,15 +269,12 @@ struct CurrentAppointmentsCard: View {
                 Menu {
                     ForEach(["pendiente", "confirmada", "cancelada", "completada"], id: \.self) { status in
                         Button(action: {
-                            viewModel.updateAppointmentStatus(
-                                appointmentId: appointment.id,
-                                newStatus: status,
-                                userId: authModel.userData.uid,
-                                userType: authModel.userData.tipo
-                            ) { success in
-                                if !success {
-                                    print("Failed to update appointment status")
-                                }
+                            if status == "cancelada" {
+                                showCancelConfirmation = true
+                            } else if status == "completada" {
+                                showCompleteConfirmation = true
+                            } else {
+                                updateAppointmentStatus(to: status)
                             }
                         }) {
                             Text(status.capitalized)
@@ -343,11 +362,37 @@ struct CurrentAppointmentsCard: View {
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: appointment.fechaHora)
     }
+    
+    private func updateAppointmentStatus(to status: String) {
+        viewModel.updateAppointmentStatus(
+            appointmentId: appointment.id,
+            newStatus: status,
+            userId: authModel.userData.uid,
+            userType: authModel.userData.tipo
+        ) { success in
+            if !success {
+                print("Failed to update appointment status")
+            }
+        }
+    }
+    
+    private func cancelAppointment() {
+        viewModel.cancelAppointment(
+            appointmentId: appointment.id,
+            userId: authModel.userData.uid,
+            userType: authModel.userData.tipo
+        ) { success in
+            if !success {
+                print("Failed to cancel appointment")
+            }
+        }
+    }
 }
 
 struct PreviousAppointmentsCard: View {
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
+    @State private var showDeleteConfirmation = false
     let appointment: Appointment
     let attorney: AttorneyBasic?
     let client: UserBasic?
@@ -380,6 +425,16 @@ struct PreviousAppointmentsCard: View {
                 .stroke(Color("btBlue"), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+        .alert(isPresented: $showDeleteConfirmation) {
+            Alert(
+                title: Text("Confirmar Eliminación"),
+                message: Text("¿Estás seguro de que quieres eliminar esta cita?"),
+                primaryButton: .destructive(Text("Eliminar")) {
+                    deleteAppointment()
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
     
     private var header: some View {
@@ -394,32 +449,16 @@ struct PreviousAppointmentsCard: View {
     
     private var statusView: some View {
         Group {
-            if userType == "abogado" {
-                Menu {
-                    ForEach(["pendiente", "confirmada", "cancelada", "completada"], id: \.self) { status in
-                        Button(action: {
-                            viewModel.updateAppointmentStatus(
-                                appointmentId: appointment.id,
-                                newStatus: status,
-                                userId: authModel.userData.uid,
-                                userType: authModel.userData.tipo
-                            ) { success in
-                                if !success {
-                                    print("Failed to update appointment status")
-                                }
-                            }
-                        }) {
-                            Text(status.capitalized)
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Text(appointment.estado.capitalized)
-                            .font(CustomFonts.MontserratMedium(size: 12))
-                            .foregroundColor(Color.secondary)
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 10))
-                            .foregroundColor(Color.secondary)
+            if userType == "abogado" && (appointment.estado == "cancelada" || appointment.estado == "completada") {
+                HStack {
+                    Text(appointment.estado.capitalized)
+                        .font(CustomFonts.MontserratMedium(size: 12))
+                        .foregroundColor(Color.secondary)
+                    Button(action: {
+                        showDeleteConfirmation = true
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(Color("btBlue"))
                     }
                 }
             } else {
@@ -429,7 +468,7 @@ struct PreviousAppointmentsCard: View {
             }
         }
     }
-
+    
     private var userInfo: some View {
         VStack(alignment: .leading, spacing: 5) {
             if userType == "cliente" {
@@ -451,7 +490,7 @@ struct PreviousAppointmentsCard: View {
             }
         }
     }
-        
+    
     private var dateInfo: some View {
         HStack {
             Image(systemName: "calendar")
@@ -482,6 +521,18 @@ struct PreviousAppointmentsCard: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: appointment.fechaHora)
+    }
+    
+    private func deleteAppointment() {
+        viewModel.deleteAppointment(
+            appointmentId: appointment.id,
+            userId: authModel.userData.uid,
+            userType: authModel.userData.tipo
+        ) { success in
+            if !success {
+                print("Failed to delete appointment")
+            }
+        }
     }
 }
 

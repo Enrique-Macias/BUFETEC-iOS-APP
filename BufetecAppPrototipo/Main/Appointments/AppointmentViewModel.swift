@@ -1,10 +1,3 @@
-//
-//  AppointmentViewModel.swift
-//  BufetecAppPrototipo
-//
-//  Created by Ramiro Uziel Rodriguez Pineda on 08/10/24.
-//
-
 import SwiftUI
 
 class AppointmentViewModel: ObservableObject {
@@ -23,44 +16,79 @@ class AppointmentViewModel: ObservableObject {
         return formatter
     }()
     
+    // New generic request function
+    private func performRequest<T: Decodable>(
+        endpoint: String,
+        method: String = "GET",
+        body: [String: Any]? = nil,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
+        guard let url = URL(string: "\(baseURL)/\(endpoint)") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        
+        if let body = body {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            } catch {
+                completion(.failure(error))
+                return
+            }
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                }
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .formatted(self.dateFormatter)
+                let decodedData = try decoder.decode(T.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(decodedData))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }.resume()
+    }
+    
     func fetchAppointments(userId: String, userType: String) {
         isLoading = true
         errorMessage = nil
         
-        guard let url = URL(string: "\(baseURL)/getAppointments?userId=\(userId)&userType=\(userType)") else {
-            errorMessage = "Invalid URL"
-            isLoading = false
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                if let error = error {
-                    self.errorMessage = "Network error: \(error.localizedDescription)"
-                    return
+        performRequest(endpoint: "getAppointments?userId=\(userId)&userType=\(userType)") { (result: Result<[Appointment], Error>) in
+            self.isLoading = false
+            switch result {
+            case .success(let fetchedAppointments):
+                self.appointments = fetchedAppointments
+                if userType == "cliente" {
+                    self.fetchAttorneyInfo()
+                } else {
+                    self.fetchClientInfo()
                 }
-                
-                guard let data = data else {
-                    self.errorMessage = "No data received"
-                    return
-                }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(self.dateFormatter)
-                    self.appointments = try decoder.decode([Appointment].self, from: data)
-                    if userType == "cliente" {
-                        self.fetchAttorneyInfo()
-                    } else {
-                        self.fetchClientInfo()
-                    }
-                } catch {
-                    self.errorMessage = "Decoding error: \(error.localizedDescription)"
-                    print("Decoding error details: \(error)")
-                }
+            case .failure(let error):
+                self.errorMessage = "Error fetching appointments: \(error.localizedDescription)"
             }
-        }.resume()
+        }
     }
     
     private func fetchAttorneyInfo() {
@@ -78,48 +106,87 @@ class AppointmentViewModel: ObservableObject {
         
         for uid in uids {
             group.enter()
-            guard let url = URL(string: "\(baseURL)/getUser?uid=\(uid)") else {
-                group.leave()
-                continue
-            }
             
-            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                defer { group.leave() }
-                guard let self = self else { return }
-                
-                if let error = error {
-                    print("Error fetching user data: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let data = data else {
-                    print("No data received for user: \(uid)")
-                    return
-                }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(self.dateFormatter)
-                    
-                    if userType == "attorney" {
-                        let attorney = try decoder.decode(AttorneyBasic.self, from: data)
+            if userType == "attorney" {
+                performRequest(endpoint: "getUser?uid=\(uid)") { (result: Result<AttorneyBasic, Error>) in
+                    defer { group.leave() }
+                    switch result {
+                    case .success(let attorney):
                         DispatchQueue.main.async {
                             self.attorneys[uid] = attorney
                         }
-                    } else {
-                        let user = try decoder.decode(UserBasic.self, from: data)
+                    case .failure(let error):
+                        print("Error fetching attorney data for \(uid): \(error)")
+                    }
+                }
+            } else {
+                performRequest(endpoint: "getUser?uid=\(uid)") { (result: Result<UserBasic, Error>) in
+                    defer { group.leave() }
+                    switch result {
+                    case .success(let user):
                         DispatchQueue.main.async {
                             self.clients[uid] = user
                         }
+                    case .failure(let error):
+                        print("Error fetching client data for \(uid): \(error)")
                     }
-                } catch {
-                    print("Error decoding user data for \(uid): \(error)")
                 }
-            }.resume()
+            }
         }
         
         group.notify(queue: .main) { [weak self] in
             self?.isLoading = false
         }
     }
+    
+    func updateAppointmentStatus(appointmentId: String, newStatus: String, userId: String, userType: String, completion: @escaping (Bool) -> Void) {
+        let updateData: [String: Any] = [
+            "_id": appointmentId,
+            "estado": newStatus
+        ]
+        
+        performRequest(endpoint: "updateAppointment", method: "PUT", body: updateData) { (result: Result<EmptyResponse, Error>) in
+            switch result {
+            case .success:
+                self.fetchAppointments(userId: userId, userType: userType)
+                completion(true)
+            case .failure(let error):
+                self.errorMessage = "Error updating appointment: \(error.localizedDescription)"
+                completion(false)
+            }
+        }
+    }
+    
+    func cancelAppointment(appointmentId: String, userId: String, userType: String, completion: @escaping (Bool) -> Void) {
+        let updateData: [String: Any] = ["_id": appointmentId]
+        
+        performRequest(endpoint: "cancelAppointment", method: "PUT", body: updateData) { (result: Result<EmptyResponse, Error>) in
+            switch result {
+            case .success:
+                self.fetchAppointments(userId: userId, userType: userType)
+                completion(true)
+            case .failure(let error):
+                self.errorMessage = "Error cancelling appointment: \(error.localizedDescription)"
+                completion(false)
+            }
+        }
+    }
+    
+    func deleteAppointment(appointmentId: String, userId: String, userType: String, completion: @escaping (Bool) -> Void) {
+        let deleteData: [String: Any] = ["_id": appointmentId]
+        
+        performRequest(endpoint: "deleteAppointment", method: "DELETE", body: deleteData) { (result: Result<EmptyResponse, Error>) in
+            switch result {
+            case .success:
+                self.fetchAppointments(userId: userId, userType: userType)
+                completion(true)
+            case .failure(let error):
+                self.errorMessage = "Error deleting appointment: \(error.localizedDescription)"
+                completion(false)
+            }
+        }
+    }
 }
+
+// Helper struct for empty responses
+struct EmptyResponse: Codable {}

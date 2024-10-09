@@ -50,7 +50,7 @@
 		ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB146FC2CA1F401009D5B70 /* ClientView.swift */; };
 		ECB146FF2CA20516009D5B70 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB146FE2CA20516009D5B70 /* ResourcesView.swift */; };
 		ECB147012CA2056C009D5B70 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147002CA2056C009D5B70 /* FAQView.swift */; };
-		ECB147072CA33015009D5B70 /* AppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147052CA33015009D5B70 /* AppointmentsView.swift */; };
+		ECB147072CA33015009D5B70 /* AppointmentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB147052CA33015009D5B70 /* AppointmentsListView.swift */; };
 		ECB147152CA33056009D5B70 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470A2CA33056009D5B70 /* LoginView.swift */; };
 		ECB147172CA33056009D5B70 /* OnboardingScreen1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470D2CA33056009D5B70 /* OnboardingScreen1View.swift */; };
 		ECB147182CA33056009D5B70 /* OnboardingScreen2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1470E2CA33056009D5B70 /* OnboardingScreen2View.swift */; };
@@ -127,7 +127,7 @@
 		ECB146FC2CA1F401009D5B70 /* ClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientView.swift; sourceTree = "<group>"; };
 		ECB146FE2CA20516009D5B70 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		ECB147002CA2056C009D5B70 /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
-		ECB147052CA33015009D5B70 /* AppointmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentsView.swift; sourceTree = "<group>"; };
+		ECB147052CA33015009D5B70 /* AppointmentsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentsListView.swift; sourceTree = "<group>"; };
 		ECB1470A2CA33056009D5B70 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		ECB1470D2CA33056009D5B70 /* OnboardingScreen1View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen1View.swift; sourceTree = "<group>"; };
 		ECB1470E2CA33056009D5B70 /* OnboardingScreen2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen2View.swift; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 		ECB147062CA33015009D5B70 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
-				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
+				ECB147052CA33015009D5B70 /* AppointmentsListView.swift */,
 				418275792CB5AD5700697F8E /* AppointmentViewModel.swift */,
 				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
@@ -490,7 +490,7 @@
 				418275802CB5B32000697F8E /* CustomCalendarView.swift in Sources */,
 				ECB146FF2CA20516009D5B70 /* ResourcesView.swift in Sources */,
 				4182757C2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift in Sources */,
-				ECB147072CA33015009D5B70 /* AppointmentsView.swift in Sources */,
+				ECB147072CA33015009D5B70 /* AppointmentsListView.swift in Sources */,
 				EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */,
 				ECB147202CA33076009D5B70 /* ProfileView.swift in Sources */,
 				ECB147012CA2056C009D5B70 /* FAQView.swift in Sources */,

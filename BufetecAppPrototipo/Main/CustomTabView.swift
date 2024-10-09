@@ -69,7 +69,7 @@ struct CustomTabView: View {
                 .tag(TabbedItems.favorite.rawValue)
                 
                 NavigationStack {
-                    AppointmentsView()
+                    AppointmentsListView()
                 }
                 .tag(TabbedItems.chat.rawValue)
                 

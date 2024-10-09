@@ -10,6 +10,7 @@ struct BufetecApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var authModel = AuthModel()
     @StateObject private var appState = AppState()
+    @StateObject private var appointmentViewModel = AppointmentViewModel()
     @State var appearanceManager = AppearanceManager()
     
     var body: some Scene {
@@ -17,6 +18,7 @@ struct BufetecApp: App {
             ContentView()
                 .environmentObject(authModel)
                 .environmentObject(appState)
+                .environmentObject(appointmentViewModel)
                 .environment(appearanceManager)
                 .onAppear {
                     appearanceManager.initAppearanceStyle()

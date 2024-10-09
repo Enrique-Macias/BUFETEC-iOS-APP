@@ -40,47 +40,50 @@ struct ClientView: View {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
-                            Text("Listos para ayudarte")
-                                .font(CustomFonts.PoppinsBold(size: 25))
-                                .foregroundColor(.white)
-                            
-                            Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.")
-                                .font(CustomFonts.MontserratRegular(size: 14))
-                                .foregroundColor(.white)
-                                .lineSpacing(5)
-                            
-                            HStack {
-                                NavigationLink(destination: AttorneysListView()) {
-                                    HStack {
-                                        Text("Agendar Cita")
-                                            .font(CustomFonts.PoppinsSemiBold(size: 14))
-                                            .foregroundColor(Color("btBlue"))
-                                        
-                                        Image(systemName: "arrow.right")
-                                            .foregroundColor(Color("btBlue"))
-                                    }
-                                    .padding()
-                                    .background(Color.white)
-                                    .cornerRadius(15)
-                                }
-                                .padding(.top, 15)
-                                .padding(.bottom, 10)
-                            }
-                        }
-                        .padding(25)
-                        .background(Color("btBlue"))
-                        .cornerRadius(15)
-                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-                        .padding()
-                        
-                        VStack(alignment: .leading, spacing: 30) {
                             VStack(spacing: 30) {
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Conoce a nuestros abogados",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: AttorneysListView(),
-                                           tabIndex: nil)
+                                VStack(alignment: .leading, spacing: 15) {
+                                    Text("Listos para ayudarte")
+                                        .font(CustomFonts.PoppinsBold(size: 25))
+                                        .foregroundColor(.white)
+                                    
+                                    Text("Conoce a nuestros abogados y agenda una cita.")
+                                        .font(CustomFonts.MontserratRegular(size: 14))
+                                        .foregroundColor(.white)
+                                        .lineSpacing(5)
+                                    
+                                    HStack {
+                                        NavigationLink(destination: AttorneysListView()) {
+                                            HStack {
+                                                Text("Agendar Cita")
+                                                    .font(CustomFonts.PoppinsSemiBold(size: 14))
+                                                    .foregroundColor(Color("btBlue"))
+                                                
+                                                Image(systemName: "arrow.right")
+                                                    .foregroundColor(Color("btBlue"))
+                                            }
+                                            .padding()
+                                            .background(Color.white)
+                                            .cornerRadius(15)
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.top, 15)
+                                        .padding(.bottom, 10)
+                                    }
+                                }
+                                .padding(18)
+                                .background(Color("btBlue"))
+                                .cornerRadius(15)
+                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+                                
+                                
+                                
+                                //                                CustomCard(selectedTab: $selectedTab,
+                                //                                           title: "Conoce a nuestros abogados",
+                                //                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                //                                           buttonText: "Visitar",
+                                //                                           destination: AttorneysListView(),
+                                //                                           tabIndex: nil)
+                                
                                 
                                 CustomCard(selectedTab: $selectedTab,
                                            title: "Procesos legales",

@@ -17,6 +17,11 @@
 		414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414665642CAA2A510049D153 /* AdditionalInfoView.swift */; };
 		414E9D342CB0BB8C0004EF9D /* Attorney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414E9D332CB0BB8C0004EF9D /* Attorney.swift */; };
 		4179019C2C6FB356006D0431 /* AppearanceSelectionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */; };
+		418275772CB5A85700697F8E /* APIURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418275762CB5A85700697F8E /* APIURL.swift */; };
+		4182757A2CB5AD5700697F8E /* AppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418275792CB5AD5700697F8E /* AppointmentViewModel.swift */; };
+		4182757C2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4182757B2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift */; };
+		4182757E2CB5ADC800697F8E /* AttorneysViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4182757D2CB5ADC800697F8E /* AttorneysViewModel.swift */; };
+		418275802CB5B32000697F8E /* CustomCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4182757F2CB5B32000697F8E /* CustomCalendarView.swift */; };
 		41AD45F22C9D274A001E43E2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41AD45F12C9D274A001E43E2 /* Kingfisher */; };
 		41C4255C2CAB44F3001B56E3 /* AttorneyAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */; };
 		41CB1FFC2CAA0CAD00FC0EC5 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */; };
@@ -95,6 +100,11 @@
 		414665642CAA2A510049D153 /* AdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoView.swift; sourceTree = "<group>"; };
 		414E9D332CB0BB8C0004EF9D /* Attorney.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attorney.swift; sourceTree = "<group>"; };
 		4179019B2C6FB356006D0431 /* AppearanceSelectionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionPicker.swift; sourceTree = "<group>"; };
+		418275762CB5A85700697F8E /* APIURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIURL.swift; sourceTree = "<group>"; };
+		418275792CB5AD5700697F8E /* AppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewModel.swift; sourceTree = "<group>"; };
+		4182757B2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAppointmentViewModel.swift; sourceTree = "<group>"; };
+		4182757D2CB5ADC800697F8E /* AttorneysViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttorneysViewModel.swift; sourceTree = "<group>"; };
+		4182757F2CB5B32000697F8E /* CustomCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarView.swift; sourceTree = "<group>"; };
 		41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttorneyAppointmentView.swift; sourceTree = "<group>"; };
 		41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		41D581532C6AB35D00E463CD /* Cosen-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Cosen-Medium.ttf"; sourceTree = "<group>"; };
@@ -221,6 +231,7 @@
 				41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */,
 				4169444C2CAE254E00AAC48C /* Lawyer */,
 				4169444E2CAE25AB00AAC48C /* Client */,
+				418275782CB5AD2C00697F8E /* Attorney */,
 				ECB147062CA33015009D5B70 /* Appointments */,
 				ECB1471E2CA33076009D5B70 /* Profile */,
 				EC800CB02C8A31BE00A9FB80 /* Chatbot */,
@@ -287,12 +298,23 @@
 			path = Client;
 			sourceTree = "<group>";
 		};
+		418275782CB5AD2C00697F8E /* Attorney */ = {
+			isa = PBXGroup;
+			children = (
+				ECA58D412C9B4F4D0081ECDE /* AttorneysListView.swift */,
+				4182757D2CB5ADC800697F8E /* AttorneysViewModel.swift */,
+				414E9D332CB0BB8C0004EF9D /* Attorney.swift */,
+			);
+			path = Attorney;
+			sourceTree = "<group>";
+		};
 		41E5B0E12CA9229C00D18E89 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
 				41E5B0E32CA9229F00D18E89 /* AuthenticationView.swift */,
 				ECB1470A2CA33056009D5B70 /* LoginView.swift */,
 				41E5B0E62CA9229F00D18E89 /* SignUpView.swift */,
+				418275762CB5A85700697F8E /* APIURL.swift */,
 				41E5B0E22CA9229F00D18E89 /* AuthenticatedView.swift */,
 				414665642CAA2A510049D153 /* AdditionalInfoView.swift */,
 				41E5B0E42CA9229F00D18E89 /* AuthModel.swift */,
@@ -318,12 +340,13 @@
 		ECB147062CA33015009D5B70 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
-				ECA58D412C9B4F4D0081ECDE /* AttorneysListView.swift */,
-				414E9D332CB0BB8C0004EF9D /* Attorney.swift */,
 				ECB147052CA33015009D5B70 /* AppointmentsView.swift */,
+				418275792CB5AD5700697F8E /* AppointmentViewModel.swift */,
 				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
 				EC5A37D02CB5AA480077E2B4 /* AppointmentsSchedule.swift */,
+				4182757F2CB5B32000697F8E /* CustomCalendarView.swift */,
+				4182757B2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";
@@ -467,7 +490,9 @@
 				ECB147182CA33056009D5B70 /* OnboardingScreen2View.swift in Sources */,
 				ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */,
 				41F2B19E2C6FB46600DE8B10 /* AppearanceManager.swift in Sources */,
+				418275802CB5B32000697F8E /* CustomCalendarView.swift in Sources */,
 				ECB146FF2CA20516009D5B70 /* ResourcesView.swift in Sources */,
+				4182757C2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift in Sources */,
 				ECB147072CA33015009D5B70 /* AppointmentsView.swift in Sources */,
 				EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */,
 				ECB147202CA33076009D5B70 /* ProfileView.swift in Sources */,
@@ -484,6 +509,7 @@
 				41E5B0E72CA9229F00D18E89 /* SignUpView.swift in Sources */,
 				41E5B0E82CA9229F00D18E89 /* AuthModel.swift in Sources */,
 				414E9D342CB0BB8C0004EF9D /* Attorney.swift in Sources */,
+				418275772CB5A85700697F8E /* APIURL.swift in Sources */,
 				41E5B0E92CA9229F00D18E89 /* AuthenticatedView.swift in Sources */,
 				41E5B0EB2CA9229F00D18E89 /* AuthenticationView.swift in Sources */,
 				41EB8AFB2C9D158E00929E28 /* FullNewsView.swift in Sources */,
@@ -498,7 +524,9 @@
 				ECB146FD2CA1F401009D5B70 /* ClientView.swift in Sources */,
 				414665652CAA2A510049D153 /* AdditionalInfoView.swift in Sources */,
 				ECE240532C9005E000F84D0D /* APIKey.swift in Sources */,
+				4182757A2CB5AD5700697F8E /* AppointmentViewModel.swift in Sources */,
 				ECA58D422C9B4F4D0081ECDE /* AttorneysListView.swift in Sources */,
+				4182757E2CB5ADC800697F8E /* AttorneysViewModel.swift in Sources */,
 				ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */,
 				EC8ABC7A2C9116C5008C42EB /* ChatBubble.swift in Sources */,
 			);

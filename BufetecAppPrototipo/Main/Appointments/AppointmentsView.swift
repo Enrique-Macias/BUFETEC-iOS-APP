@@ -68,11 +68,12 @@ struct AppointmentsView: View {
     
     private var currentAppointments: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Cita proxima")
+            Text("Citas proximas")
                 .font(.system(size: 18))
                 .fontWeight(.heavy)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
+                .padding(.leading, 3)
             
             let currentAppointments = viewModel.appointments.filter { $0.estado == "pendiente" }
             
@@ -107,6 +108,7 @@ struct AppointmentsView: View {
                 .fontWeight(.heavy)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
+                .padding(.leading, 3)
             
             let previousAppointments = viewModel.appointments.filter { $0.estado != "pendiente" }
             
@@ -142,11 +144,11 @@ struct AppointmentsView: View {
                 .frame(width: 60, height: 60)
                 .foregroundColor(Color("btBlue"))
             
-            Text("No hay cita proxima")
+            Text("No hay citas proximas")
                 .font(CustomFonts.PoppinsBold(size: 16))
                 .foregroundColor(Color.primary)
             
-            Text("Cuando tengas citas una cita agendada, aparecera aqui.")
+            Text("Cuando tengas citas agendadas, aparecera aqui.")
                 .font(CustomFonts.MontserratMedium(size: 14))
                 .foregroundColor(Color.secondary)
                 .multilineTextAlignment(.center)

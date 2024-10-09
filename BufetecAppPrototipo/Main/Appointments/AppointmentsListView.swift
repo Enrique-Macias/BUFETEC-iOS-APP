@@ -35,8 +35,8 @@ struct UserBasic: Codable {
     let tipo: String
 }
 
-struct AppointmentsView: View {
-    @StateObject private var viewModel = AppointmentViewModel()
+struct AppointmentsListView: View {
+    @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
     
     var body: some View {
@@ -196,6 +196,8 @@ struct AppointmentsView: View {
 }
 
 struct CurrentAppointmentsCard: View {
+    @EnvironmentObject var viewModel: AppointmentViewModel
+    @EnvironmentObject var authModel: AuthModel
     let appointment: Appointment
     let attorney: AttorneyBasic?
     let client: UserBasic?
@@ -228,9 +230,7 @@ struct CurrentAppointmentsCard: View {
                     .font(CustomFonts.PoppinsBold(size: 18))
                     .foregroundColor(Color.white)
                 
-                Text(appointment.estado.capitalized)
-                    .font(CustomFonts.MontserratMedium(size: 12))
-                    .foregroundColor(Color.white)
+                statusView
             }
             Spacer()
             Image(systemName: "person.circle.fill")
@@ -238,6 +238,44 @@ struct CurrentAppointmentsCard: View {
                 .frame(width: 40, height: 40)
                 .foregroundColor(Color.white)
                 .offset(y: 3)
+        }
+    }
+    
+    private var statusView: some View {
+        Group {
+            if userType == "abogado" {
+                Menu {
+                    ForEach(["pendiente", "confirmada", "cancelada", "completada"], id: \.self) { status in
+                        Button(action: {
+                            viewModel.updateAppointmentStatus(
+                                appointmentId: appointment.id,
+                                newStatus: status,
+                                userId: authModel.userData.uid,
+                                userType: authModel.userData.tipo
+                            ) { success in
+                                if !success {
+                                    print("Failed to update appointment status")
+                                }
+                            }
+                        }) {
+                            Text(status.capitalized)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(appointment.estado.capitalized)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                            .foregroundColor(Color.white)
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10))
+                            .foregroundColor(Color.white)
+                    }
+                }
+            } else {
+                Text(appointment.estado.capitalized)
+                    .font(CustomFonts.MontserratMedium(size: 12))
+                    .foregroundColor(Color.white)
+            }
         }
     }
     
@@ -308,6 +346,8 @@ struct CurrentAppointmentsCard: View {
 }
 
 struct PreviousAppointmentsCard: View {
+    @EnvironmentObject var viewModel: AppointmentViewModel
+    @EnvironmentObject var authModel: AuthModel
     let appointment: Appointment
     let attorney: AttorneyBasic?
     let client: UserBasic?
@@ -348,12 +388,48 @@ struct PreviousAppointmentsCard: View {
                 .font(CustomFonts.PoppinsBold(size: 18))
                 .foregroundColor(Color.primary)
             
-            Text(appointment.estado.capitalized)
-                .font(CustomFonts.MontserratMedium(size: 12))
-                .foregroundColor(Color.secondary)
+            statusView
         }
     }
     
+    private var statusView: some View {
+        Group {
+            if userType == "abogado" {
+                Menu {
+                    ForEach(["pendiente", "confirmada", "cancelada", "completada"], id: \.self) { status in
+                        Button(action: {
+                            viewModel.updateAppointmentStatus(
+                                appointmentId: appointment.id,
+                                newStatus: status,
+                                userId: authModel.userData.uid,
+                                userType: authModel.userData.tipo
+                            ) { success in
+                                if !success {
+                                    print("Failed to update appointment status")
+                                }
+                            }
+                        }) {
+                            Text(status.capitalized)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(appointment.estado.capitalized)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                            .foregroundColor(Color.secondary)
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10))
+                            .foregroundColor(Color.secondary)
+                    }
+                }
+            } else {
+                Text(appointment.estado.capitalized)
+                    .font(CustomFonts.MontserratMedium(size: 12))
+                    .foregroundColor(Color.secondary)
+            }
+        }
+    }
+
     private var userInfo: some View {
         VStack(alignment: .leading, spacing: 5) {
             if userType == "cliente" {
@@ -410,7 +486,8 @@ struct PreviousAppointmentsCard: View {
 }
 
 #Preview {
-    AppointmentsView()
+    AppointmentsListView()
         .environment(AppearanceManager())
         .environmentObject(AuthModel())
+        .environmentObject(AppointmentViewModel())
 }

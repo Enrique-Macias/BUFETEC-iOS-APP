@@ -2,7 +2,6 @@ import SwiftUI
 
 struct WelcomeScreenView: View {
     @EnvironmentObject var appState: AppState
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
     @State private var showBufetecApp = false
@@ -61,9 +60,6 @@ struct WelcomeScreenView: View {
                 Spacer()
             }
         }
-        .onAppear {
-            appearanceManager.initAppearanceStyle()
-        }
     }
     
     // Método que genera el texto con estilos usando AttributedString
@@ -90,6 +86,5 @@ struct WelcomeScreenView: View {
 
 #Preview {
     WelcomeScreenView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

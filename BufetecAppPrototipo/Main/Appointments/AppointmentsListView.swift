@@ -36,6 +36,7 @@ struct UserBasic: Codable {
 }
 
 struct AppointmentsListView: View {
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
     
@@ -137,41 +138,42 @@ struct AppointmentsListView: View {
     }
     
     private var noNextAppointmentView: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             Image(systemName: "calendar.badge.exclamationmark")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 60, height: 60)
-                .foregroundColor(Color("btBlue"))
+                .foregroundColor(Color.accentColor)
             
             Text("No hay citas proximas")
                 .font(CustomFonts.PoppinsBold(size: 16))
                 .foregroundColor(Color.primary)
             
-            Text("Cuando tengas citas agendadas, aparecera aqui.")
+            Text("Cuando tengas citas agendadas, apareceran aqui.")
                 .font(CustomFonts.MontserratMedium(size: 14))
                 .foregroundColor(Color.secondary)
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: 300)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.white)
+        .background(colorScheme == .light ? Color.white : Color.gray.opacity(0.15))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
         .padding(.horizontal, 10)
     }
     
     private var noPreviousAppointmentsView: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             Image(systemName: "calendar.badge.exclamationmark")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 60, height: 60)
-                .foregroundColor(Color("btBlue"))
+                .foregroundColor(Color.accentColor)
             
             Text("No hay citas previas")
                 .font(CustomFonts.PoppinsBold(size: 16))
@@ -181,14 +183,15 @@ struct AppointmentsListView: View {
                 .font(CustomFonts.MontserratMedium(size: 14))
                 .foregroundColor(Color.secondary)
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: 300)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.white)
+        .background(colorScheme == .light ? Color.white : Color.gray.opacity(0.15))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
         .padding(.horizontal, 10)
@@ -198,6 +201,7 @@ struct AppointmentsListView: View {
 import SwiftUI
 
 struct CurrentAppointmentsCard: View {
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
     @State private var showCancelConfirmation = false
@@ -222,8 +226,12 @@ struct CurrentAppointmentsCard: View {
             dateTime
         }
         .padding(20)
-        .background(Color("btBlue"))
+        .background(colorScheme == .light ? Color.accentColor : Color.gray.opacity(0.15))
         .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
         .alert(isPresented: $showCancelConfirmation) {
             Alert(
@@ -343,10 +351,10 @@ struct CurrentAppointmentsCard: View {
                 .font(CustomFonts.MontserratMedium(size: 12))
             Spacer()
         }
-        .foregroundStyle(Color("btBlue"))
+        .foregroundStyle(colorScheme == .light ? Color.accentColor : Color.primary)
         .padding(.vertical, 10)
+        .background(colorScheme == .light ? Color.white : Color.gray.opacity(0.15))
         .frame(maxWidth: .infinity)
-        .background(.white)
         .cornerRadius(10)
         .padding(.top, 10)
     }
@@ -390,6 +398,7 @@ struct CurrentAppointmentsCard: View {
 }
 
 struct PreviousAppointmentsCard: View {
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
     @State private var showDeleteConfirmation = false
@@ -418,11 +427,11 @@ struct PreviousAppointmentsCard: View {
             }
         }
         .padding(20)
-        .background(Color.white)
+        .background(colorScheme == .light ? Color.accentColor : Color.gray.opacity(0.15))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
         .alert(isPresented: $showDeleteConfirmation) {
@@ -458,7 +467,7 @@ struct PreviousAppointmentsCard: View {
                         showDeleteConfirmation = true
                     }) {
                         Image(systemName: "trash")
-                            .foregroundColor(Color("btBlue"))
+                            .foregroundColor(Color.accentColor)
                     }
                 }
             } else {
@@ -494,7 +503,7 @@ struct PreviousAppointmentsCard: View {
     private var dateInfo: some View {
         HStack {
             Image(systemName: "calendar")
-                .foregroundColor(Color("btBlue"))
+                .foregroundStyle(colorScheme == .light ? Color.accentColor : Color.primary)
             Text(formattedDate)
                 .font(CustomFonts.MontserratMedium(size: 12))
                 .foregroundColor(Color.primary)
@@ -504,7 +513,7 @@ struct PreviousAppointmentsCard: View {
     private var timeInfo: some View {
         HStack {
             Image(systemName: "clock")
-                .foregroundColor(Color("btBlue"))
+                .foregroundStyle(colorScheme == .light ? Color.accentColor : Color.primary)
             Text(formattedTime)
                 .font(CustomFonts.MontserratMedium(size: 12))
                 .foregroundColor(Color.primary)

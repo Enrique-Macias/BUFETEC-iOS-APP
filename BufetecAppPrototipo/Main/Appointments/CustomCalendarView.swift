@@ -69,7 +69,7 @@ struct CustomCalendarView: View {
                     VStack {
                         Text("\(calendar.component(.day, from: day.date))")
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(isPastDate(day.date) ? Color.gray.opacity(0.5) : (calendar.isDate(selectedDate, inSameDayAs: day.date) ? Color.white : Color.black))
+                            .foregroundColor(isPastDate(day.date) ? Color.gray.opacity(0.5) : (calendar.isDate(selectedDate, inSameDayAs: day.date) ? Color.white : Color.primary))
                             .frame(width: 32, height: 32)
                             .background(isPastDate(day.date) ? Color.clear : (calendar.isDate(selectedDate, inSameDayAs: day.date) ? Color("btBlue") : Color.clear))
                             .cornerRadius(16)

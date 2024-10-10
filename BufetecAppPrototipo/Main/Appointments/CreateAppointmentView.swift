@@ -6,6 +6,7 @@ struct CalendarDay: Identifiable {
 }
 
 struct AppointmentCardInfo: View {
+    @Environment(\.colorScheme) var colorScheme
     let name: String
     let specialty: String
     let phoneNumber: String
@@ -16,10 +17,9 @@ struct AppointmentCardInfo: View {
         VStack(alignment: .leading, spacing: 10) {
             header
             contactInfo
-            addressInfo
         }
         .padding()
-        .background(Color.white)
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
@@ -78,6 +78,7 @@ struct AppointmentCardInfo: View {
 }
 
 struct ConfirmationAlertView: View {
+    @Environment(\.colorScheme) var colorScheme
     let name: String
     let selectedDate: Date
     let selectedTime: String
@@ -138,13 +139,14 @@ struct ConfirmationAlertView: View {
         }
         .padding()
         .frame(width: 300, height: 400)
-        .background(Color.white)
+        .background(Color("btBackground"))
         .cornerRadius(20)
     }
 }
 
 struct CreateAppointmentView: View {
     let attorney: Attorney
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authModel: AuthModel
     @StateObject private var viewModel = CreateAppointmentViewModel()
@@ -175,6 +177,7 @@ struct CreateAppointmentView: View {
             }
             .padding(.bottom, 40)
         }
+        .background(Color("btBackground"))
         .navigationTitle("Agendar Cita")
         .alert(isPresented: $showingErrorAlert) {
             Alert(
@@ -232,7 +235,7 @@ struct CreateAppointmentView: View {
                                 .font(CustomFonts.PoppinsSemiBold(size: 16))
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(selectedTime == time ? Color("btBlue") : Color.white)
+                                .background(selectedTime == time ? Color("btBlue") : (colorScheme == .light ? Color.white : Color.clear))
                                 .foregroundColor(selectedTime == time ? Color.white : Color("btBlue"))
                                 .cornerRadius(10)
                                 .overlay(

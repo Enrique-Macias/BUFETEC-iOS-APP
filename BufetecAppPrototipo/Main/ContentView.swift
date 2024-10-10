@@ -1,18 +1,30 @@
-//
-//  ContentView.swift
-//  BufetecAppPrototipo
-//
-//  Created by Ramiro Uziel Rodriguez Pineda on 10/10/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Group {
+                if hasSeenOnboarding {
+                    AuthenticationView()
+                } else {
+                    OnboardingView()
+                }
+            }
+            .opacity(appState.isShowingSplash ? 0 : 1)
+            .animation(.easeIn(duration: 0.3), value: appState.isShowingSplash)
+            
+            if appState.isShowingSplash {
+                SplashScreenView()
+            }
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AuthModel())
+        .environmentObject(AppState())
 }

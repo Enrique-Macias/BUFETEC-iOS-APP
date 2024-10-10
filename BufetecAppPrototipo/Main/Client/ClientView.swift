@@ -43,11 +43,11 @@ struct ClientView: View {
                             VStack(spacing: 30) {
                                 VStack(alignment: .leading, spacing: 15) {
                                     Text("Listos para ayudarte")
-                                        .font(CustomFonts.PoppinsBold(size: 25))
-                                        .foregroundColor(.white)
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
                                     
                                     Text("Conoce a nuestros abogados y agenda una cita.")
-                                        .font(CustomFonts.MontserratRegular(size: 14))
+                                        .font(.system(size: 16))
                                         .foregroundColor(.white)
                                         .lineSpacing(5)
                                     
@@ -55,14 +55,18 @@ struct ClientView: View {
                                         NavigationLink(destination: AttorneysListView()) {
                                             HStack {
                                                 Text("Agendar Cita")
-                                                    .font(CustomFonts.PoppinsSemiBold(size: 14))
+                                                    .font(.system(size: 16, weight: .semibold))
                                                     .foregroundColor(Color("btBlue"))
                                                 
                                                 Image(systemName: "arrow.right")
                                                     .foregroundColor(Color("btBlue"))
                                             }
                                             .padding()
-                                            .background(Color.white)
+                                            .background(colorScheme == .dark ? Color.clear : Color.white)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 15)
+                                                    .stroke(Color.accentColor, lineWidth: 4)
+                                            )
                                             .cornerRadius(15)
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -71,8 +75,12 @@ struct ClientView: View {
                                     }
                                 }
                                 .padding(18)
-                                .background(Color("btBlue"))
+                                .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
                                 .cornerRadius(15)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+                                )
                                 .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
                                 
                                 

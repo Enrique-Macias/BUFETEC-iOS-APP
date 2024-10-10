@@ -65,7 +65,11 @@ struct LawyerView: View {
                                 .padding(.horizontal, 10)
                                 .frame(maxWidth: 230, maxHeight: 40, alignment: .center)
                                 .foregroundColor(.white)
-                                .background(Color("btBlue"))
+                                .background(colorScheme == .dark ? Color.gray.opacity(0.15) : Color.accentColor)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(Color.accentColor, lineWidth: 4)
+                                )
                                 .cornerRadius(15)
                             }
                             .padding(.horizontal, 15)
@@ -322,6 +326,7 @@ struct NewsCard: View {
                         .frame(width: 320, height: 160)
                         .cornerRadius(15)
                 }
+                .background(Color.white)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 320, height: 160)
                 .clipShape(RoundedRectangle(cornerRadius: 10))

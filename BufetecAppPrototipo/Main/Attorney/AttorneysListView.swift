@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AttorneyCard: View {
+    @Environment(\.colorScheme) var colorScheme
     let attorney: Attorney
     @State private var isExpanded = false
     
@@ -59,7 +60,7 @@ struct AttorneyCard: View {
             }
         }
         .padding()
-        .background(Color(UIColor.secondarySystemBackground))
+        .background(colorScheme == .dark ? Color.gray.opacity(0.15) : Color.white)
         .cornerRadius(12)
     }
     
@@ -70,7 +71,7 @@ struct AttorneyCard: View {
                 .foregroundColor(Color("btBlue"))
             Text(text)
                 .font(CustomFonts.MontserratMedium(size: 14))
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
         }
     }
     
@@ -94,6 +95,7 @@ struct AttorneyCard: View {
 }
 
 struct AttorneysListView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel = AttorneysViewModel()
     @State private var searchText = ""
     @State private var sortOption = SortOption.caseName
@@ -105,6 +107,8 @@ struct AttorneysListView: View {
                 filterButtons
                 attorneyList
             }
+            .background(Color("btBackground"))
+    
         }
         .navigationTitle("Nuestros Abogados")
         .navigationBarTitleDisplayMode(.inline)
@@ -120,7 +124,7 @@ struct AttorneysListView: View {
             TextField("Buscar abogados", text: $searchText)
         }
         .padding(10)
-        .background(Color(UIColor.systemBackground))
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
         .cornerRadius(10)
         .padding(.horizontal)
         .padding(.top)

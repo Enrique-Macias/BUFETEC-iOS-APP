@@ -78,6 +78,7 @@ struct SignUpView: View {
                 Spacer()
                 Image(systemName: "chevron.down")
             }
+            .accentColor(Color.black)
             .padding()
             .frame(width: .infinity, height: 60)
             .background(colorScheme == .dark ? Color.clear : Color.white)

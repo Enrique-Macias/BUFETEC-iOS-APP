@@ -427,7 +427,7 @@ struct PreviousAppointmentsCard: View {
             }
         }
         .padding(20)
-        .background(colorScheme == .light ? Color.accentColor : Color.gray.opacity(0.15))
+        .background(colorScheme == .light ? Color.white : Color.gray.opacity(0.15))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)

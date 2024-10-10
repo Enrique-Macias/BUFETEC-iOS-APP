@@ -8,16 +8,16 @@ struct EmailVerificationView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Verify Your Email")
+            Text("Verifica tu correo")
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            Text("We've sent a verification email to \(authModel.userData.email). Please check your inbox and click the verification link.")
+            Text("Enviamos un correo de verificación a \(authModel.userData.email). Revisa tu bandeja de entrada y haz clic en el enlace de verificación.")
                 .multilineTextAlignment(.center)
                 .padding()
             
             Button(action: refreshEmailVerificationStatus) {
-                Text("I've Verified My Email")
+                Text("Ya verifiqué mi correo")
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.blue)
@@ -27,7 +27,7 @@ struct EmailVerificationView: View {
             .padding(.horizontal)
             
             Button(action: resendVerificationEmail) {
-                Text("Resend Verification Email")
+                Text("Renviar correo de verificación")
                     .foregroundColor(.blue)
                     .underline()
             }

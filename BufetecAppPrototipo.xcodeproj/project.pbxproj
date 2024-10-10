@@ -216,12 +216,12 @@
 		04CAEF8229B3047900A4FB62 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				ECB147122CA33056009D5B70 /* Onboarding */,
-				41E5B0E12CA9229C00D18E89 /* Authentication */,
 				41E5B0EC2CA922A800D18E89 /* AppDelegate.swift */,
 				04CAEF5829B3029B00A4FB62 /* BufetecApp.swift */,
 				04CAEF5A29B3029B00A4FB62 /* CustomTabView.swift */,
 				41CB1FFB2CAA0CAD00FC0EC5 /* SplashScreenView.swift */,
+				ECB147122CA33056009D5B70 /* Onboarding */,
+				41E5B0E12CA9229C00D18E89 /* Authentication */,
 				4169444C2CAE254E00AAC48C /* Lawyer */,
 				4169444E2CAE25AB00AAC48C /* Client */,
 				418275782CB5AD2C00697F8E /* Attorney */,

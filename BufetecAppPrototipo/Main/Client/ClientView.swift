@@ -174,5 +174,4 @@ struct ChatBotFlowClientView: View {
 
 #Preview {
     ClientView(selectedTab: .constant(0))
-        .environment(AppearanceManager())
 }

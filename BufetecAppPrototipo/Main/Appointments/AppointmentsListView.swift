@@ -538,7 +538,6 @@ struct PreviousAppointmentsCard: View {
 
 #Preview {
     AppointmentsListView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
         .environmentObject(AppointmentViewModel())
 }

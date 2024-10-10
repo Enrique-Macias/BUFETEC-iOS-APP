@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AdditionalInfoView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var authModel: AuthModel
     @State private var phoneNumber = ""
@@ -131,6 +130,5 @@ struct AdditionalInfoView: View {
 
 #Preview {
     AdditionalInfoView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

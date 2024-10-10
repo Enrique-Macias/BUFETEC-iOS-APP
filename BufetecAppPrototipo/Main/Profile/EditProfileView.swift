@@ -255,6 +255,5 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 #Preview {
     EditProfileView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

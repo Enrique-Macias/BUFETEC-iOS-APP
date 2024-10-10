@@ -345,5 +345,4 @@ struct AppointmentScheduleView: View {
 
 #Preview {
     AppointmentScheduleView()
-        .environment(AppearanceManager())
 }

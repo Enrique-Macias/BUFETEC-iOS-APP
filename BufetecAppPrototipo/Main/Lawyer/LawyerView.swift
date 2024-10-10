@@ -433,5 +433,4 @@ struct CustomCard<Destination: View>: View {
 
 #Preview {
     LawyerView(selectedTab: .constant(0))
-        .environment(AppearanceManager())
 }

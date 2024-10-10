@@ -147,6 +147,5 @@ struct ProfileOption: View {
 
 #Preview {
     ProfileView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

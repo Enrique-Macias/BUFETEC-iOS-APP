@@ -2,7 +2,6 @@ import SwiftUI
 import FirebaseAuth
 
 struct EmailVerificationView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
@@ -108,6 +107,5 @@ struct EmailVerificationView: View {
 
 #Preview {
     EmailVerificationView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

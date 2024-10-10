@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AuthenticatedView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @State private var isEditingProfile = false
     @State private var editedNombre = ""
@@ -142,6 +141,5 @@ struct AuthenticatedView: View {
 
 #Preview {
     AuthenticatedView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

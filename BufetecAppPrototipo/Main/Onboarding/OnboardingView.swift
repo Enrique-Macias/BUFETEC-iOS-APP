@@ -2,7 +2,6 @@ import SwiftUI
 
 struct OnboardingView: View {
     
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var authModel: AuthModel
     
@@ -32,6 +31,5 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView()
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

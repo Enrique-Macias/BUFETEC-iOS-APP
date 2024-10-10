@@ -9,7 +9,6 @@ import SwiftUI
 
 struct OnboardingScreen3View: View {
     
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
 
     
@@ -84,5 +83,4 @@ struct OnboardingScreen3View: View {
 
 #Preview {
     OnboardingScreen3View()
-        .environment(AppearanceManager())
 }

@@ -31,5 +31,4 @@ struct AttorneyAppointmentView: View {
 
 #Preview {
     AttorneyAppointmentView()
-        .environment(AppearanceManager())
 }

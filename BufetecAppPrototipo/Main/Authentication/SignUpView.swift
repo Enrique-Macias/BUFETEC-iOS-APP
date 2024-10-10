@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var authModel: AuthModel
     @Binding var isShowingSignUp: Bool

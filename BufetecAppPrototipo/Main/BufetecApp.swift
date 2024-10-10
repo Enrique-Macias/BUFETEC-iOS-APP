@@ -1,5 +1,13 @@
 import SwiftUI
 
+enum AppTheme: String, CaseIterable, Identifiable {
+    case light = "Claro"
+    case dark = "Oscuro"
+    case system = "Sistema"
+    
+    var id: Self { self }
+}
+
 class AppState: ObservableObject {
     @Published var isShowingSplash = true
     @Published var logoPosition: CGPoint = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 - 50)
@@ -11,7 +19,7 @@ struct BufetecApp: App {
     @StateObject private var authModel = AuthModel()
     @StateObject private var appState = AppState()
     @StateObject private var appointmentViewModel = AppointmentViewModel()
-    @State var appearanceManager = AppearanceManager()
+    @AppStorage("appTheme") private var appTheme = AppTheme.system
     
     var body: some Scene {
         WindowGroup {
@@ -19,16 +27,23 @@ struct BufetecApp: App {
                 .environmentObject(authModel)
                 .environmentObject(appState)
                 .environmentObject(appointmentViewModel)
-                .environment(appearanceManager)
-                .onAppear {
-                    appearanceManager.initAppearanceStyle()
-                }
+                .preferredColorScheme(colorScheme)
+        }
+    }
+    
+    private var colorScheme: ColorScheme? {
+        switch appTheme {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .system:
+            return nil
         }
     }
 }
 
 struct ContentView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding: Bool = false
     @EnvironmentObject var appState: AppState
     
@@ -37,10 +52,8 @@ struct ContentView: View {
             Group {
                 if hasSeenOnboarding {
                     AuthenticationView()
-                        .environment(appearanceManager)
                 } else {
                     OnboardingView()
-                        .environment(appearanceManager)
                 }
             }
             .opacity(appState.isShowingSplash ? 0 : 1)
@@ -48,7 +61,6 @@ struct ContentView: View {
             
             if appState.isShowingSplash {
                 SplashScreenView()
-                    .environment(appearanceManager)
             }
         }
     }
@@ -58,5 +70,4 @@ struct ContentView: View {
     ContentView()
         .environmentObject(AuthModel())
         .environmentObject(AppState())
-        .environment(AppearanceManager())
 }

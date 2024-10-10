@@ -6,7 +6,6 @@ import GoogleSignIn
 struct LoginView: View {
     @EnvironmentObject var authModel: AuthModel
     @EnvironmentObject var appState: AppState
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var isShowingSignUp: Bool
@@ -202,6 +201,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView(isShowingSignUp: .constant(false))
-        .environment(AppearanceManager())
         .environmentObject(AuthModel())
 }

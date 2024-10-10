@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AuthenticationView: View {
-    @Environment(AppearanceManager.self) var appearanceManager: AppearanceManager
     @EnvironmentObject var authModel: AuthModel
     @EnvironmentObject var appState: AppState
     @State private var isShowingSignUp = false

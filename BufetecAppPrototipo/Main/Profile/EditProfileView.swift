@@ -161,7 +161,6 @@ struct EditProfileView: View {
             fechaNacimiento = date
         } else {
             print("Failed to parse date: \(authModel.userData.fechaDeNacimiento)")
-            // Set a default date or handle the error as appropriate
             fechaNacimiento = Date()
         }
     }

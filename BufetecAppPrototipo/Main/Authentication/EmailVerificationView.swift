@@ -32,6 +32,13 @@ struct EmailVerificationView: View {
                     .foregroundColor(.blue)
                     .underline()
             }
+            
+            Button(action: signOut) {
+                Text("Cerrar Sesión")
+                    .foregroundColor(.blue)
+                    .underline()
+            }
+
         }
         .padding()
         .alert(isPresented: $showErrorAlert) {
@@ -85,6 +92,18 @@ struct EmailVerificationView: View {
             }
         }
     }
+    
+    private func signOut() {
+        Task {
+            do {
+                try await authModel.logout()
+            } catch {
+                errorMessage = "Failed to sign out: \(error.localizedDescription)"
+                showErrorAlert = true
+            }
+        }
+    }
+
 }
 
 #Preview {

@@ -44,15 +44,17 @@ struct ProfileView: View {
             Spacer()
             
             VStack(spacing: 20) {
-                Divider()
-                    .background(Color.accentColor)
+//                Divider()
+//                    .background(Color.accentColor)
                 
                 NavigationLink(destination: SettingsView()) {
                     ProfileOption(iconName: "gearshape.fill", title: "Configuración", showChevron: true) {
                     }
                 }
                 
-                ProfileOption(iconName: "doc.text.fill", title: "Mis casos", showChevron: true) {
+                if (authModel.userData.tipo == "abogado") {
+                    ProfileOption(iconName: "calendar.badge.clock", title: "Mi horario", showChevron: true) {
+                    }
                 }
                 
                 ProfileOption(iconName: "lock.fill", title: "Cambiar Contraseña", showChevron: true) {

@@ -5,8 +5,7 @@ struct FAQView: View {
         NavigationStack {
             VStack {
                 Text("PREGUNTAS FRECUENTES")
-                    .font(.custom("Poppins-Bold", size: 45))
-                    .fontWeight(.bold)
+                    .font(.custom("Poppins-ExtraBold", size: 45))
                     .foregroundColor(Color("btBlue"))
                     .padding(.top, 20)
                     .padding(.trailing,50)
@@ -18,7 +17,7 @@ struct FAQView: View {
                     .font(.custom("Poppins-Regular", size: 17))
                     .foregroundColor(Color("btBlue"))
                     .padding(.bottom, 10)
-                    .padding(.trailing)
+                    .padding(.trailing,95)
 
                 Spacer()
                     .frame(height:25)
@@ -35,18 +34,19 @@ struct FAQView: View {
             .background(Color.white)
             .navigationTitle("")
             .navigationBarItems(leading: HStack {
-                NavigationLink(destination: Text("Home View")) {
-                    Image(systemName: "house")
+                NavigationStack() {
+                    Image("btIcon")
                         .resizable()
-                        .padding(.leading, 20)
-                        .frame(width: 55, height: 35)
+                        .padding(.leading, 10)
+                        .foregroundStyle(Color("btBlue"))
+                        .frame(width: 75, height: 35)
                 }
             }, trailing: HStack {
-                NavigationLink(destination: Text("Profile View")) {
-                    Image(systemName: "person.circle")
+                NavigationLink(destination: ProfileView()) {
+                    Image("UserCircle")
                         .resizable()
-                        .padding(.trailing, 20)
-                        .frame(width: 55, height: 35)
+                        .padding(.trailing, 10)
+                        .frame(width: 65, height: 55)
                         
                 }
             })
@@ -63,14 +63,14 @@ struct ExpandableCardView: View {
             HStack {
                 Text(question.text)
                     .padding(.vertical, 10)
-                    .foregroundColor(isExpanded ? Color.white : Color.blue)
+                    .foregroundColor(isExpanded ? Color.white : Color("btBlue"))
                     .fontWeight(.bold)
                     .font(.system(size: 15))
                 
                 Spacer()
                 
                 Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                    .foregroundColor(isExpanded ? .white : .blue)
+                    .foregroundColor(isExpanded ? .white : Color("btBlue"))
                     .padding()
                     .onTapGesture {
                         withAnimation {
@@ -79,7 +79,7 @@ struct ExpandableCardView: View {
                     }
             }
             .frame(width: 340)
-            .background(isExpanded ? Color.blue : Color.white)
+            .background(isExpanded ? Color("btBlue") : Color.white)
             .cornerRadius(10)
             
             if isExpanded {
@@ -91,11 +91,11 @@ struct ExpandableCardView: View {
             }
         }
         .padding()
-        .background(isExpanded ? Color.blue : Color.white)
+        .background(isExpanded ? Color("btBlue") : Color.white)
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.blue, lineWidth: 2)
+                .stroke(Color("btBlue"), lineWidth: 2)
         )
         .shadow(radius: 2)
        // .animation(.easeInOut)

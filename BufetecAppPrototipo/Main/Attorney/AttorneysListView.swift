@@ -39,7 +39,6 @@ struct AttorneyCard: View {
             if isExpanded {
                 VStack(alignment: .leading, spacing: 10) {
                     descriptionSection("Descripción:", text: attorney.descripcion)
-                    descriptionSection("Horario:", text: formatSchedule(attorney.horarioSemanal))
                     descriptionSection("Ejemplos de Casos:", text: attorney.casosEjemplo)
                     
                     NavigationLink(destination: CreateAppointmentView(attorney: attorney)) {

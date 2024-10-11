@@ -154,6 +154,7 @@ struct CreateAppointmentView: View {
     @State private var selectedDate = Date()
     @State private var selectedTime: String? = nil
     @State private var currentMonthOffset: Int = 0
+    @State private var appointmentReason: String = ""
     
     @State private var showingConfirmationAlert = false
     @State private var showingErrorAlert = false
@@ -165,14 +166,15 @@ struct CreateAppointmentView: View {
                 AppointmentCardInfo(
                     name: attorney.nombre,
                     specialty: attorney.especialidad,
-                    phoneNumber: attorney.celular, // Add this to the Attorney model if available
-                    email: attorney.email, // Add this to the Attorney model if available
-                    address: "N/A" // Add this to the Attorney model if available
+                    phoneNumber: attorney.celular,
+                    email: attorney.email,
+                    address: "N/A"
                 )
                 .padding(.horizontal, 10)
                 
                 calendarSection
                 timeSelectionSection
+                reasonSection
                 confirmButton
             }
             .padding(.bottom, 40)
@@ -255,19 +257,55 @@ struct CreateAppointmentView: View {
         .padding(.horizontal, 20)
     }
     
+    private var reasonSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Motivo de la cita")
+                .font(.system(size: 24))
+                .fontWeight(.bold)
+                .foregroundColor(Color("btBlue"))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            ZStack(alignment: .topLeading) {
+                TextEditor(text: $appointmentReason)
+                    .frame(height: 100)
+                    .padding(10)
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color("btBlue"), lineWidth: 1)
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color(colorScheme == .light ? Color.white : Color.black))
+                    )
+                
+                if appointmentReason.isEmpty {
+                    Text("Escribe aquí el motivo de la cita")
+                        .foregroundColor(Color.gray.opacity(0.7))
+                        .padding(15)
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+    
     private var confirmButton: some View {
         Button(action: createAppointment) {
-            Text("Confirmar cita")
+            Text("Continuar")
                 .font(CustomFonts.PoppinsSemiBold(size: 18))
                 .foregroundColor(.white)
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(viewModel.isDateAvailable && selectedTime != nil ? Color("btBlue") : Color.gray.opacity(0.6))
+                .background(isFormValid ? Color("btBlue") : Color.gray.opacity(0.6))
                 .cornerRadius(10)
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
-        .disabled(!viewModel.isDateAvailable || selectedTime == nil)
+        .disabled(!isFormValid)
+    }
+    
+    private var isFormValid: Bool {
+        viewModel.isDateAvailable && selectedTime != nil && !appointmentReason.isEmpty
     }
     
     private func handleDateChange(for date: Date) {
@@ -286,7 +324,8 @@ struct CreateAppointmentView: View {
             abogadoUid: attorney.uid,
             clienteUid: authModel.userData.uid,
             fecha: selectedDate,
-            hora: selectedTime
+            hora: selectedTime,
+            motivo: appointmentReason
         ) { result in
             switch result {
             case .success:

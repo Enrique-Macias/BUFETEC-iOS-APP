@@ -41,7 +41,7 @@ struct ProfileView: View {
                 }
             }
             
-            Spacer()
+//            Spacer()
             
             VStack(spacing: 20) {
 //                Divider()
@@ -63,8 +63,8 @@ struct ProfileView: View {
                 Divider()
                     .background(Color.accentColor)
                 
-                ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
-                }
+//                ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
+//                }
                 
                 Button(action: signOut) {
                     HStack {
@@ -85,6 +85,7 @@ struct ProfileView: View {
                 }
             }
             .padding(.horizontal, 20)
+            .padding(.vertical, 20)
             
             Spacer()
             Spacer()

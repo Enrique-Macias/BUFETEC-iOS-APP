@@ -78,22 +78,15 @@ struct LawyerView: View {
                             // Cards for "Gestión de Casos" and "Clientes"
                             VStack(spacing: 30) {
                                 CustomCard(selectedTab: $selectedTab,
-                                           title: "Gestión de Casos",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: EmptyView(),
-                                           tabIndex: TabbedItems.favorite.rawValue)
-                                
-                                CustomCard(selectedTab: $selectedTab,
                                            title: "Gestion de clientes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           description: "Acceda y visualice la información detallada de sus clientes.",
                                            buttonText: "Visitar",
                                            destination: ClientsListView(),
-                                           tabIndex: nil)
+                                           tabIndex: 1)
                                 
                                 CustomCard(selectedTab: $selectedTab,
-                                           title: "Clientes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
+                                           title: "Vista de Cliente",
+                                           description: "Navega y visualiza la aplicación desde la perspectiva de sus clientes.",
                                            buttonText: "Visitar",
                                            destination: ClientView(selectedTab: $selectedTab),
                                            tabIndex: nil)
@@ -186,7 +179,7 @@ struct NewsHeaderView: View {
                 .foregroundStyle(Color.accentColor)
                 .padding(.top, 20)
             
-            Text("It is a long established fact that a reader will be distracted by the readable content")
+            Text("Anuncios recientes y actualizaciones importantes de Bufetec.")
                 .font(.system(size: 16))
                 .lineSpacing(5)
                 .foregroundStyle(.primary)

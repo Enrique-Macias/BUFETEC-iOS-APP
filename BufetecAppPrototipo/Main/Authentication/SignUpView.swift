@@ -215,9 +215,8 @@ struct InputField: View {
         HStack {
             Image(systemName: icon)
             TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.gray).kerning(0))
-                .font(.custom("Manrope-Bold", size: 16))
+                .font(.system(size: 16))
                 .kerning(0.8)
-                .fontWeight(.bold)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .multilineTextAlignment(.leading)
@@ -254,7 +253,7 @@ struct PasswordField: View {
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .kerning(0.8)
-            .font(.custom("Manrope-Bold", size: 16))
+            .font(.system(size: 16))
             .multilineTextAlignment(.leading)
             
             Spacer()

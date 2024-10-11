@@ -66,7 +66,7 @@ class CreateAppointmentViewModel: ObservableObject {
         }
     }
     
-    func createAppointment(abogadoUid: String, clienteUid: String, fecha: Date, hora: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func createAppointment(abogadoUid: String, clienteUid: String, fecha: Date, hora: String, motivo: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let url = URL(string: "\(baseURL)/createAppointment") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -97,7 +97,7 @@ class CreateAppointmentViewModel: ObservableObject {
             "clienteUid": clienteUid,
             "fechaHora": fechaString,
             "estado": "pendiente",
-            "notas": "Cita agendada a través de la aplicación"
+            "motivo": motivo
         ]
                 
         var request = URLRequest(url: url)

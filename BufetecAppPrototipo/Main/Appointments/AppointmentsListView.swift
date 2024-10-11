@@ -7,11 +7,11 @@ struct Appointment: Identifiable, Codable {
     let clienteUid: String
     let fechaHora: Date
     let estado: String
-    let notas: String?
+    let motivo: String?
     
     enum CodingKeys: String, CodingKey {
         case id = "_id"
-        case abogadoUid, clienteUid, fechaHora, estado, notas
+        case abogadoUid, clienteUid, fechaHora, estado, motivo
     }
 }
 
@@ -330,10 +330,10 @@ struct CurrentAppointmentsCard: View {
     
     private var reasonInfo: some View {
         HStack(spacing: 5) {
-            Text("Notas: ")
+            Text("Motivo: ")
                 .font(CustomFonts.MontserratMedium(size: 12))
                 .fontWeight(.black)
-            Text(appointment.notas ?? "Sin notas")
+            Text(appointment.motivo ?? "Motivo no definido.")
                 .font(CustomFonts.MontserratMedium(size: 12))
         }
         .foregroundColor(Color.white)

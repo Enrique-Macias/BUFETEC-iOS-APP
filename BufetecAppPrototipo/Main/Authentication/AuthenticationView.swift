@@ -3,6 +3,7 @@ import SwiftUI
 struct AuthenticationView: View {
     @EnvironmentObject var authModel: AuthModel
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     @State private var isShowingSignUp = false
     
     var body: some View {
@@ -19,6 +20,7 @@ struct AuthenticationView: View {
                     AdditionalInfoView()
                 case .authenticating:
                     ProgressView("Completando perfil...")
+                        .progressViewStyle(CircularProgressViewStyle(tint: colorScheme == .dark ? .white : .black))
                 case .authenticated:
                     CustomTabView()
                 case .needsEmailVerification:
@@ -31,7 +33,7 @@ struct AuthenticationView: View {
                 ProgressView()
                     .scaleEffect(1.5)
                     .padding()
-                    .background(Color.white.opacity(0.8))
+                    .background(colorScheme == .dark ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                     .cornerRadius(10)
             }
         }

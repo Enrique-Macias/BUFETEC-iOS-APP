@@ -7,7 +7,7 @@ struct ClientsListView: View {
     @State private var sortOption = SortOption.caseName
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 searchBar
                 filterButtons

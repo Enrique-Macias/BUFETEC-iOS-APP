@@ -37,111 +37,137 @@ struct ClientView: View {
     var body: some View {
         GeometryReader { outer in
             NavigationStack {
-                ZStack {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 30) {
-                            VStack(spacing: 30) {
-                                VStack(alignment: .leading, spacing: 15) {
-                                    Text("Listos para ayudarte")
-                                        .font(.system(size: 24, weight: .bold))
-                                        .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
-                                    
-                                    Text("Conoce a nuestros abogados y agenda una cita.")
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.white)
-                                        .lineSpacing(5)
-                                    
-                                    HStack {
-                                        NavigationLink(destination: AttorneysListView()) {
-                                            HStack {
-                                                Text("Agendar Cita")
-                                                    .font(.system(size: 16, weight: .semibold))
-                                                    .foregroundColor(Color("btBlue"))
-                                                
-                                                Image(systemName: "arrow.right")
-                                                    .foregroundColor(Color("btBlue"))
-                                            }
-                                            .padding()
-                                            .background(colorScheme == .dark ? Color.clear : Color.white)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .stroke(Color.accentColor, lineWidth: 4)
-                                            )
-                                            .cornerRadius(15)
-                                        }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.top, 15)
-                                        .padding(.bottom, 10)
-                                    }
-                                }
-                                .padding(18)
-                                .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
-                                .cornerRadius(15)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-                                )
-                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-                                
-                                
-                                
-                                //                                CustomCard(selectedTab: $selectedTab,
-                                //                                           title: "Conoce a nuestros abogados",
-                                //                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                //                                           buttonText: "Visitar",
-                                //                                           destination: AttorneysListView(),
-                                //                                           tabIndex: nil)
-                                
-                                
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Procesos legales",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: ResourcesView(),
-                                           tabIndex: nil)
-                                
-                                CustomCard(selectedTab: $selectedTab,
-                                           title: "Preguntas Frecuentes",
-                                           description: "It is a long established fact that a reader will be distracted by the readable content",
-                                           buttonText: "Visitar",
-                                           destination: FAQView(),
-                                           tabIndex: nil)
-                            }
-                            .padding()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 30) {
+                        VStack(spacing: 30) {
+                            // Existing "Listos para ayudarte" card
+                            AttorneyAssistanceCard()
+                            
+                            // New ChatBot Assistant card
+                            ChatBotAssistantCard(showingChatbotViews: $showingChatbotViews, currentView: $currentView)
+                            
+                            // Existing FAQ card
+                            CustomCard(selectedTab: $selectedTab,
+                                       title: "Preguntas Frecuentes",
+                                       description: "Respuestas a dudas comunes sobre la plataforma.",
+                                       buttonText: "Visitar",
+                                       destination: FAQView(),
+                                       tabIndex: nil)
                         }
-                        .padding(.bottom, 100)
+                        .padding()
                     }
-                    .background(Color("btBackground"))
-                    .toolbar {
-                        CustomToolbar(showingScrolledTitle: $showingScrolledTitle, showingSettings: $showingSettings)
-                    }
-                    .navigationTitle("Cliente")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .sheet(isPresented: $showingSettings) {
-                        SettingsView()
-                    }
-                    
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            ChatBotButton()
-                                .padding(20)
-                                .padding(.bottom, 85)
-                                .onTapGesture {
-                                    print("tapped chatbot button")
-                                    showingChatbotViews = true
-                                    currentView = .load
-                                }
-                        }
-                    }
-                    .ignoresSafeArea()
+                    .padding(.bottom, 100)
                 }
-                .fullScreenCover(isPresented: $showingChatbotViews) {
-                    ChatBotFlowClientView(currentView: $currentView, hasSeenChatbotOnboarding: $hasSeenChatbotOnboarding)
+                .background(Color("btBackground"))
+                .navigationTitle("Cliente")
+                .navigationBarTitleDisplayMode(.inline)
+                .sheet(isPresented: $showingSettings) {
+                    SettingsView()
                 }
             }
+            .fullScreenCover(isPresented: $showingChatbotViews) {
+                ChatBotFlowClientView(currentView: $currentView, hasSeenChatbotOnboarding: $hasSeenChatbotOnboarding)
+            }
         }
+    }
+}
+
+struct AttorneyAssistanceCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Listos para ayudarte")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
+            
+            Text("Conoce a nuestros abogados y agenda una cita.")
+                .font(.system(size: 16))
+                .foregroundColor(.white)
+                .lineSpacing(5)
+            
+            HStack {
+                NavigationLink(destination: AttorneysListView()) {
+                    HStack {
+                        Text("Agendar Cita")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color("btBlue"))
+                        
+                        Image(systemName: "arrow.right")
+                            .foregroundColor(Color("btBlue"))
+                    }
+                    .padding()
+                    .background(colorScheme == .dark ? Color.clear : Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.accentColor, lineWidth: 4)
+                    )
+                    .cornerRadius(15)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 15)
+                .padding(.bottom, 10)
+            }
+        }
+        .padding(18)
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+    }
+}
+
+struct ChatBotAssistantCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var showingChatbotViews: Bool
+    @Binding var currentView: ClientView.ChatBotState
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Asistente Virtual")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
+            
+            Text("Resuelve tus dudas de forma rápida con nuestro asistente virtual.")
+                .font(.system(size: 16))
+                .foregroundColor(.white)
+                .lineSpacing(5)
+            
+            Button(action: {
+                showingChatbotViews = true
+                currentView = .load
+            }) {
+                HStack {
+                    Text("Iniciar Chat")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(Color("btBlue"))
+                    
+                    Image(systemName: "message.circle.fill")
+                        .foregroundColor(Color("btBlue"))
+                }
+                .padding()
+                .background(colorScheme == .dark ? Color.clear : Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.accentColor, lineWidth: 4)
+                )
+                .cornerRadius(15)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 15)
+            .padding(.bottom, 10)
+        }
+        .padding(18)
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
     }
 }
 

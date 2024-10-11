@@ -333,9 +333,9 @@
 				418275792CB5AD5700697F8E /* AppointmentViewModel.swift */,
 				41C4255B2CAB44F3001B56E3 /* AttorneyAppointmentView.swift */,
 				ECB147212CA33715009D5B70 /* CreateAppointmentView.swift */,
+				4182757B2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift */,
 				EC5A37D02CB5AA480077E2B4 /* AppointmentsSchedule.swift */,
 				4182757F2CB5B32000697F8E /* CustomCalendarView.swift */,
-				4182757B2CB5ADAC00697F8E /* CreateAppointmentViewModel.swift */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";

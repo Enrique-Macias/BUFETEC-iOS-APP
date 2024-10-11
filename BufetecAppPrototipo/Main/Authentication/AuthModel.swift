@@ -11,7 +11,7 @@ struct UserData: Codable {
     var celular: String = ""
     var email: String = ""
     var fechaDeNacimiento: String = ""
-    var tipo: String = "cliente" // Default to "cliente", can be "abogado" or "admin"
+    var tipo: String = "" // Default to "cliente", can be "abogado" or "admin"
 }
 
 class AuthModel: ObservableObject {

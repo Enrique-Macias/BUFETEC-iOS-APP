@@ -2,17 +2,17 @@ import SwiftUI
 
 enum TabbedItems: Int, CaseIterable {
     case home = 0
-    case favorite
-    case chat
+    case clients
+    case appointments
     case profile
     
     var title: String {
         switch self {
         case .home:
             return "Inicio"
-        case .favorite:
-            return "Casos"
-        case .chat:
+        case .clients:
+            return "Clientes"
+        case .appointments:
             return "Citas"
         case .profile:
             return "Perfil"
@@ -23,9 +23,9 @@ enum TabbedItems: Int, CaseIterable {
         switch self {
         case .home:
             return "house"
-        case .favorite:
-            return "book.closed"
-        case .chat:
+        case .clients:
+            return "person.crop.rectangle.stack"
+        case .appointments:
             return "text.bubble"
         case .profile:
             return "person"
@@ -52,51 +52,61 @@ struct CustomTabView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selectedTab) {
-                NavigationStack {
-                    if authModel.userData.tipo == "cliente" {
-                        ClientView(selectedTab: $selectedTab)
-                    } else {
-                        LawyerView(selectedTab: $selectedTab)
+            if authModel.isLoading || authModel.userData.tipo.isEmpty {
+                ProgressView("Cargando...")
+                    .progressViewStyle(CircularProgressViewStyle(tint: colorScheme == .dark ? .white : .black))
+            } else if !authModel.userData.tipo.isEmpty {
+                TabView(selection: $selectedTab) {
+                    NavigationStack {
+                        if authModel.userData.tipo == "cliente" {
+                            ClientView(selectedTab: $selectedTab)
+                        } else {
+                            LawyerView(selectedTab: $selectedTab)
+                        }
                     }
+                    .tag(TabbedItems.home.rawValue)
+                    
+                    if authModel.userData.tipo == "abogado" {
+                        NavigationStack {
+                            ClientsListView()
+                        }
+                        .tag(TabbedItems.clients.rawValue)
+                    }
+                    
+                    NavigationStack {
+                        AppointmentsListView()
+                    }
+                    .tag(TabbedItems.appointments.rawValue)
+                    
+                    NavigationStack {
+                        ProfileView()
+                    }
+                    .tag(TabbedItems.profile.rawValue)
                 }
-                .tag(TabbedItems.home.rawValue)
                 
-                NavigationStack {
-                    CasesView()
+                VStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Gradient overlay
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color.clear,
+                            Color(UIColor.systemBackground).opacity(0.8),
+                            Color(UIColor.systemBackground)
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 100)
+                    .allowsHitTesting(false)
                 }
-                .tag(TabbedItems.favorite.rawValue)
+                .ignoresSafeArea()
                 
-                NavigationStack {
-                    AppointmentsListView()
-                }
-                .tag(TabbedItems.chat.rawValue)
-                
-                NavigationStack {
-                    ProfileView()
-                }
-                .tag(TabbedItems.profile.rawValue)
+                CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme, isLawyer: authModel.userData.tipo == "abogado")
+            } else {
+                Text("Error: No se pudo cargar la información del usuario")
+                    .foregroundColor(.red)
             }
-            
-            VStack(spacing: 0) {
-                Spacer()
-                
-                // Gradient overlay
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color.clear,
-                        Color(UIColor.systemBackground).opacity(0.8),
-                        Color(UIColor.systemBackground)
-                    ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 100)
-                .allowsHitTesting(false)
-            }
-            .ignoresSafeArea()
-            
-            CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme)
         }
     }
 }
@@ -104,18 +114,21 @@ struct CustomTabView: View {
 struct CustomTabBar: View {
     @Binding var selectedTab: Int
     var colorScheme: ColorScheme
+    var isLawyer: Bool
     
     var body: some View {
         HStack(spacing: 0) {
             ForEach(TabbedItems.allCases, id: \.self) { item in
-                Button {
-                    withAnimation(nil) {
-                        selectedTab = item.rawValue
+                if isLawyer || item != .clients {
+                    Button {
+                        withAnimation(nil) {
+                            selectedTab = item.rawValue
+                        }
+                    } label: {
+                        CustomTabItem(imageName: item.iconName, title: item.title, isActive: selectedTab == item.rawValue, colorScheme: colorScheme)
                     }
-                } label: {
-                    CustomTabItem(imageName: item.iconName, title: item.title, isActive: selectedTab == item.rawValue, colorScheme: colorScheme)
+                    .buttonStyle(NoEffectButton())
                 }
-                .buttonStyle(NoEffectButton())
             }
         }
         .frame(height: 55)

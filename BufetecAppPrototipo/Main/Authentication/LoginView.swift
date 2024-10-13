@@ -13,7 +13,8 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var showPassword = false
-    
+    @State private var showingPasswordReset = false
+
     @FocusState private var focusedField: Field?
     
     @State private var showErrorAlert = false
@@ -42,6 +43,9 @@ struct LoginView: View {
         .overlay(loadingOverlay)
         .alert(isPresented: $showErrorAlert) {
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
+        .sheet(isPresented: $showingPasswordReset) {
+            AnyEmailPasswordResetView(email: $email)
         }
     }
     
@@ -132,7 +136,7 @@ struct LoginView: View {
     
     private var passwordRecoveryButton: some View {
         Button(action: {
-            // Implement password recovery functionality
+            showingPasswordReset = true
         }) {
             Text("Recuperar Contraseña")
                 .foregroundColor(.primary)
@@ -198,6 +202,107 @@ struct LoginView: View {
         }
     }
 }
+
+struct AnyEmailPasswordResetView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var authModel: AuthModel
+    @Binding var email: String
+    
+    @State private var showAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var isLoading = false
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color("btBackground")
+                    .edgesIgnoringSafeArea(.all)
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Image(systemName: "lock.circle.fill")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.primary)
+                            .padding(.top, 40)
+                        
+                        Text("Restablecer Contraseña")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.primary)
+                        
+                        Text("Ingrese su correo electrónico para recibir un enlace de restablecimiento de contraseña.")
+                            .font(.system(size: 16))
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                        
+                        InputField(icon: "envelope", placeholder: "Correo Electrónico", text: $email)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                        
+                        Button(action: sendResetEmail) {
+                            HStack {
+                                if isLoading {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle(tint: colorScheme == .light ? Color.white : Color.black))
+                                } else {
+                                    Text("Enviar Enlace de Restablecimiento")
+                                }
+                            }
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(colorScheme == .light ? Color.white : Color.black)
+                            .frame(width: UIScreen.main.bounds.width * 0.9, height: 60)
+                            .background(colorScheme == .light ? Color.black : Color.white)
+                            .cornerRadius(16)
+                        }
+                        .disabled(email.isEmpty || isLoading)
+                        .opacity(email.isEmpty ? 0.6 : 1.0)
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle("Restablecer Contraseña")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing: Button("Cancelar") {
+                presentationMode.wrappedValue.dismiss()
+            })
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text(alertTitle),
+                  message: Text(alertMessage),
+                  dismissButton: .default(Text("OK")) {
+                if alertTitle == "Éxito" {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            })
+        }
+    }
+    
+    private func sendResetEmail() {
+        isLoading = true
+        Task {
+            do {
+                try await authModel.sendPasswordResetEmail(to: email)
+                await MainActor.run {
+                    alertTitle = "Éxito"
+                    alertMessage = "Por favor, revise su bandeja de entrada y siga las instrucciones para restablecer su contraseña."
+                    showAlert = true
+                    isLoading = false
+                }
+            } catch {
+                await MainActor.run {
+                    alertTitle = "Error"
+                    alertMessage = error.localizedDescription
+                    showAlert = true
+                    isLoading = false
+                }
+            }
+        }
+    }
+}
+
 
 #Preview {
     LoginView(isShowingSignUp: .constant(false))

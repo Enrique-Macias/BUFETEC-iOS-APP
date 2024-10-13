@@ -252,6 +252,21 @@ class AuthModel: ObservableObject {
     }
     
     @MainActor
+    func sendPasswordResetEmail(to email: String) async throws {
+        logger.info("Sending password reset email to: \(email)")
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+            logger.info("Password reset email sent successfully")
+        } catch {
+            logger.error("Failed to send password reset email: \(error.localizedDescription)")
+            throw error
+        }
+    }
+
+    @MainActor
     func fetchUserInfo() async throws -> Bool {
         logger.info("Fetching user info from server")
         guard let url = URL(string: "\(baseURL)/getUser?uid=\(userData.uid)") else {

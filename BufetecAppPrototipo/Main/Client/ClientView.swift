@@ -16,43 +16,42 @@ struct ClientView: View {
         case main, load, onboarding, chat
     }
     
-    private let numberOfTabs = 5
-    
-    private func scrollDetector(topInsets: CGFloat) -> some View {
-        GeometryReader { proxy in
-            let minY = proxy.frame(in: .global).minY
-            let isUnderToolbar = minY - topInsets < 0
-            Color.clear
-                .onChange(of: isUnderToolbar) { oldVal, newVal in
-                    showingScrolledTitle = newVal
-                }
-        }
-    }
-    
-    init(selectedTab: Binding<Int>) {
-        self._selectedTab = selectedTab
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.tintColor]
-    }
-    
     var body: some View {
         GeometryReader { outer in
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 30) {
                         VStack(spacing: 30) {
-                            // Existing "Listos para ayudarte" card
-                            AttorneyAssistanceCard()
+                            // Attorney Assistance Card
+                            NavigationGradientCard(
+                                icon: "person.fill.checkmark",
+                                title: "Listos para ayudarte",
+                                description: "Conoce a nuestros abogados y agenda una cita.",
+                                buttonText: "Agendar Cita",
+                                destination: AttorneysListView()
+                            )
                             
-                            // New ChatBot Assistant card
-                            ChatBotAssistantCard(showingChatbotViews: $showingChatbotViews, currentView: $currentView)
+                            // ChatBot Assistant Card
+                            ActionGradientCard(
+                                icon: "bubble.left.and.bubble.right.fill",
+                                title: "Asistente Virtual",
+                                description: "Resuelve tus dudas de forma rápida con nuestro asistente virtual inteligente.",
+                                buttonText: "Iniciar Chat",
+                                action: {
+                                    showingChatbotViews = true
+                                    currentView = .load
+                                },
+                                gradientColors: colorScheme == .dark ? [Color.gray.opacity(0.15), Color.accentColor.opacity(0.15)] : [Color.white]
+                            )
                             
-                            // Existing FAQ card
-                            CustomCard(selectedTab: $selectedTab,
-                                       title: "Preguntas Frecuentes",
-                                       description: "Respuestas a dudas comunes sobre la plataforma.",
-                                       buttonText: "Visitar",
-                                       destination: FAQView(),
-                                       tabIndex: nil)
+                            // FAQ Card
+                            NavigationGradientCard(
+                                icon: "questionmark.circle",
+                                title: "Preguntas Frecuentes",
+                                description: "Respuestas a dudas comunes sobre la plataforma.",
+                                buttonText: "Visitar",
+                                destination: FAQView()
+                            )
                         }
                         .padding()
                     }
@@ -69,105 +68,6 @@ struct ClientView: View {
                 ChatBotFlowClientView(currentView: $currentView, hasSeenChatbotOnboarding: $hasSeenChatbotOnboarding)
             }
         }
-    }
-}
-
-struct AttorneyAssistanceCard: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("Listos para ayudarte")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
-            
-            Text("Conoce a nuestros abogados y agenda una cita.")
-                .font(.system(size: 16))
-                .foregroundColor(.white)
-                .lineSpacing(5)
-            
-            HStack {
-                NavigationLink(destination: AttorneysListView()) {
-                    HStack {
-                        Text("Agendar Cita")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color("btBlue"))
-                        
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(Color("btBlue"))
-                    }
-                    .padding()
-                    .background(colorScheme == .dark ? Color.clear : Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.accentColor, lineWidth: 4)
-                    )
-                    .cornerRadius(15)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 15)
-                .padding(.bottom, 10)
-            }
-        }
-        .padding(18)
-        .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
-        .cornerRadius(15)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-    }
-}
-
-struct ChatBotAssistantCard: View {
-    @Environment(\.colorScheme) var colorScheme
-    @Binding var showingChatbotViews: Bool
-    @Binding var currentView: ClientView.ChatBotState
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("Asistente Virtual")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(colorScheme == .dark ? Color.accentColor : Color.white)
-            
-            Text("Resuelve tus dudas de forma rápida con nuestro asistente virtual.")
-                .font(.system(size: 16))
-                .foregroundColor(.white)
-                .lineSpacing(5)
-            
-            Button(action: {
-                showingChatbotViews = true
-                currentView = .load
-            }) {
-                HStack {
-                    Text("Iniciar Chat")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color("btBlue"))
-                    
-                    Image(systemName: "message.circle.fill")
-                        .foregroundColor(Color("btBlue"))
-                }
-                .padding()
-                .background(colorScheme == .dark ? Color.clear : Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.accentColor, lineWidth: 4)
-                )
-                .cornerRadius(15)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 15)
-            .padding(.bottom, 10)
-        }
-        .padding(18)
-        .background(colorScheme == .dark ? .gray.opacity(0.15) : .accentColor)
-        .cornerRadius(15)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
     }
 }
 
@@ -205,6 +105,135 @@ struct ChatBotFlowClientView: View {
         }
     }
 }
+
+struct ActionGradientCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var icon: String
+    var title: String
+    var description: String
+    var buttonText: String
+    var action: () -> Void
+    var gradientColors: [Color]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 25))
+                    .foregroundColor(.accentColor)
+                
+                Text(title)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.accentColor)
+            }
+            
+            Text(description)
+                .font(.system(size: 16))
+                .foregroundColor(.primary)
+                .lineSpacing(5)
+            
+            Button(action: action) {
+                HStack {
+                    Text(buttonText)
+                        .font(.system(size: 16, weight: .semibold))
+                    
+                    Image(systemName: "arrow.right")
+                }
+                .foregroundColor(.accentColor)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.clear)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.accentColor, lineWidth: 3)
+                )
+                .cornerRadius(15)
+            }
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        }
+        .padding(25)
+        .background(
+            LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .bottomLeading, endPoint: .top)
+        )
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+    }
+}
+
+struct NavigationGradientCard<Destination: View>: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var icon: String
+    var title: String
+    var description: String
+    var buttonText: String
+    var destination: Destination?
+    var gradientColors: [Color]?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 25))
+                    .foregroundColor(.accentColor)
+                
+                Text(title)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.accentColor)
+            }
+            
+            Text(description)
+                .font(.system(size: 16))
+                .foregroundColor(.primary)
+                .lineSpacing(5)
+            
+            Group {
+                NavigationLink(destination: destination) {
+                    buttonContent
+                }
+            }
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        }
+        .padding(25)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: gradientColors ?? [colorScheme == .dark ? Color.gray.opacity(0.15) : .white]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(colorScheme == .dark ? .white.opacity(0.5) : .accentColor, lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+    }
+    
+    private var buttonContent: some View {
+        HStack {
+            Text(buttonText)
+                .font(.system(size: 16, weight: .semibold))
+            
+            Image(systemName: "arrow.right")
+        }
+        .foregroundColor(.accentColor)
+        .padding()
+        .background(.clear)
+        .frame(maxWidth: .infinity)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.accentColor, lineWidth: 3)
+        )
+        .cornerRadius(15)
+    }
+}
+
 
 #Preview {
     ClientView(selectedTab: .constant(0))

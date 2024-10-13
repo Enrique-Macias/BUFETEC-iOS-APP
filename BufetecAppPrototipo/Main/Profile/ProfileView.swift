@@ -57,7 +57,9 @@ struct ProfileView: View {
                     }
                 }
                 
-                ProfileOption(iconName: "lock.fill", title: "Cambiar Contraseña", showChevron: true) {
+                NavigationLink(destination: PasswordResetView()) {
+                    ProfileOption(iconName: "lock.fill", title: "Restablecer Contraseña", showChevron: true) {
+                    }
                 }
                 
                 Divider()

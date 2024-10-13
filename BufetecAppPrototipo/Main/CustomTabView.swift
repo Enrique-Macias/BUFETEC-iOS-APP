@@ -53,7 +53,7 @@ struct CustomTabView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             if authModel.isLoading || authModel.userData.tipo.isEmpty {
-                ProgressView("Cargando...")
+                ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: colorScheme == .dark ? .white : .black))
             } else if !authModel.userData.tipo.isEmpty {
                 TabView(selection: $selectedTab) {

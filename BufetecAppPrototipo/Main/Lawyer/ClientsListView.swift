@@ -108,15 +108,16 @@ struct ClientsListView: View {
                             let alumno = (dict["alumno"] as? String) ?? "n/a"
                             let folio = (dict["folio"] as? String) ?? "n/a"
                             let ultimaVezInformada = (dict["ultima_vez_informada"] as? String) ?? "n/a"
+                            let numero = (dict["numero"] as? String) ?? "n/a" // Extract phone number
 
                             // Extracting expediente and juzgado
                             let components = expedienteYJuzgado.components(separatedBy: "Juzgado")
                             let expediente = components.first?.trimmingCharacters(in: .whitespaces) ?? "n/a"
                             let juzgado = components.count > 1 ? "Juzgado " + components[1].trimmingCharacters(in: .whitespaces) : "n/a"
                             
-                            return Client(name: name, exp: expediente, tram: tramite, email: email, seguimiento: seguimiento, alumno: alumno, folio: folio, ultimaVezInformada: ultimaVezInformada, juzgado: juzgado)
+                            return Client(name: name, exp: expediente, tram: tramite, email: email, seguimiento: seguimiento, alumno: alumno, folio: folio, ultimaVezInformada: ultimaVezInformada, juzgado: juzgado, numero: numero)
                         }
-                        print("Fetched \(clients.count) clients.") 
+                        print("Fetched \(clients.count) clients.") // Check number of clients fetched
                     }
                 }
             } catch {
@@ -124,6 +125,7 @@ struct ClientsListView: View {
             }
         }.resume()
     }
+
 
 }
 
@@ -184,7 +186,8 @@ struct Client: Identifiable {
     let alumno: String
     let folio: String
     let ultimaVezInformada: String
-    let juzgado: String // New property for juzgado
+    let juzgado: String
+    let numero: String
 }
 
 private enum SortOption: String, CaseIterable {

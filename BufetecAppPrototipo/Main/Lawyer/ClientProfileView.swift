@@ -2,7 +2,8 @@ import SwiftUI
 
 struct ClientProfileView: View {
     @Environment(\.colorScheme) var colorScheme
-    
+    var client: Client // Accepting the client
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -17,23 +18,23 @@ struct ClientProfileView: View {
         .navigationTitle("Perfil del Cliente")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     var profileHeader: some View {
         HStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Stephan Guy")
+                Text(client.name) // Using client name
                     .font(.custom("Poppins-Bold", size: 24))
                     .foregroundColor(.primary)
                 
                 HStack {
-                    Text("#902a")
+                    Text(client.exp)
                         .font(.custom("Poppins", size: 14))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
                         .background(Color.blue.opacity(0.1))
                         .cornerRadius(8)
-                    
-                    Text("Cliente")
+            
+                    Text(client.juzgado)
                         .font(.custom("Poppins", size: 14))
                         .foregroundColor(.secondary)
                 }
@@ -51,18 +52,23 @@ struct ClientProfileView: View {
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
     }
-    
+
     var caseInfoCard: some View {
         HStack {
-            infoItem(title: "Caso", value: "Mercantil")
-            Divider().frame(height: 30)
-            infoItem(title: "Estado", value: "En proceso")
+            infoItem(title: "Trámite", value: client.tram)
+            Divider()
+                .frame(height: 30)
+              
+            VStack(){
+                infoItem(title: "Correo", value: client.email)
+                infoItem(title: "Número", value: client.numero)
+            }
         }
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
     }
-    
+
     func infoItem(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)
@@ -74,10 +80,10 @@ struct ClientProfileView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
     var datesSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Fechas")
+            Text("Citas Previas")
                 .font(.custom("Poppins-Bold", size: 20))
                 .padding(.bottom, 5)
             
@@ -89,7 +95,7 @@ struct ClientProfileView: View {
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
     }
-    
+
     func dateItemView(item: DateItem) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
@@ -110,21 +116,21 @@ struct ClientProfileView: View {
         }
         .padding(.vertical, 5)
     }
-    
+
     var detailsSection: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("Detalles")
                 .font(.custom("Poppins-Bold", size: 20))
             
-            detailItem(title: "Descripción del cliente", content: "Estoy enfrentando un problema legal con un cliente que no ha cumplido con el pago de una factura por servicios prestados. He intentado varias veces comunicarme con ellos, pero no he recibido respuesta. Necesito orientación sobre cómo proceder bajo la ley mercantil para recuperar el monto adeudado.")
+            detailItem(title: "Seguimiento", content: client.seguimiento)
             
-            detailItem(title: "Evaluación del asistente al cliente", content: "Te recomiendo informar de inmediato a nuestro abogado asesor sobre tu situación de incumplimiento de pago, ya que este es un caso de derecho mercantil. Ellos podrán guiarte sobre los pasos legales a seguir para resolver tu caso y asegurarte de que recibas el apoyo necesario para proteger tus derechos.")
+            detailItem(title: "Evaluación del asistente al cliente", content: "Evaluación del asistente aquí.")
         }
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
     }
-    
+
     func detailItem(title: String, content: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)
@@ -150,6 +156,6 @@ let dateItems = [
 
 #Preview {
     NavigationView {
-        ClientProfileView()
+        ClientProfileView(client: Client(name: "Stephan Guy", exp: "376/2023", tram: "Mercantil", email: "example@example.com", seguimiento: "En proceso", alumno: "Alumno 1", folio: "#902a", ultimaVezInformada: "01/01/2024", juzgado: "Juzgado 4o",numero:"8100000000"))
     }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 enum TabbedItems: Int, CaseIterable {
     case home = 0
-    case clients
+    case clientsOrNews
     case appointments
     case profile
     
@@ -10,8 +10,8 @@ enum TabbedItems: Int, CaseIterable {
         switch self {
         case .home:
             return "Inicio"
-        case .clients:
-            return "Clientes"
+        case .clientsOrNews:
+            return "Clientes/Noticias"  // This will be dynamically set in the view
         case .appointments:
             return "Citas"
         case .profile:
@@ -19,12 +19,12 @@ enum TabbedItems: Int, CaseIterable {
         }
     }
     
-    var iconName: String {
+    func iconName(for userType: String) -> String {
         switch self {
         case .home:
             return "house"
-        case .clients:
-            return "person.crop.rectangle.stack"
+        case .clientsOrNews:
+            return userType == "abogado" ? "person.crop.rectangle.stack" : "newspaper"
         case .appointments:
             return "text.bubble"
         case .profile:
@@ -66,12 +66,14 @@ struct CustomTabView: View {
                     }
                     .tag(TabbedItems.home.rawValue)
                     
-                    if authModel.userData.tipo == "abogado" {
-                        NavigationStack {
+                    NavigationStack {
+                        if authModel.userData.tipo == "abogado" {
                             ClientsListView()
+                        } else {
+                            ClientNewsView()
                         }
-                        .tag(TabbedItems.clients.rawValue)
                     }
+                    .tag(TabbedItems.clientsOrNews.rawValue)
                     
                     NavigationStack {
                         AppointmentsListView()
@@ -102,7 +104,7 @@ struct CustomTabView: View {
                 }
                 .ignoresSafeArea()
                 
-                CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme, isLawyer: authModel.userData.tipo == "abogado")
+                CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme, userType: authModel.userData.tipo)
             } else {
                 Text("Error: No se pudo cargar la información del usuario")
                     .foregroundColor(.red)
@@ -114,21 +116,24 @@ struct CustomTabView: View {
 struct CustomTabBar: View {
     @Binding var selectedTab: Int
     var colorScheme: ColorScheme
-    var isLawyer: Bool
+    var userType: String
     
     var body: some View {
         HStack(spacing: 0) {
             ForEach(TabbedItems.allCases, id: \.self) { item in
-                if isLawyer || item != .clients {
-                    Button {
-                        withAnimation(nil) {
-                            selectedTab = item.rawValue
-                        }
-                    } label: {
-                        CustomTabItem(imageName: item.iconName, title: item.title, isActive: selectedTab == item.rawValue, colorScheme: colorScheme)
+                Button {
+                    withAnimation(nil) {
+                        selectedTab = item.rawValue
                     }
-                    .buttonStyle(NoEffectButton())
+                } label: {
+                    CustomTabItem(
+                        imageName: item.iconName(for: userType),
+                        title: item == .clientsOrNews ? (userType == "abogado" ? "Clientes" : "Noticias") : item.title,
+                        isActive: selectedTab == item.rawValue,
+                        colorScheme: colorScheme
+                    )
                 }
+                .buttonStyle(NoEffectButton())
             }
         }
         .frame(height: 55)

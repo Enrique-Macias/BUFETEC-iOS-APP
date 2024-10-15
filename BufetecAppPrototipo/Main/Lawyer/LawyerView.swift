@@ -310,29 +310,28 @@ struct NewsCard: View {
     var articleURL: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 10) {
             KFImage(URL(string: image))
                 .resizable()
                 .placeholder {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(width: 320, height: 160)
+                        .frame(width: 320, height: 180)
                         .cornerRadius(15)
                 }
                 .background(Color.white)
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 320, height: 160)
+                .frame(width: 320, height: 130)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.bottom, 10)
             
             Text(cardTitle)
-                .font(.system(size: 20, weight: .bold))
+                .font(.system(size: 18, weight: .bold))
                 .foregroundStyle(.primary)
-                .lineLimit(2)
                 .multilineTextAlignment(.leading)
-                .padding(.top, 5)
             
             Text(cardDate)
-                .font(.system(size: 14))
+                .font(.system(size: 12))
                 .foregroundColor(.gray)
             
             Text(cardBody)
@@ -342,6 +341,8 @@ struct NewsCard: View {
                 .lineLimit(3)
                 .multilineTextAlignment(.leading)
             
+            Spacer()
+
             NavigationLink(destination: FullNewsView(article: NewsDataType(id: UUID().uuidString, title: cardTitle, desc: cardBody, url: articleURL, image: image, date: cardDate, body: cardBody))) {
                 HStack {
                     Text("Ver más")
@@ -351,11 +352,10 @@ struct NewsCard: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .foregroundStyle(Color.accentColor)
-                .padding(.top, 5)
             }
         }
         .padding(20)
-        .frame(width: 360, height: 350)
+        .frame(width: 360, height: 370)
         .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay(
@@ -365,6 +365,7 @@ struct NewsCard: View {
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
 }
+
 
 struct CustomCard<Destination: View>: View {
     @Environment(\.colorScheme) var colorScheme

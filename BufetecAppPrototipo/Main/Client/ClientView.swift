@@ -12,6 +12,7 @@ struct ClientView: View {
     @AppStorage("hasSeenChatbotOnboarding") private var hasSeenChatbotOnboarding = false
     @State private var showingChatbotViews = false
     
+    
     enum ChatBotState {
         case main, load, onboarding, chat
     }
@@ -58,7 +59,7 @@ struct ClientView: View {
                     .padding(.bottom, 100)
                 }
                 .background(Color("btBackground"))
-                .navigationTitle("Cliente")
+                .navigationTitle("Inicio")
                 .navigationBarTitleDisplayMode(.inline)
                 .sheet(isPresented: $showingSettings) {
                     SettingsView()

@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct AppointmentScheduleView: View {
-    // MARK: - Properties
+    @EnvironmentObject var authModel: AuthModel
+    @Environment(\.dismiss) var dismiss
+    
     @State private var selectedTab: String = "Dias"
     @State private var horarioSemanal: [String: [Date]] = [:]
     @State private var selectedDay: String = ""
@@ -16,56 +18,54 @@ struct AppointmentScheduleView: View {
     @State private var excepcionesFechas: [ExcepcionFecha] = []
     @State private var removedHorarios: [Date: [Date]] = [:]
     
+    private let baseURL = APIURL.default
+    
     private let daysOfWeek = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
     private let dayAbbreviations = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"]
     
     // MARK: - Body
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    headerSection
-                        .padding(.bottom, 20)
-                    tabSelectionSection
-                        .padding(.bottom, 10)
-
-                    
-                    if selectedTab == "Dias" {
-                        diasView
-                    } else if selectedTab == "Calendario" {
-                        calendarioView
-                    }
-                    
-                    if showingTimePicker {
-                        timePickerModal
-                    }
-                }
-                                
-                guardarCambiosButton
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                headerSection
+                    .padding(.bottom, 20)
+                tabSelectionSection
+                    .padding(.bottom, 10)
                 
-                if showSuccessAlert {
-                    successAlertView
+                if selectedTab == "Dias" {
+                    diasView
+                } else if selectedTab == "Calendario" {
+                    calendarioView
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            
+            guardarCambiosButton
+            
         }
+        .alert(isPresented: $showSuccessAlert) {
+            Alert(
+                title: Text("Confirmado"),
+                message: Text("Se ha guardado el horario"),
+                dismissButton: .default(Text("Aceptar")) {
+                    dismiss()
+                }
+            )
+        }
+        .sheet(isPresented: $showingTimePicker) {
+            timePickerModal
+        }
+        .navigationBarTitleDisplayMode(.large)
+        .navigationTitle("Definir horario")
     }
     
     // MARK: - View Components
     private var headerSection: some View {
         VStack(alignment: .leading) {
-            Text("Definir Horarios")
-                .font(.system(size: 24))
-                .fontWeight(.bold)
-                .foregroundColor(Color("btBlue"))
-                .padding(.bottom, 5)
-                .padding(.leading, 20)
-            
             Text("Define tu horario semanal y remueve las fechas que no deseas en la vista de calendario.")
-                .font(CustomFonts.MontserratRegular(size: 14))
+                .font(.system(size: 16))
                 .foregroundColor(Color.primary)
                 .lineSpacing(5)
-                .padding(.leading, 20)
+                .padding(.horizontal, 20)
         }
     }
     
@@ -74,7 +74,7 @@ struct AppointmentScheduleView: View {
             tabButton(title: "Días de la Semana", tab: "Dias")
             tabButton(title: "Calendario", tab: "Calendario")
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 18)
     }
     
     private func tabButton(title: String, tab: String) -> some View {
@@ -89,10 +89,11 @@ struct AppointmentScheduleView: View {
                 .fontWeight(.bold)
                 .foregroundColor(selectedTab == tab ? Color.white : Color("btBlue"))
                 .padding()
+                .padding(.vertical, -5)
                 .frame(maxWidth: .infinity)
                 .background(selectedTab == tab ? Color("btBlue") : Color.white)
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color("btBlue"), lineWidth: 2))
-                .cornerRadius(10)
+                .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color("btBlue"), lineWidth: 2))
+                .cornerRadius(15)
         }
     }
     
@@ -111,22 +112,25 @@ struct AppointmentScheduleView: View {
     
     private func daySection(day: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(day)
-                .font(.system(size: 16))
-                .fontWeight(.bold)
-                .foregroundColor(Color("btBlue"))
-                .padding(.leading, 20)
+            HStack {
+                Text(day)
+                    .font(.system(size: 16))
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("btBlue"))
+                Spacer()
+                addHorarioButton(for: day)
+            }
+            .padding(.horizontal, 20)
             
             if let horariosDelDia = horarioSemanal[day] {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 10) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 5) {
                     ForEach(horariosDelDia, id: \.self) { horario in
                         horarioItem(day: day, horario: horario)
                     }
                 }
-                .padding(.leading, 10)
+                .padding(.horizontal, 12)
             }
             
-            addHorarioButton(for: day)
         }
     }
     
@@ -144,7 +148,7 @@ struct AppointmentScheduleView: View {
             Button(action: {
                 deleteHorario(day: day, horario: horario)
             }) {
-                Image(systemName: "xmark")
+                Image(systemName: "xmark.circle")
                     .foregroundColor(Color("btBlue"))
                     .padding(.trailing, 5)
             }
@@ -156,14 +160,8 @@ struct AppointmentScheduleView: View {
             selectedDay = day
             showingTimePicker = true
         }) {
-            Text("Agregar Horario")
-                .font(CustomFonts.PoppinsSemiBold(size: 14))
-                .foregroundColor(Color.white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .background(Color("btBlue"))
-                .cornerRadius(8)
-                .padding(.leading, 20)
+            Image(systemName: "plus.circle.fill")
+                .font(.system(size: 24))
         }
     }
     
@@ -181,42 +179,45 @@ struct AppointmentScheduleView: View {
                     Text("Horarios:")
                         .font(CustomFonts.PoppinsSemiBold(size: 16))
                         .foregroundColor(Color("btBlue"))
-                        .padding(.leading, 20)
+                        .padding(.top, -10)
                     
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 10) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 5) {
                         ForEach(horariosFecha, id: \.self) { horario in
                             calendarHorarioItem(horario: horario)
                         }
                     }
-                    .padding(.leading, 20)
+                    .padding(.horizontal, 18)
                 }
             }
+            .padding(.top, -20)
+            .padding(.bottom, 120)
         }
     }
     
     private func calendarHorarioItem(horario: Date) -> some View {
         HStack {
             Text(formattedTime(for: horario))
-                .font(CustomFonts.PoppinsMedium(size: 10))
+                .font(.system(size: 16))
                 .padding(.horizontal)
                 .padding(.vertical, 8)
                 .background(Color.white)
+                .frame(width: 78)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("btBlue"), lineWidth: 2))
                 .cornerRadius(8)
             
             Button(action: {
                 deleteHorarioFromCalendar(date: selectedCalendarDate, horario: horario)
             }) {
-                Image(systemName: "xmark")
+                Image(systemName: "xmark.circle")
                     .foregroundColor(Color("btBlue"))
-                    .padding(.trailing, 10)
+                    .padding(.trailing, 5)
             }
         }
     }
     
     private var timePickerModal: some View {
         VStack {
-            DatePicker("Seleccionar Hora", selection: $newHorario, displayedComponents: .hourAndMinute)
+            DatePicker("", selection: $newHorario, displayedComponents: .hourAndMinute)
                 .labelsHidden()
                 .datePickerStyle(WheelDatePickerStyle())
             
@@ -252,10 +253,10 @@ struct AppointmentScheduleView: View {
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 10)
+        .cornerRadius(15)
         .padding(.horizontal, 20)
-        .padding(.bottom, 100)
+        .presentationDragIndicator(.visible)
+        .presentationDetents([.height(400)])
     }
     
     private var guardarCambiosButton: some View {
@@ -271,7 +272,7 @@ struct AppointmentScheduleView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color("btBlue"))
-                        .cornerRadius(10)
+                        .cornerRadius(15)
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
                 }
@@ -320,12 +321,32 @@ struct AppointmentScheduleView: View {
     }
     
     private func getHorariosForDate(_ date: Date) -> [Date]? {
-        let baseHorarios = customHorarios[date] ?? []
+        let calendar = Calendar.current
+        let dayOfWeek = calendar.component(.weekday, from: date)
+        let dayName = daysOfWeek[(dayOfWeek + 5) % 7]
+        
+        // Get the base horarios for the day of the week
+        let baseHorarios = horarioSemanal[dayName] ?? []
+        
+        // Get any custom horarios for this specific date
+        let customHorariosForDate = customHorarios[date] ?? []
+        
+        // Combine base and custom horarios
+        var allHorarios = baseHorarios + customHorariosForDate
+        
+        // Remove any horarios that are in the removedHorarios for this date
         let removedHorariosForDate = removedHorarios[date] ?? []
-        return baseHorarios.filter { !removedHorariosForDate.contains($0) }
+        allHorarios = allHorarios.filter { horario in
+            !removedHorariosForDate.contains { removedHorario in
+                calendar.isDate(horario, equalTo: removedHorario, toGranularity: .minute)
+            }
+        }
+        
+        return allHorarios.isEmpty ? nil : allHorarios
     }
     
     private func deleteHorario(day: String, horario: Date) {
+        // Remove the horario from the specific day
         horarioSemanal[day]?.removeAll { $0 == horario }
         if horarioSemanal[day]?.isEmpty ?? true {
             horarioSemanal.removeValue(forKey: day)
@@ -354,22 +375,46 @@ struct AppointmentScheduleView: View {
         removedHorarios[date]?.append(horario)
         
         // Add to excepcionesFechas
-        let excepcion = ExcepcionFecha(fechaHora: combineDateAndTime(date: date, time: horario), razon: "Cita programada")
+        let excepcion = ExcepcionFecha(fechaHora: combineDateAndTime(date: date, time: horario), razon: "Cita cancelada")
         excepcionesFechas.append(excepcion)
         
         showGuardarCambios = true
     }
     
+    private func updateAttorneyData() async throws {
+        let url = URL(string: "\(baseURL)/updateAttorney")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "uid": authModel.userData.uid,
+        ]
+        // append body print json de la consola
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+    }
+
+    
     private func guardarCambios() {
         // Convert horarioSemanal to the required format
+        let orderedDays = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"]
+        
+        // Convert horarioSemanal to the required format and order
         var horarioSemanalFormatted: [String: [String]] = [:]
-        for (day, horarios) in horarioSemanal {
-            if let index = daysOfWeek.firstIndex(of: day) {
-                let dayAbbr = dayAbbreviations[index]
-                horarioSemanalFormatted[dayAbbr] = horarios.map { formattedTime(for: $0) }
+        for day in orderedDays {
+            if let fullDay = dayAbbreviations.firstIndex(of: day).flatMap({ daysOfWeek[$0] }),
+               let horarios = horarioSemanal[fullDay] {
+                horarioSemanalFormatted[day] = horarios.map { formattedTime(for: $0) }.sorted()
             }
         }
-        
+
         // Convert excepcionesFechas to the required format
         let excepcionesFormatted = excepcionesFechas.map { excepcion -> [String: String] in
             let dateFormatter = ISO8601DateFormatter()
@@ -379,19 +424,25 @@ struct AppointmentScheduleView: View {
             ]
         }
         
-        // Print to console
-        print("\"horarioSemanal\": \(horarioSemanalFormatted)")
-        print("\"excepcionesFechas\": \(excepcionesFormatted)")
+        // Create the final JSON structure
+        let finalJSON: [String: Any] = [
+            "horarioSemanal": horarioSemanalFormatted,
+            "excepcionesFechas": excepcionesFormatted
+        ]
+        
+        // Convert to JSON string
+        if let jsonData = try? JSONSerialization.data(withJSONObject: finalJSON, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print(jsonString)
+        } else {
+            print("Error: Couldn't convert to JSON")
+        }
         
         // Show alert
         showSuccessAlert = true
         shouldHideGuardarCambios = true
-        
-        // Hide the alert after 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            showSuccessAlert = false
-        }
     }
+
     
     private func formattedTime(for date: Date) -> String {
         let formatter = DateFormatter()
@@ -414,5 +465,7 @@ struct ExcepcionFecha: Identifiable {
 }
 
 #Preview {
-    AppointmentScheduleView()
+    NavigationView {
+        AppointmentScheduleView()
+    }
 }

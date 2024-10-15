@@ -53,7 +53,10 @@ struct ProfileView: View {
                 }
                 
                 if (authModel.userData.tipo == "abogado") {
-                    ProfileOption(iconName: "calendar.badge.clock", title: "Mi horario", showChevron: true) {
+                    NavigationLink(destination: AppointmentScheduleView()) {
+                        
+                        ProfileOption(iconName: "calendar.badge.clock", title: "Mi horario", showChevron: true) {
+                        }
                     }
                 }
                 

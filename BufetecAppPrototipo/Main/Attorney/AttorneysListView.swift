@@ -1,103 +1,11 @@
 import SwiftUI
 
-struct AttorneyCard: View {
-    @Environment(\.colorScheme) var colorScheme
-    let attorney: Attorney
-    @State private var isExpanded = false
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button(action: {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                    isExpanded.toggle()
-                }
-            }) {
-                HStack(spacing: 15) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(Color("btBlue"))
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(attorney.nombre)
-                            .font(CustomFonts.PoppinsBold(size: 16))
-                            .foregroundColor(Color("btBlue"))
-                        Text(attorney.especialidad)
-                            .font(CustomFonts.MontserratMedium(size: 12))
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer()
-                    
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(Color("btBlue"))
-                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-            
-            if isExpanded {
-                VStack(alignment: .leading, spacing: 10) {
-                    descriptionSection("Descripción:", text: attorney.descripcion)
-                    descriptionSection("Ejemplos de Casos:", text: attorney.casosEjemplo)
-                    
-                    NavigationLink(destination: CreateAppointmentView(attorney: attorney)) {
-                        HStack {
-                            Text("Agendar Cita")
-                                .font(CustomFonts.PoppinsSemiBold(size: 12))
-                            Image(systemName: "arrow.right")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color("btBlue"))
-                        .cornerRadius(15)
-                    }
-                    .padding(.top, 10)
-                }
-                .padding(.top, 15)
-            }
-        }
-        .padding()
-        .background(colorScheme == .dark ? Color.gray.opacity(0.15) : Color.white)
-        .cornerRadius(12)
-    }
-    
-    private func descriptionSection(_ title: String, text: String) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text(title)
-                .font(CustomFonts.PoppinsBold(size: 14))
-                .foregroundColor(Color("btBlue"))
-            Text(text)
-                .font(CustomFonts.MontserratMedium(size: 14))
-                .foregroundColor(.primary)
-        }
-    }
-    
-    private func formatSchedule(_ schedule: [String: [String]]) -> String {
-        let days = [
-            "lun": "Lunes",
-            "mar": "Martes",
-            "mie": "Miércoles",
-            "jue": "Jueves",
-            "vie": "Viernes",
-            "sab": "Sábado",
-            "dom": "Domingo"
-        ]
-        
-        return schedule.map { key, value in
-            let dayName = days[key] ?? key
-            let hours = value.joined(separator: ", ")
-            return "\(dayName): \(hours)"
-        }.joined(separator: "\n")
-    }
-}
-
 struct AttorneysListView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel = AttorneysViewModel()
     @State private var searchText = ""
     @State private var sortOption = SortOption.caseName
+    @Binding var isPresented: Bool
     
     var body: some View {
         NavigationView {
@@ -107,7 +15,6 @@ struct AttorneysListView: View {
                 attorneyList
             }
             .background(Color("btBackground"))
-    
         }
         .navigationTitle("Nuestros Abogados")
         .navigationBarTitleDisplayMode(.inline)
@@ -170,14 +77,14 @@ struct AttorneysListView: View {
             } else {
                 LazyVStack(spacing: 15) {
                     ForEach(filteredAttorneys) { attorney in
-                        AttorneyCard(attorney: attorney)
+                        AttorneyCard(attorney: attorney, isPresented: $isPresented)
                     }
                 }
                 .padding()
             }
         }
     }
-    
+
     private var filteredAttorneys: [Attorney] {
         viewModel.attorneys.filter { attorney in
             searchText.isEmpty || attorney.nombre.localizedCaseInsensitiveContains(searchText) || attorney.especialidad.localizedCaseInsensitiveContains(searchText)
@@ -191,6 +98,100 @@ struct AttorneysListView: View {
         case .specialty:
             return lhs.especialidad < rhs.especialidad
         }
+    }
+}
+
+struct AttorneyCard: View {
+    @Environment(\.colorScheme) var colorScheme
+    let attorney: Attorney
+    @State private var isExpanded = false
+    @Binding var isPresented: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button(action: {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    isExpanded.toggle()
+                }
+            }) {
+                HStack(spacing: 15) {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(Color("btBlue"))
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(attorney.nombre)
+                            .font(CustomFonts.PoppinsBold(size: 16))
+                            .foregroundColor(Color("btBlue"))
+                        Text(attorney.especialidad)
+                            .font(CustomFonts.MontserratMedium(size: 12))
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.down")
+                        .foregroundColor(Color("btBlue"))
+                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            if isExpanded {
+                VStack(alignment: .leading, spacing: 10) {
+                    descriptionSection("Descripción:", text: attorney.descripcion)
+                    descriptionSection("Ejemplos de Casos:", text: attorney.casosEjemplo)
+                    
+                    NavigationLink(destination: CreateAppointmentView(attorney: attorney, isPresented: $isPresented)) {
+                        HStack {
+                            Text("Agendar Cita")
+                                .font(CustomFonts.PoppinsSemiBold(size: 12))
+                            Image(systemName: "arrow.right")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Color("btBlue"))
+                        .cornerRadius(15)
+                    }
+                    .padding(.top, 10)
+                }
+                .padding(.top, 15)
+            }
+        }
+        .padding()
+        .background(colorScheme == .dark ? Color.gray.opacity(0.15) : Color.white)
+        .cornerRadius(12)
+    }
+    
+    private func descriptionSection(_ title: String, text: String) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(CustomFonts.PoppinsBold(size: 14))
+                .foregroundColor(Color("btBlue"))
+            Text(text)
+                .font(CustomFonts.MontserratMedium(size: 14))
+                .foregroundColor(.primary)
+        }
+    }
+    
+    private func formatSchedule(_ schedule: [String: [String]]) -> String {
+        let days = [
+            "lun": "Lunes",
+            "mar": "Martes",
+            "mie": "Miércoles",
+            "jue": "Jueves",
+            "vie": "Viernes",
+            "sab": "Sábado",
+            "dom": "Domingo"
+        ]
+        
+        return schedule.map { key, value in
+            let dayName = days[key] ?? key
+            let hours = value.joined(separator: ", ")
+            return "\(dayName): \(hours)"
+        }.joined(separator: "\n")
     }
 }
 

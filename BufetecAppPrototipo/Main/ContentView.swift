@@ -27,4 +27,5 @@ struct ContentView: View {
     ContentView()
         .environmentObject(AuthModel())
         .environmentObject(AppState())
+        .environmentObject(AppointmentViewModel())
 }

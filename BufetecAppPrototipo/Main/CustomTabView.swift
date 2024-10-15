@@ -11,7 +11,7 @@ enum TabbedItems: Int, CaseIterable {
         case .home:
             return "Inicio"
         case .clientsOrNews:
-            return "Clientes/Noticias"  // This will be dynamically set in the view
+            return "Clientes/Noticias"
         case .appointments:
             return "Citas"
         case .profile:

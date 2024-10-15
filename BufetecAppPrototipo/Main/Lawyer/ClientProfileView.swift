@@ -2,13 +2,13 @@ import SwiftUI
 
 struct ClientProfileView: View {
     @Environment(\.colorScheme) var colorScheme
+    var client: Client // Accepting the client
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 profileHeader
                 caseInfoCard
-                datesSection
                 detailsSection
             }
             .padding()
@@ -21,30 +21,30 @@ struct ClientProfileView: View {
     var profileHeader: some View {
         HStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Stephan Guy")
+                Text(client.name) // Using client name
                     .font(.custom("Poppins-Bold", size: 24))
                     .foregroundColor(.primary)
                 
                 HStack {
-                    Text("#902a")
+                    Text(client.exp)
                         .font(.custom("Poppins", size: 14))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
                         .background(Color.blue.opacity(0.1))
                         .cornerRadius(8)
                     
-                    Text("Cliente")
+                    Text(client.juzgado)
                         .font(.custom("Poppins", size: 14))
                         .foregroundColor(.secondary)
                 }
             }
             Spacer()
-            Image(uiImage: UIImage(named: "placeholderProfileImage") ?? UIImage())
+            Image(systemName: "person.crop.circle.fill")
                 .resizable()
+                .foregroundStyle(Color.accentColor)
                 .scaledToFill()
-                .frame(width: 80, height: 80)
+                .frame(width: 40, height: 40)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(Color.blue, lineWidth: 2))
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding()
@@ -54,9 +54,14 @@ struct ClientProfileView: View {
     
     var caseInfoCard: some View {
         HStack {
-            infoItem(title: "Caso", value: "Mercantil")
-            Divider().frame(height: 30)
-            infoItem(title: "Estado", value: "En proceso")
+            infoItem(title: "Trámite", value: client.tram)
+            Divider()
+                .frame(height: 30)
+            
+            VStack(){
+                infoItem(title: "Correo", value: client.email)
+                infoItem(title: "Número", value: client.numero)
+            }
         }
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
@@ -77,7 +82,7 @@ struct ClientProfileView: View {
     
     var datesSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Fechas")
+            Text("Citas Previas")
                 .font(.custom("Poppins-Bold", size: 20))
                 .padding(.bottom, 5)
             
@@ -116,10 +121,9 @@ struct ClientProfileView: View {
             Text("Detalles")
                 .font(.custom("Poppins-Bold", size: 20))
             
-            detailItem(title: "Descripción del cliente", content: "Estoy enfrentando un problema legal con un cliente que no ha cumplido con el pago de una factura por servicios prestados. He intentado varias veces comunicarme con ellos, pero no he recibido respuesta. Necesito orientación sobre cómo proceder bajo la ley mercantil para recuperar el monto adeudado.")
-            
-            detailItem(title: "Evaluación del asistente al cliente", content: "Te recomiendo informar de inmediato a nuestro abogado asesor sobre tu situación de incumplimiento de pago, ya que este es un caso de derecho mercantil. Ellos podrán guiarte sobre los pasos legales a seguir para resolver tu caso y asegurarte de que recibas el apoyo necesario para proteger tus derechos.")
+            detailItem(title: "Seguimiento", content: client.seguimiento)
         }
+        .frame(maxWidth: .infinity, minHeight: 220, alignment: .topLeading)
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
@@ -150,6 +154,6 @@ let dateItems = [
 
 #Preview {
     NavigationView {
-        ClientProfileView()
+        ClientProfileView(client: Client(name: "Stephan Guy", exp: "376/2023", tram: "Mercantil", email: "example@example.com", seguimiento: "En proceso", alumno: "Alumno 1", folio: "#902a", ultimaVezInformada: "01/01/2024", juzgado: "Juzgado 4o",numero:"8100000000"))
     }
 }

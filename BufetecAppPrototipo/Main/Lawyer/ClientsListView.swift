@@ -1,7 +1,7 @@
 import SwiftUI
-import Kingfisher
 
 struct ClientsListView: View {
+    @State private var clients: [Client] = []
     @State private var searchText = ""
     @State private var isManaging = false
     @State private var sortOption = SortOption.caseName
@@ -13,18 +13,11 @@ struct ClientsListView: View {
                 filterButtons
                 clientList
             }
+            .background(Color("btBackground"))
         }
         .navigationTitle("Clientes")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { isManaging.toggle() }) {
-                    Text(isManaging ? "Listo" : "Administrar")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                }
-            }
-        }
+        .onAppear(perform: fetchClients)
     }
     
     private var searchBar: some View {
@@ -32,12 +25,9 @@ struct ClientsListView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
             TextField("Buscar clientes", text: $searchText)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
         }
-        .padding(10)
-        .background(Color(UIColor.systemBackground))
-        .cornerRadius(10)
         .padding(.horizontal)
-        .padding(.top)
     }
     
     private var filterButtons: some View {
@@ -63,7 +53,7 @@ struct ClientsListView: View {
     private var clientList: some View {
         ScrollView {
             LazyVStack(spacing: 15) {
-                ForEach(filteredClients, id: \.name) { client in
+                ForEach(filteredClients, id: \.id) { client in
                     CustomCardClient(client: client, isManaging: $isManaging)
                 }
             }
@@ -82,20 +72,62 @@ struct ClientsListView: View {
         case .caseName:
             return lhs.name < rhs.name
         case .caseNumber:
-            return lhs.caseNumber < rhs.caseNumber
+            return lhs.exp < rhs.exp
         case .caseType:
-            return lhs.caseType < rhs.caseType
+            return lhs.tram < rhs.tram
         }
     }
+    
+    private func fetchClients() {
+        guard let url = URL(string: "https://buffetec-api.vercel.app/getClientsFromSheets") else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error fetching clients: \(error)")
+                return
+            }
+            
+            guard let data = data else { return }
+            do {
+                if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                    DispatchQueue.main.async {
+                        clients = jsonArray.compactMap { dict in
+                            let name = (dict["nombre"] as? String) ?? "n/a"
+                            let expedienteYJuzgado = (dict["expediente_y_juzgado"] as? String) ?? "n/a"
+                            let tramite = (dict["tramite"] as? String) ?? "n/a"
+                            let email = (dict["correo"] as? String) ?? "n/a"
+                            let seguimiento = (dict["seguimiento"] as? String) ?? "n/a"
+                            let alumno = (dict["alumno"] as? String) ?? "n/a"
+                            let folio = (dict["folio"] as? String) ?? "n/a"
+                            let ultimaVezInformada = (dict["ultima_vez_informada"] as? String) ?? "n/a"
+                            let numero = (dict["numero"] as? String) ?? "n/a" // Extract phone number
+                            
+                            // Extracting expediente and juzgado
+                            let components = expedienteYJuzgado.components(separatedBy: "Juzgado")
+                            let expediente = components.first?.trimmingCharacters(in: .whitespaces) ?? "n/a"
+                            let juzgado = components.count > 1 ? "Juzgado " + components[1].trimmingCharacters(in: .whitespaces) : "n/a"
+                            
+                            return Client(name: name, exp: expediente, tram: tramite, email: email, seguimiento: seguimiento, alumno: alumno, folio: folio, ultimaVezInformada: ultimaVezInformada, juzgado: juzgado, numero: numero)
+                        }
+                        print("Fetched \(clients.count) clients.") // Check number of clients fetched
+                    }
+                }
+            } catch {
+                print("Failed to parse JSON: \(error)")
+            }
+        }.resume()
+    }
+    
+    
 }
 
 struct CustomCardClient: View {
     let client: Client
+    @Environment(\.colorScheme) var colorScheme
     @Binding var isManaging: Bool
     @State private var isSelected = false
     
     var body: some View {
-        NavigationLink(destination: ClientProfileView()) {
+        NavigationLink(destination: ClientProfileView(client: client)) {
             HStack(spacing: 15) {
                 if isManaging {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
@@ -105,22 +137,22 @@ struct CustomCardClient: View {
                         }
                 }
                 
-                KFImage(URL(string: client.imageURL))
-                    .placeholder { Image(systemName: "person.crop.circle.fill").font(.largeTitle) }
+                Image(systemName: "person.crop.circle.fill")
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
                     .frame(width: 60, height: 60)
-                    .clipShape(Circle())
+                    .foregroundColor(.gray)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(client.name)
                         .font(.headline)
-                    Text(client.caseNumber)
+                    Text(client.exp)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    Text(client.caseType)
+                    Text(client.tram)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                    
                 }
                 
                 Spacer()
@@ -129,19 +161,25 @@ struct CustomCardClient: View {
                     .foregroundColor(.accentColor)
             }
             .padding()
-            .background(Color(UIColor.secondarySystemBackground))
+            .background(colorScheme == .light ? Color.white : Color.black)
             .cornerRadius(12)
         }
-        .buttonStyle(PlainButtonStyle()) // This ensures the button doesn't have default styling
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
 struct Client: Identifiable {
     let id = UUID()
     let name: String
-    let caseNumber: String
-    let caseType: String
-    let imageURL: String
+    let exp: String
+    let tram: String
+    let email: String
+    let seguimiento: String
+    let alumno: String
+    let folio: String
+    let ultimaVezInformada: String
+    let juzgado: String
+    let numero: String
 }
 
 private enum SortOption: String, CaseIterable {
@@ -149,13 +187,6 @@ private enum SortOption: String, CaseIterable {
     case caseNumber = "Número de caso"
     case caseType = "Tipo de caso"
 }
-
-// Sample data
-let clients = [
-    Client(name: "Stephan Guy", caseNumber: "#153a", caseType: "Caso civil", imageURL: "https://example.com/image1.jpg"),
-    Client(name: "Guy Stephani", caseNumber: "#153b", caseType: "Caso familiar", imageURL: "https://example.com/image2.jpg"),
-    // Add more clients here...
-]
 
 #Preview {
     ClientsListView()

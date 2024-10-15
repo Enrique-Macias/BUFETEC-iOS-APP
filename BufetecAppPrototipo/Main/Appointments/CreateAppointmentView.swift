@@ -5,151 +5,13 @@ struct CalendarDay: Identifiable {
     let id: UUID
 }
 
-struct AppointmentCardInfo: View {
-    @Environment(\.colorScheme) var colorScheme
-    let name: String
-    let specialty: String
-    let phoneNumber: String
-    let email: String
-    let address: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            header
-            contactInfo
-        }
-        .padding()
-        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
-        .cornerRadius(15)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("btBlue"), lineWidth: 1)
-        )
-        .padding(.horizontal, 10)
-        .padding(.vertical, 10)
-    }
-    
-    private var header: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading) {
-                Text(name)
-                    .font(CustomFonts.PoppinsBold(size: 20))
-                    .foregroundColor(Color("btBlue"))
-                
-                Text(specialty)
-                    .font(CustomFonts.MontserratMedium(size: 14))
-                    .foregroundColor(.gray)
-            }
-            
-            Spacer()
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .foregroundColor(Color("btBlue"))
-                .offset(y: 3)
-        }
-    }
-    
-    private var contactInfo: some View {
-        HStack(spacing: 10) {
-            contactInfoItem(icon: "phone.fill", text: phoneNumber)
-            contactInfoItem(icon: "envelope.fill", text: email)
-        }
-    }
-    
-    private func contactInfoItem(icon: String, text: String) -> some View {
-        HStack(spacing: 5) {
-            Image(systemName: icon)
-            Text(text)
-        }
-        .font(CustomFonts.MontserratBold(size: 12))
-        .foregroundColor(Color("btBlue"))
-    }
-    
-    private var addressInfo: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "mappin.and.ellipse")
-            Text(address)
-                .font(CustomFonts.MontserratMedium(size: 12))
-        }
-        .foregroundColor(Color("btBlue"))
-    }
-}
-
-struct ConfirmationAlertView: View {
-    @Environment(\.colorScheme) var colorScheme
-    let name: String
-    let selectedDate: Date
-    let selectedTime: String
-    let dismiss: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "checkmark.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .foregroundColor(.green)
-            
-            Text("Cita Confirmada")
-                .font(CustomFonts.PoppinsBold(size: 20))
-                .foregroundColor(.primary)
-            
-            Text("Tu cita con \(name) ha sido confirmada")
-                .font(CustomFonts.MontserratRegular(size: 14))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-            
-            HStack {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("\(selectedDate, style: .date)")
-                        .font(CustomFonts.MontserratRegular(size: 14))
-                        .foregroundColor(.primary)
-                }
-                
-                HStack {
-                    Image(systemName: "clock")
-                    Text(selectedTime)
-                        .font(CustomFonts.MontserratRegular(size: 14))
-                        .foregroundColor(.primary)
-                }
-            }
-            
-            HStack {
-                Image(systemName: "mappin.and.ellipse")
-                Text("C. Av. Luis Elizondo y Garza Sada, Tecnológico, 64700 Monterrey, N.L.")
-                    .font(CustomFonts.MontserratRegular(size: 12))
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(.bottom, 10)
-            
-            Button(action: dismiss) {
-                Text("Continuar")
-                    .font(CustomFonts.PoppinsSemiBold(size: 16))
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color("btBlue"))
-                    .cornerRadius(10)
-            }
-            .padding(.horizontal, 40)
-        }
-        .padding()
-        .frame(width: 300, height: 400)
-        .background(Color("btBackground"))
-        .cornerRadius(20)
-    }
-}
-
 struct CreateAppointmentView: View {
     let attorney: Attorney
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authModel: AuthModel
     @StateObject private var viewModel = CreateAppointmentViewModel()
+    @Binding var isPresented: Bool
     
     @State private var selectedDate = Date()
     @State private var selectedTime: String? = nil
@@ -189,7 +51,15 @@ struct CreateAppointmentView: View {
             )
         }
         .sheet(isPresented: $showingConfirmationAlert) {
-            ConfirmationAlertView(name: attorney.nombre, selectedDate: selectedDate, selectedTime: selectedTime ?? "", dismiss: { showingConfirmationAlert = false })
+            ConfirmationAlertView(
+                name: attorney.nombre,
+                selectedDate: selectedDate,
+                selectedTime: selectedTime ?? "",
+                dismiss: {
+                    showingConfirmationAlert = false
+                    isPresented = false
+                }
+            )
         }
         .onAppear {
             viewModel.fetchAvailability(for: attorney, month: selectedDate)
@@ -338,6 +208,144 @@ struct CreateAppointmentView: View {
     }
 }
 
+struct AppointmentCardInfo: View {
+    @Environment(\.colorScheme) var colorScheme
+    let name: String
+    let specialty: String
+    let phoneNumber: String
+    let email: String
+    let address: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            header
+            contactInfo
+        }
+        .padding()
+        .background(colorScheme == .dark ? .gray.opacity(0.15) : .white)
+        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("btBlue"), lineWidth: 1)
+        )
+        .padding(.horizontal, 10)
+        .padding(.vertical, 10)
+    }
+    
+    private var header: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(CustomFonts.PoppinsBold(size: 20))
+                    .foregroundColor(Color("btBlue"))
+                
+                Text(specialty)
+                    .font(CustomFonts.MontserratMedium(size: 14))
+                    .foregroundColor(.gray)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundColor(Color("btBlue"))
+                .offset(y: 3)
+        }
+    }
+    
+    private var contactInfo: some View {
+        HStack(spacing: 10) {
+            contactInfoItem(icon: "phone.fill", text: phoneNumber)
+            contactInfoItem(icon: "envelope.fill", text: email)
+        }
+    }
+    
+    private func contactInfoItem(icon: String, text: String) -> some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon)
+            Text(text)
+        }
+        .font(CustomFonts.MontserratBold(size: 12))
+        .foregroundColor(Color("btBlue"))
+    }
+    
+    private var addressInfo: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "mappin.and.ellipse")
+            Text(address)
+                .font(CustomFonts.MontserratMedium(size: 12))
+        }
+        .foregroundColor(Color("btBlue"))
+    }
+}
+
+struct ConfirmationAlertView: View {
+    @Environment(\.colorScheme) var colorScheme
+    let name: String
+    let selectedDate: Date
+    let selectedTime: String
+    let dismiss: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "checkmark.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 60)
+                .foregroundColor(.green)
+            
+            Text("Cita Confirmada")
+                .font(CustomFonts.PoppinsBold(size: 20))
+                .foregroundColor(.primary)
+            
+            Text("Tu cita con \(name) ha sido confirmada")
+                .font(CustomFonts.MontserratRegular(size: 14))
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+            
+            HStack {
+                HStack {
+                    Image(systemName: "calendar")
+                    Text("\(selectedDate, style: .date)")
+                        .font(CustomFonts.MontserratRegular(size: 14))
+                        .foregroundColor(.primary)
+                }
+                
+                HStack {
+                    Image(systemName: "clock")
+                    Text(selectedTime)
+                        .font(CustomFonts.MontserratRegular(size: 14))
+                        .foregroundColor(.primary)
+                }
+            }
+            
+            HStack {
+                Image(systemName: "mappin.and.ellipse")
+                Text("C. Av. Luis Elizondo y Garza Sada, Tecnológico, 64700 Monterrey, N.L.")
+                    .font(CustomFonts.MontserratRegular(size: 12))
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.bottom, 10)
+            
+            Button(action: dismiss) {
+                Text("Continuar")
+                    .font(CustomFonts.PoppinsSemiBold(size: 16))
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color("btBlue"))
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal, 40)
+        }
+        .padding()
+        .frame(width: 300, height: 400)
+        .background(Color("btBackground"))
+        .cornerRadius(20)
+    }
+}
 
 // Uncomment this for previews
 // #Preview {

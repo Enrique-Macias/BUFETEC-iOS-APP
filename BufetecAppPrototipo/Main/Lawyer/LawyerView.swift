@@ -41,16 +41,11 @@ struct LawyerView: View {
         GeometryReader { outer in
             NavigationStack {
                 ZStack {
-                    // Scrollable content in the background
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
-                            // News Header
                             NewsHeaderView(showingScrolledTitle: $showingScrolledTitle)
                             VStack {
-                                // TabView for News
                                 NewsTabView(list: newsData, selectedIndex: $selectedIndex)
-                                
-                                // Page Indicator
                                 PageIndicator(list: newsData, selectedIndex: $selectedIndex)
                             }
                             
@@ -75,7 +70,6 @@ struct LawyerView: View {
                             .padding(.horizontal, 15)
                             .frame(maxWidth: .infinity, alignment: .center)
                             
-                            // Cards for "Gestión de Casos" and "Clientes"
                             VStack(spacing: 30) {
                                 CustomCard(selectedTab: $selectedTab,
                                            title: "Gestion de clientes",
@@ -106,7 +100,6 @@ struct LawyerView: View {
                         newsData.fetchData()
                     }
                     
-                    // Floating ChatBot Button
                     VStack {
                         Spacer()
                         HStack {
@@ -280,11 +273,10 @@ struct PageIndicator: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .padding(.top, 10) // Add some padding to separate from the TabView
+        .padding(.top, 10)
     }
 }
 
-// Custom Toolbar
 struct CustomToolbar: ToolbarContent {
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingScrolledTitle: Bool
@@ -342,7 +334,7 @@ struct NewsCard: View {
                 .multilineTextAlignment(.leading)
             
             Spacer()
-
+            
             NavigationLink(destination: FullNewsView(article: NewsDataType(id: UUID().uuidString, title: cardTitle, desc: cardBody, url: articleURL, image: image, date: cardDate, body: cardBody))) {
                 HStack {
                     Text("Ver más")

@@ -39,10 +39,11 @@ struct AppointmentsListView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var viewModel: AppointmentViewModel
     @EnvironmentObject var authModel: AuthModel
+    @State private var showAttorneysList = false
     
     var body: some View {
-        ScrollView {
-            ZStack {
+        ZStack {
+            ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     if viewModel.isLoading {
                         ProgressView()
@@ -56,15 +57,41 @@ struct AppointmentsListView: View {
                         previousAppointments
                     }
                 }
-                .padding(.bottom, 40)
+                .padding(.bottom, 80)
+            }
+            .background(Color("btBackground"))
+            .navigationTitle("Citas")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                fetchAppointments()
+            }
+            
+            if authModel.userData.tipo == "cliente" {
+                VStack {
+                    Spacer()
+                    Button(action: {
+                        showAttorneysList = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(.accentColor)
+                            .background(Color("btBackground"))
+                            .clipShape(Circle())
+                    }
+                    .padding(.bottom, 20)
+                }
             }
         }
-        .background(Color("btBackground"))
-        .navigationTitle("Citas")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            viewModel.fetchAppointments(userId: authModel.userData.uid, userType: authModel.userData.tipo)
+        .sheet(isPresented: $showAttorneysList, onDismiss: {
+            fetchAppointments()
+        }) {
+            AttorneysListView(isPresented: $showAttorneysList)
         }
+    }
+    
+    private func fetchAppointments() {
+        viewModel.fetchAppointments(userId: authModel.userData.uid, userType: authModel.userData.tipo)
     }
     
     private var currentAppointments: some View {

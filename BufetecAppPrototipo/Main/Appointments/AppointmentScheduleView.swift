@@ -13,10 +13,16 @@ struct AppointmentScheduleView: View {
     @State private var showSuccessAlert = false
     @State private var shouldHideGuardarCambios = false
     
+    @State private var disabledHorarios: Set<Date> = []
+    @State private var availability: [Date: [String]] = [:]
+    
     @State private var selectedCalendarDate = Date()
     @State private var customHorarios: [Date: [Date]] = [:]
     @State private var excepcionesFechas: [ExcepcionFecha] = []
     @State private var removedHorarios: [Date: [Date]] = [:]
+    
+    @State private var isLoading = true
+    @State private var errorMessage: String?
     
     private let baseURL = APIURL.default
     
@@ -26,21 +32,28 @@ struct AppointmentScheduleView: View {
     // MARK: - Body
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
-                headerSection
-                    .padding(.bottom, 20)
-                tabSelectionSection
-                    .padding(.bottom, 10)
-                
-                if selectedTab == "Dias" {
-                    diasView
-                } else if selectedTab == "Calendario" {
-                    calendarioView
+            if isLoading {
+                ProgressView("Cargando...")
+            } else if let error = errorMessage {
+                Text(error)
+                    .foregroundColor(.red)
+            } else {
+                VStack(alignment: .leading, spacing: 0) {
+                    headerSection
+                        .padding(.bottom, 20)
+                        .padding(.top, 20)
+                    tabSelectionSection
+                        .padding(.bottom, 10)
+                    
+                    if selectedTab == "Dias" {
+                        diasView
+                    } else if selectedTab == "Calendario" {
+                        calendarioView
+                    }
                 }
+                
+                guardarCambiosButton
             }
-            
-            guardarCambiosButton
-            
         }
         .alert(isPresented: $showSuccessAlert) {
             Alert(
@@ -54,8 +67,286 @@ struct AppointmentScheduleView: View {
         .sheet(isPresented: $showingTimePicker) {
             timePickerModal
         }
-        .navigationBarTitleDisplayMode(.large)
+//        .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Definir horario")
+        .onAppear {
+            fetchAttorneyData()
+        }
+    }
+    
+    // MARK: - API Calls
+    private let iso8601Formatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        formatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+        return formatter
+    }()
+    
+    private func fetchAttorneyData() {
+        let uid = authModel.userData.uid
+        
+        let urlString = "\(baseURL)/getAttorney?uid=\(uid)"
+        guard let url = URL(string: urlString) else {
+            errorMessage = "URL inválida"
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.errorMessage = "Error de red: \(error.localizedDescription)"
+                    return
+                }
+                
+                guard let data = data else {
+                    self.errorMessage = "No se recibieron datos"
+                    return
+                }
+                
+                do {
+                    if let jsonResult = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        print("Received JSON: \(jsonResult)")
+                        
+                        if let horarioSemanal = jsonResult["horarioSemanal"] as? [String: [String]] {
+                            self.horarioSemanal = self.convertStringsToDates(horarioSemanal)
+                        } else {
+                            print("horarioSemanal is not in the expected format")
+                        }
+                        
+                        if let excepcionesFechas = jsonResult["excepcionesFechas"] as? [[String: Any]] {
+                            self.excepcionesFechas = excepcionesFechas.compactMap { excepcion in
+                                guard let fechaHoraString = excepcion["fechaHora"] as? String,
+                                      let fechaHora = self.iso8601Formatter.date(from: fechaHoraString),
+                                      let razon = excepcion["razon"] as? String else {
+                                    print("Failed to parse exception: \(excepcion)")
+                                    return nil
+                                }
+                                return ExcepcionFecha(fechaHora: fechaHora, razon: razon)
+                            }
+                            
+                            // Print the date and hour of each ExcepcionFecha
+                            for excepcion in self.excepcionesFechas {
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+                                dateFormatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+                                let dateString = dateFormatter.string(from: excepcion.fechaHora)
+                                print("ExcepcionFecha: \(dateString)")
+                            }
+                        } else {
+                            print("excepcionesFechas is not in the expected format")
+                        }
+                        
+                        self.updateAvailability()
+                        self.updateDisabledHorariosForSelectedDate()
+                        self.isLoading = false
+                    } else {
+                        self.errorMessage = "Los datos no están en el formato JSON esperado"
+                    }
+                } catch {
+                    self.errorMessage = "Error al procesar los datos: \(error.localizedDescription)"
+                    print("Raw data received: \(String(data: data, encoding: .utf8) ?? "Unable to convert data to string")")
+                }
+            }
+        }.resume()
+    }
+    
+    
+    private func updateAvailability() {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let nextThreeMonths = calendar.date(byAdding: .month, value: 3, to: currentDate)!
+        
+        var tempAvailability: [Date: [String]] = [:]
+        
+        calendar.enumerateDates(startingAfter: currentDate, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime) { date, _, stop in
+            guard let date = date else { return }
+            if date > nextThreeMonths {
+                stop = true
+                return
+            }
+            
+            let weekday = calendar.component(.weekday, from: date)
+            let weekdayKey = dayAbbreviations[weekday - 1]
+            
+            if let availableHours = horarioSemanal[weekdayKey] {
+                let startOfDay = calendar.startOfDay(for: date)
+                let exceptionsForDay = excepcionesFechas.filter {
+                    calendar.isDate($0.fechaHora, inSameDayAs: date)
+                }
+                
+                var availableTimesForDay = availableHours.map { formattedTime(for: $0) }
+                
+                for exception in exceptionsForDay {
+                    let exceptionTimeString = formattedTime(for: exception.fechaHora)
+                    availableTimesForDay.removeAll { $0 == exceptionTimeString }
+                }
+                
+                tempAvailability[startOfDay] = availableTimesForDay
+            } else {
+                tempAvailability[calendar.startOfDay(for: date)] = []
+            }
+        }
+        
+        self.availability = tempAvailability
+    }
+    
+    private func updateAttorneyData() {
+        let uid = authModel.userData.uid
+        
+        let url = URL(string: "\(baseURL)/updateAttorney")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let excepcionesFormatted = excepcionesFechas.map { excepcion -> [String: String] in
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+            return [
+                "fechaHora": dateFormatter.string(from: excepcion.fechaHora),
+                "razon": excepcion.razon
+            ]
+        }
+        
+        let body: [String: Any] = [
+            "uid": uid,
+            "horarioSemanal": convertDatesToStrings(horarioSemanal),
+            "excepcionesFechas": excepcionesFormatted
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            errorMessage = "Error al preparar los datos: \(error.localizedDescription)"
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.errorMessage = "Error: \(error.localizedDescription)"
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    self.errorMessage = "Error del servidor"
+                    return
+                }
+                
+                self.showSuccessAlert = true
+                self.shouldHideGuardarCambios = true
+            }
+        }.resume()
+    }
+    
+    // MARK: - Helper Functions
+    private func convertStringsToDates(_ horarioSemanal: [String: [String]]) -> [String: [Date]] {
+        var convertedHorario: [String: [Date]] = [:]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+        
+        for (day, times) in horarioSemanal {
+            convertedHorario[day] = times.compactMap { dateFormatter.date(from: $0) }
+        }
+        
+        return convertedHorario
+    }
+    
+    private func convertDatesToStrings(_ horarioSemanal: [String: [Date]]) -> [String: [String]] {
+        var convertedHorario: [String: [String]] = [:]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+        
+        for (day, times) in horarioSemanal {
+            convertedHorario[day] = times.map { dateFormatter.string(from: $0) }
+        }
+        
+        return convertedHorario
+    }
+    
+    private func deleteHorario(day: String, horario: Date) {
+        let dayAbbr = dayAbbreviations[daysOfWeek.firstIndex(of: day)!]
+        horarioSemanal[dayAbbr]?.removeAll { $0 == horario }
+        if horarioSemanal[dayAbbr]?.isEmpty ?? true {
+            horarioSemanal.removeValue(forKey: dayAbbr)
+        }
+        
+        showGuardarCambios = true
+    }
+    
+    private func deleteHorarioFromCalendar(date: Date, horario: Date) {
+        if removedHorarios[date] == nil {
+            removedHorarios[date] = []
+        }
+        removedHorarios[date]?.append(horario)
+        
+        let excepcion = ExcepcionFecha(fechaHora: combineDateAndTime(date: date, time: horario), razon: "Cita cancelada")
+        excepcionesFechas.append(excepcion)
+        
+        showGuardarCambios = true
+    }
+    
+    private func guardarCambios() {
+        updateAttorneyData()
+    }
+    
+    private func combineDateAndTime(date: Date, time: Date) -> Date {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+        return calendar.date(from: DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: timeComponents.hour, minute: timeComponents.minute)) ?? date
+    }
+    
+    private func syncHorariosWithCalendar() {
+        let calendar = Calendar.current
+        customHorarios.removeAll()
+        
+        for day in horarioSemanal.keys {
+            if let dayIndex = dayAbbreviations.firstIndex(of: day) {
+                let currentDate = calendar.date(bySetting: .weekday, value: (dayIndex + 1) % 7 + 1, of: selectedCalendarDate)
+                if let date = currentDate {
+                    customHorarios[date] = horarioSemanal[day]
+                }
+            }
+        }
+    }
+    
+    private func syncHorariosForSelectedDate(_ date: Date) {
+        let calendar = Calendar.current
+        let dayOfWeek = calendar.component(.weekday, from: date)
+        let dayName = dayAbbreviations[(dayOfWeek + 5) % 7]
+        if customHorarios[date] == nil {
+            customHorarios[date] = horarioSemanal[dayName]
+        }
+    }
+    
+    private func getHorariosForDate(_ date: Date) -> [Date]? {
+        let calendar = Calendar.current
+        let dayOfWeek = calendar.component(.weekday, from: date)
+        let dayName = dayAbbreviations[(dayOfWeek + 5) % 7]
+        
+        guard let horarios = customHorarios[date] ?? horarioSemanal[dayName] else {
+            return nil
+        }
+        
+        return horarios.map { horario in
+            let components = calendar.dateComponents([.hour, .minute], from: horario)
+            return calendar.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: 0, of: date) ?? date
+        }
+    }
+
+    private func removeExcepcion(_ excepcion: ExcepcionFecha) {
+        excepcionesFechas.removeAll { $0.id == excepcion.id }
+        showGuardarCambios = true
+    }
+    
+    private func formattedTime(for date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = TimeZone(identifier: "America/Mexico_City")
+        return formatter.string(from: date)
     }
     
     // MARK: - View Components
@@ -122,7 +413,8 @@ struct AppointmentScheduleView: View {
             }
             .padding(.horizontal, 20)
             
-            if let horariosDelDia = horarioSemanal[day] {
+            let dayAbbr = dayAbbreviations[daysOfWeek.firstIndex(of: day)!]
+            if let horariosDelDia = horarioSemanal[dayAbbr] {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 5) {
                     ForEach(horariosDelDia, id: \.self) { horario in
                         horarioItem(day: day, horario: horario)
@@ -130,7 +422,12 @@ struct AppointmentScheduleView: View {
                 }
                 .padding(.horizontal, 12)
             }
-            
+//                else {
+//                Text("No hay horarios para este día")
+//                    .font(.system(size: 14))
+//                    .foregroundColor(.gray)
+//                    .padding(.horizontal, 20)
+//            }
         }
     }
     
@@ -159,8 +456,7 @@ struct AppointmentScheduleView: View {
         Button(action: {
             selectedDay = day
             showingTimePicker = true
-        }) {
-            Image(systemName: "plus.circle.fill")
+        }) { Image(systemName: "plus.circle.fill")
                 .font(.system(size: 24))
         }
     }
@@ -171,48 +467,99 @@ struct AppointmentScheduleView: View {
                 DatePicker("Seleccionar fecha", selection: $selectedCalendarDate, in: Date()..., displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
-                    .onChange(of: selectedCalendarDate) { oldDate, newDate in
-                        syncHorariosForSelectedDate(newDate)
+                    .onChange(of: selectedCalendarDate) { old, new in
+                        updateDisabledHorariosForSelectedDate()
                     }
                 
-                if let horariosFecha = getHorariosForDate(selectedCalendarDate) {
-                    Text("Horarios:")
-                        .font(CustomFonts.PoppinsSemiBold(size: 16))
-                        .foregroundColor(Color("btBlue"))
-                        .padding(.top, -10)
-                    
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 5) {
-                        ForEach(horariosFecha, id: \.self) { horario in
+                Text("Horarios:")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color("btBlue"))
+                    .padding(.top, 5)
+                
+                if let horarios = getHorariosForDate(selectedCalendarDate) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 10) {
+                        ForEach(horarios, id: \.self) { horario in
                             calendarHorarioItem(horario: horario)
                         }
                     }
-                    .padding(.horizontal, 18)
+                    .padding(.horizontal)
+                } else {
+                    Text("No hay horarios para esta fecha")
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                        .padding(.top, 10)
                 }
             }
             .padding(.top, -20)
             .padding(.bottom, 120)
         }
+        .onAppear {
+            updateDisabledHorariosForSelectedDate()
+        }
     }
     
     private func calendarHorarioItem(horario: Date) -> some View {
-        HStack {
+        let isDisabled = isHorarioDisabled(horario)
+        return Button(action: {
+            toggleHorario(horario)
+        }) {
             Text(formattedTime(for: horario))
                 .font(.system(size: 16))
+                .foregroundColor(isDisabled ? .white : Color("btBlue"))
                 .padding(.horizontal)
                 .padding(.vertical, 8)
-                .background(Color.white)
-                .frame(width: 78)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("btBlue"), lineWidth: 2))
+                .frame(width: 100)
+                .background(isDisabled ? Color.gray : Color.white)
                 .cornerRadius(8)
-            
-            Button(action: {
-                deleteHorarioFromCalendar(date: selectedCalendarDate, horario: horario)
-            }) {
-                Image(systemName: "xmark.circle")
-                    .foregroundColor(Color("btBlue"))
-                    .padding(.trailing, 5)
-            }
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(isDisabled ? Color.gray : Color("btBlue"), lineWidth: 2))
         }
+    }
+    
+    
+    private func isHorarioDisabled(_ horario: Date) -> Bool {
+        disabledHorarios.contains(horario)
+    }
+    
+    private func toggleHorario(_ horario: Date) {
+        let combinedDateTime = combineDateAndTime(date: selectedCalendarDate, time: horario)
+        
+        if isHorarioDisabled(horario) {
+            disabledHorarios.remove(horario)
+            excepcionesFechas.removeAll { $0.fechaHora == combinedDateTime }
+        } else {
+            disabledHorarios.insert(horario)
+            let newExcepcion = ExcepcionFecha(fechaHora: combinedDateTime, razon: "Horario deshabilitado")
+            excepcionesFechas.append(newExcepcion)
+        }
+        
+        updateAvailability()
+        showGuardarCambios = true
+    }
+    
+    private func updateDisabledHorariosForSelectedDate() {
+        let calendar = Calendar.current
+        let dayOfWeek = calendar.component(.weekday, from: selectedCalendarDate)
+        let dayKey = dayAbbreviations[dayOfWeek - 1]
+        
+        let allPossibleTimes = Set(getHorariosForDate(selectedCalendarDate) ?? [])
+        print("All possible times for selected date: \(allPossibleTimes)")
+        
+        let exceptionsForSelectedDate = excepcionesFechas.filter { excepcion in
+            calendar.isDate(excepcion.fechaHora, inSameDayAs: selectedCalendarDate)
+        }
+        print("Exceptions for selected date: \(exceptionsForSelectedDate)")
+        
+        let disabledHorariosForSelectedDate = Set(exceptionsForSelectedDate.compactMap { excepcion -> Date? in
+            let components = calendar.dateComponents([.hour, .minute], from: excepcion.fechaHora)
+            guard let hour = components.hour, let minute = components.minute else {
+                return nil
+            }
+            return calendar.date(bySettingHour: hour, minute: minute, second: 0, of: selectedCalendarDate)
+        })
+        print("Disabled horarios for selected date: \(disabledHorariosForSelectedDate)")
+        
+        disabledHorarios = disabledHorariosForSelectedDate
+        print("Updated disabled horarios: \(disabledHorarios)")
     }
     
     private var timePickerModal: some View {
@@ -235,11 +582,12 @@ struct AppointmentScheduleView: View {
                         shouldHideGuardarCambios = false
                     }
                 } else if selectedTab == "Dias" {
-                    if horarioSemanal[selectedDay] == nil {
-                        horarioSemanal[selectedDay] = []
+                    let dayAbbr = dayAbbreviations[daysOfWeek.firstIndex(of: selectedDay)!]
+                    if horarioSemanal[dayAbbr] == nil {
+                        horarioSemanal[dayAbbr] = []
                     }
-                    if !horarioSemanal[selectedDay]!.contains(where: { calendar.dateComponents([.hour, .minute], from: $0) == newHourMinute }) {
-                        horarioSemanal[selectedDay]?.append(newHorario)
+                    if !horarioSemanal[dayAbbr]!.contains(where: { calendar.dateComponents([.hour, .minute], from: $0) == newHourMinute }) {
+                        horarioSemanal[dayAbbr]?.append(newHorario)
                         showGuardarCambios = true
                         shouldHideGuardarCambios = false
                     }
@@ -279,183 +627,6 @@ struct AppointmentScheduleView: View {
             }
         }
     }
-    
-    private var successAlertView: some View {
-        VStack {
-            HStack {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundColor(.green)
-                    .font(.system(size: 40))
-                Text("Cambios guardados con éxito")
-                    .font(CustomFonts.PoppinsSemiBold(size: 16))
-                    .foregroundColor(.green)
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .shadow(radius: 10)
-        }
-        .padding(.top, 20)
-    }
-    
-    // MARK: - Helper Functions
-    private func syncHorariosWithCalendar() {
-        let calendar = Calendar.current
-        customHorarios.removeAll()
-        
-        for day in horarioSemanal.keys {
-            if let dayIndex = daysOfWeek.firstIndex(of: day) {
-                let currentDate = calendar.date(bySetting: .weekday, value: (dayIndex + 1) % 7 + 1, of: selectedCalendarDate)
-                if let date = currentDate {
-                    customHorarios[date] = horarioSemanal[day]
-                }
-            }
-        }
-    }
-    
-    private func syncHorariosForSelectedDate(_ date: Date) {
-        let calendar = Calendar.current
-        let dayOfWeek = calendar.component(.weekday, from: date)
-        let dayName = daysOfWeek[(dayOfWeek + 5) % 7]
-        customHorarios[date] = horarioSemanal[dayName]
-    }
-    
-    private func getHorariosForDate(_ date: Date) -> [Date]? {
-        let calendar = Calendar.current
-        let dayOfWeek = calendar.component(.weekday, from: date)
-        let dayName = daysOfWeek[(dayOfWeek + 5) % 7]
-        
-        // Get the base horarios for the day of the week
-        let baseHorarios = horarioSemanal[dayName] ?? []
-        
-        // Get any custom horarios for this specific date
-        let customHorariosForDate = customHorarios[date] ?? []
-        
-        // Combine base and custom horarios
-        var allHorarios = baseHorarios + customHorariosForDate
-        
-        // Remove any horarios that are in the removedHorarios for this date
-        let removedHorariosForDate = removedHorarios[date] ?? []
-        allHorarios = allHorarios.filter { horario in
-            !removedHorariosForDate.contains { removedHorario in
-                calendar.isDate(horario, equalTo: removedHorario, toGranularity: .minute)
-            }
-        }
-        
-        return allHorarios.isEmpty ? nil : allHorarios
-    }
-    
-    private func deleteHorario(day: String, horario: Date) {
-        // Remove the horario from the specific day
-        horarioSemanal[day]?.removeAll { $0 == horario }
-        if horarioSemanal[day]?.isEmpty ?? true {
-            horarioSemanal.removeValue(forKey: day)
-        }
-        
-        // Remove this horario from all dates in customHorarios
-        for (date, horarios) in customHorarios {
-            customHorarios[date] = horarios.filter { $0 != horario }
-        }
-        
-        // Remove from removedHorarios if it exists
-        for (date, _) in removedHorarios {
-            removedHorarios[date]?.removeAll { $0 == horario }
-            if removedHorarios[date]?.isEmpty ?? true {
-                removedHorarios.removeValue(forKey: date)
-            }
-        }
-        
-        showGuardarCambios = true
-    }
-    
-    private func deleteHorarioFromCalendar(date: Date, horario: Date) {
-        if removedHorarios[date] == nil {
-            removedHorarios[date] = []
-        }
-        removedHorarios[date]?.append(horario)
-        
-        // Add to excepcionesFechas
-        let excepcion = ExcepcionFecha(fechaHora: combineDateAndTime(date: date, time: horario), razon: "Cita cancelada")
-        excepcionesFechas.append(excepcion)
-        
-        showGuardarCambios = true
-    }
-    
-    private func updateAttorneyData() async throws {
-        let url = URL(string: "\(baseURL)/updateAttorney")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body: [String: Any] = [
-            "uid": authModel.userData.uid,
-        ]
-        // append body print json de la consola
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
-        let (_, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw URLError(.badServerResponse)
-        }
-    }
-
-    
-    private func guardarCambios() {
-        // Convert horarioSemanal to the required format
-        let orderedDays = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"]
-        
-        // Convert horarioSemanal to the required format and order
-        var horarioSemanalFormatted: [String: [String]] = [:]
-        for day in orderedDays {
-            if let fullDay = dayAbbreviations.firstIndex(of: day).flatMap({ daysOfWeek[$0] }),
-               let horarios = horarioSemanal[fullDay] {
-                horarioSemanalFormatted[day] = horarios.map { formattedTime(for: $0) }.sorted()
-            }
-        }
-
-        // Convert excepcionesFechas to the required format
-        let excepcionesFormatted = excepcionesFechas.map { excepcion -> [String: String] in
-            let dateFormatter = ISO8601DateFormatter()
-            return [
-                "fechaHora": dateFormatter.string(from: excepcion.fechaHora),
-                "razon": excepcion.razon
-            ]
-        }
-        
-        // Create the final JSON structure
-        let finalJSON: [String: Any] = [
-            "horarioSemanal": horarioSemanalFormatted,
-            "excepcionesFechas": excepcionesFormatted
-        ]
-        
-        // Convert to JSON string
-        if let jsonData = try? JSONSerialization.data(withJSONObject: finalJSON, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print(jsonString)
-        } else {
-            print("Error: Couldn't convert to JSON")
-        }
-        
-        // Show alert
-        showSuccessAlert = true
-        shouldHideGuardarCambios = true
-    }
-
-    
-    private func formattedTime(for date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
-    }
-    
-    private func combineDateAndTime(date: Date, time: Date) -> Date {
-        let calendar = Calendar.current
-        let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-        return calendar.date(from: DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: timeComponents.hour, minute: timeComponents.minute)) ?? date
-    }
 }
 
 struct ExcepcionFecha: Identifiable {
@@ -467,5 +638,6 @@ struct ExcepcionFecha: Identifiable {
 #Preview {
     NavigationView {
         AppointmentScheduleView()
+            .environmentObject(AuthModel())
     }
 }

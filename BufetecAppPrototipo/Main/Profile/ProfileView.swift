@@ -68,10 +68,15 @@ struct ProfileView: View {
                 Divider()
                     .background(Color.accentColor)
                 
-                NavigationLink(destination: HelpSupportView()) {
-                    ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
-                    }
-                }
+                Button(action: {
+                                if let url = URL(string: "https://wa.me/+528110157802?text=Hola,%20estoy%20teniendo%20problemas%20con%20la%20aplicación") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }) {
+                                ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
+                                    
+                                }
+                            }
                 
                 Button(action: signOut) {
                     HStack {

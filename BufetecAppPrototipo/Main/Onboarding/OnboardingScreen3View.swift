@@ -39,7 +39,7 @@ struct OnboardingScreen3View: View {
                 Spacer()
 
                 // Texto descriptivo debajo de la imagen
-                Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
+                Text("Bufetec te permite administrar tus casos y citas en un solo lugar.")
                     .font(CustomFonts.MontserratRegular(size: 16))
                     .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
                     .multilineTextAlignment(.center)

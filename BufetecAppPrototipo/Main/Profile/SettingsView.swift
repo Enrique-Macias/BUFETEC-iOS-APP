@@ -18,12 +18,7 @@ struct SettingsView: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
-            
-            Section(header: Text("Información")) {
-                NavigationLink(destination: Text("Acerca de la app")) {
-                    Label("Acerca de la app", systemImage: "info.circle")
-                }
-            }
+        
         }
         .navigationTitle("Configuración")
         .navigationBarTitleDisplayMode(.inline)

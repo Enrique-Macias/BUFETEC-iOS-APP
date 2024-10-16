@@ -42,6 +42,9 @@ struct CreateAppointmentView: View {
             .padding(.bottom, 40)
         }
         .background(Color("btBackground"))
+        .onTapGesture {
+            self.hideKeyboard()
+        }
         .navigationTitle("Agendar Cita")
         .alert(isPresented: $showingErrorAlert) {
             Alert(

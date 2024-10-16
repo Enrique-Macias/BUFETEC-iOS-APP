@@ -37,7 +37,7 @@ struct MultiturnChatView: View {
                             // Botones de preguntas predefinidas
                             VStack(spacing: 12) {
                                 Button(action: {
-                                    // Acción para la primera pregunta
+                                    textInput = "¿Cómo se cuál es mi procedimiento legal?"
                                 }) {
                                     Text("¿Cómo se cuál es mi procedimiento legal?")
                                         .font(CustomFonts.NunitoMedium(size: 16))
@@ -53,7 +53,7 @@ struct MultiturnChatView: View {
                                 }
                                 
                                 Button(action: {
-                                    // Acción para la segunda pregunta
+                                    textInput = "¿Que papelería debo tener a la mano?"
                                 }) {
                                     Text("¿Que papelería debo tener a la mano?")
                                         .font(CustomFonts.NunitoMedium(size: 16))
@@ -69,7 +69,7 @@ struct MultiturnChatView: View {
                                 }
                                 
                                 Button(action: {
-                                    // Acción para la tercera pregunta
+                                    textInput = "¿Cómo se cuál procedimiento tomar?"
                                 }) {
                                     Text("¿Cómo se cuál procedimiento tomar?")
                                         .font(CustomFonts.NunitoMedium(size: 16))
@@ -86,6 +86,7 @@ struct MultiturnChatView: View {
                             }
                             .padding(.horizontal, 32)
                         }
+                        
                         ForEach(chatBot.messages) { chatMessage in
                             // Chat Message View
                             chatMessageView(chatMessage)
@@ -120,14 +121,6 @@ struct MultiturnChatView: View {
                         .cornerRadius(8)
                         .frame(height: 50)
                     
-                    // Micrófono
-                    Button(action: {
-                        // Acción para grabar pregunta por voz (por implementar)
-                    }) {
-                        Image("microphone-2")
-                            .font(.system(size: 20))
-                            .foregroundColor(.gray)
-                    }
                     
                     // Botón de enviar pregunta
                     Button(action: {
@@ -148,6 +141,9 @@ struct MultiturnChatView: View {
                 .padding(.bottom, 10)
             }
             .navigationBarTitleDisplayMode(.inline)
+            .onTapGesture {
+                hideKeyboard() // Ocultar el teclado cuando se toque en cualquier área vacía
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -171,25 +167,6 @@ struct MultiturnChatView: View {
                             .foregroundStyle(Color("btBlue"))
                             .opacity(logoAnimating ? 0.5 : 1)
                             .animation(.easeInOut, value: logoAnimating)
-                    }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 15) {
-                        Button(action: {
-                            // Acción para sonido (por implementar)
-                        }) {
-                            Image("volume-high")
-                                .font(.system(size: 20))
-                        }
-                        
-                        Button(action: {
-                            // Acción para recargar (por implementar)
-                        }) {
-                            Image("export")
-                                .font(.system(size: 20))
-                                .foregroundStyle(Color(.gray))
-                        }
                     }
                 }
             }

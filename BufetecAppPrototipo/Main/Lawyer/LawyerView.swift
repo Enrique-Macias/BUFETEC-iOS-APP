@@ -58,7 +58,7 @@ struct LawyerView: View {
                                 }
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 10)
-                                .frame(maxWidth: 230, maxHeight: 40, alignment: .center)
+                                .frame(maxWidth: 200, maxHeight: 40, alignment: .center)
                                 .foregroundColor(.white)
                                 .background(colorScheme == .dark ? Color.gray.opacity(0.15) : Color.accentColor)
                                 .overlay(

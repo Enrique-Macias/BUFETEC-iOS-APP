@@ -96,15 +96,18 @@ struct AppointmentsListView: View {
     
     private var currentAppointments: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Citas proximas")
+            Text("Citas próximas")
                 .font(.system(size: 18))
                 .fontWeight(.heavy)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
                 .padding(.leading, 3)
-            
-            let currentAppointments = viewModel.appointments.filter { $0.estado != "completada" && $0.estado != "cancelada" }
-            
+
+            // Ordenar las citas actuales por fecha y hora
+            let currentAppointments = viewModel.appointments
+                .filter { $0.estado != "completada" && $0.estado != "cancelada" }
+                .sorted { $0.fechaHora < $1.fechaHora }
+
             if currentAppointments.isEmpty {
                 noNextAppointmentView
             } else {
@@ -128,7 +131,7 @@ struct AppointmentsListView: View {
             }
         }
     }
-    
+
     private var previousAppointments: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Citas previas")
@@ -137,9 +140,12 @@ struct AppointmentsListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
                 .padding(.leading, 3)
-            
-            let previousAppointments = viewModel.appointments.filter { $0.estado == "completada" || $0.estado == "cancelada" }
-            
+
+            // Ordenar las citas previas por fecha y hora
+            let previousAppointments = viewModel.appointments
+                .filter { $0.estado == "completada" || $0.estado == "cancelada" }
+                .sorted { $0.fechaHora < $1.fechaHora }
+
             if previousAppointments.isEmpty {
                 noPreviousAppointmentsView
             } else {
@@ -163,6 +169,7 @@ struct AppointmentsListView: View {
             }
         }
     }
+
     
     private var noNextAppointmentView: some View {
         VStack(spacing: 10) {

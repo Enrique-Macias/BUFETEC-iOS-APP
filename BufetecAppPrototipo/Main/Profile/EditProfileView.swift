@@ -57,6 +57,9 @@ struct EditProfileView: View {
                     saveButton
                 }
                 .padding()
+                .onTapGesture {
+                    hideKeyboard()  // Ocultar teclado al tocar fuera de los campos de texto
+                }
             }
         }
         .navigationTitle("Editar Perfil")
@@ -126,15 +129,15 @@ struct EditProfileView: View {
             InputField(icon: "briefcase", placeholder: "Especialidad", text: $especialidad)
             InputField(icon: "doc.text", placeholder: "Casos Ejemplo", text: $casosEjemplo)
             CustomInputField(icon: "text.alignleft", placeholder: "Descripción", text: $descripcion, isMultiline: true)
-//            TextEditor(text: $descripcion)
-//                .frame(height: 100)
-//                .padding(8)
-//                .background(Color(.systemGray6))
-//                .cornerRadius(8)
-//                .overlay(
-//                    RoundedRectangle(cornerRadius: 8)
-//                        .stroke(Color.gray, lineWidth: 1)
-//                )
+            //            TextEditor(text: $descripcion)
+            //                .frame(height: 100)
+            //                .padding(8)
+            //                .background(Color(.systemGray6))
+            //                .cornerRadius(8)
+            //                .overlay(
+            //                    RoundedRectangle(cornerRadius: 8)
+            //                        .stroke(Color.gray, lineWidth: 1)
+            //                )
         }
         .padding(.horizontal)
     }
@@ -195,7 +198,7 @@ struct EditProfileView: View {
                 .cornerRadius(16)
         }
     }
-
+    
     private var saveButton: some View {
         Button(action: saveChanges) {
             Text("Guardar Cambios")

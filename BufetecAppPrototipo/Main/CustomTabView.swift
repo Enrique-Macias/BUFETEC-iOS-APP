@@ -1,5 +1,11 @@
 import SwiftUI
 
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
 enum TabbedItems: Int, CaseIterable {
     case home = 0
     case clientsOrNews

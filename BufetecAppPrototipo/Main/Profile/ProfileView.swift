@@ -68,8 +68,10 @@ struct ProfileView: View {
                 Divider()
                     .background(Color.accentColor)
                 
-//                ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
-//                }
+                NavigationLink(destination: HelpSupportView()) {
+                    ProfileOption(iconName: "questionmark.circle.fill", title: "Ayuda y soporte", showChevron: false) {
+                    }
+                }
                 
                 Button(action: signOut) {
                     HStack {

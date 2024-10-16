@@ -83,6 +83,7 @@
 		ECB60E3F2C8B9786007535DB /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */; };
 		ECB60E412C8B9795007535DB /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */; };
 		ECB60E432C8B9B53007535DB /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB60E422C8B9B53007535DB /* Fonts.swift */; };
+		ECCA732A2CBF63C4009199F0 /* HelpSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCA73292CBF63C3009199F0 /* HelpSupportView.swift */; };
 		ECE240512C8F96DA00F84D0D /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = ECE240502C8F96DA00F84D0D /* GoogleGenerativeAI */; };
 		ECE240532C9005E000F84D0D /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE240522C9005E000F84D0D /* APIKey.swift */; };
 		ECE240572C9010FE00F84D0D /* MultiturnChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */; };
@@ -162,6 +163,7 @@
 		ECB60E3E2C8B9786007535DB /* Manrope-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Bold.ttf"; sourceTree = "<group>"; };
 		ECB60E402C8B9795007535DB /* Manrope-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Medium.ttf"; sourceTree = "<group>"; };
 		ECB60E422C8B9B53007535DB /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		ECCA73292CBF63C3009199F0 /* HelpSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpSupportView.swift; sourceTree = "<group>"; };
 		ECE240522C9005E000F84D0D /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		ECE240562C9010FE00F84D0D /* MultiturnChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiturnChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -365,6 +367,7 @@
 				ECB1471C2CA33076009D5B70 /* EditProfileView.swift */,
 				41586DF82CBB8D88002E3908 /* PasswordResetView.swift */,
 				41203A402C6D4187006E1FAC /* SettingsView.swift */,
+				ECCA73292CBF63C3009199F0 /* HelpSupportView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				ECB147072CA33015009D5B70 /* AppointmentsListView.swift in Sources */,
 				EC8ABC7C2C911C10008C42EB /* ChatBubbleShape.swift in Sources */,
 				ECB147202CA33076009D5B70 /* ProfileView.swift in Sources */,
+				ECCA732A2CBF63C4009199F0 /* HelpSupportView.swift in Sources */,
 				ECB147012CA2056C009D5B70 /* FAQView.swift in Sources */,
 				EC800CB42C8A322200A9FB80 /* OnboardingChatBotView.swift in Sources */,
 				ECB1471A2CA33056009D5B70 /* OnboardingView.swift in Sources */,
@@ -655,7 +659,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = XGW3QF7T97;
+				DEVELOPMENT_TEAM = 37A8UMU294;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -672,7 +676,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
+				PRODUCT_BUNDLE_IDENTIFIER = icodecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -692,7 +696,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BufetecAppPrototipo/Preview Content\"";
-				DEVELOPMENT_TEAM = XGW3QF7T97;
+				DEVELOPMENT_TEAM = 37A8UMU294;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BufetecAppPrototipo/Info.plist;
@@ -709,7 +713,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = codecrew.BufetecApp;
+				PRODUCT_BUNDLE_IDENTIFIER = icodecrew.BufetecApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

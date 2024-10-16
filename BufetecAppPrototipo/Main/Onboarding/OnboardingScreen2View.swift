@@ -38,7 +38,7 @@ struct OnboardingScreen2View: View {
                 Spacer()
 
                 // Texto descriptivo debajo de la imagen
-                Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
+                Text("¿Necesitas asesoría legal? Reserva citas fácilmente con abogados especializados según tu caso.")
                     .font(CustomFonts.MontserratRegular(size: 16))
                     .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
                     .multilineTextAlignment(.center)

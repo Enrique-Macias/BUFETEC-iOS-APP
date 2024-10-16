@@ -22,12 +22,12 @@ struct WelcomeScreenView: View {
                 
                 Spacer()
                 
-                Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout")
-                    .font(CustomFonts.MontserratSemiBold(size: 18))
+                Text("Bufetec es un despacho jurídico que ofrece asesoría legal gratuita a grupos vulnerables, con atención humana y responsable. Además, impulsa el desarrollo ético de estudiantes de Derecho a través de prácticas formativas.")
+                    .font(CustomFonts.MontserratSemiBold(size: 16))
                     .foregroundColor(Color(colorScheme == .light ? Color.accentColor : .white))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
-                    .padding(.bottom, 80)
+                    .padding(.bottom, 40)
                 
                 Button(action: {
                     hasSeenOnboarding = true
